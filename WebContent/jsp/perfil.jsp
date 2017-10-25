@@ -15,7 +15,7 @@ if(sesion.getAttribute("usuarioLogueado")==null){
 	
 	
   %>
-<%@page import="java.util.HashMap,java.util.Set,modelo.hibernate.Usuarios,modelo.hibernate.Genero, utils.HibernateUtils, org.hibernate.Session, java.util.ArrayList"%>
+<%@page import="java.time.format.DateTimeFormatter,java.util.HashMap,java.util.Set,modelo.hibernate.Usuarios,modelo.hibernate.Genero, utils.HibernateUtils, org.hibernate.Session, java.util.ArrayList"%>
 <html>
 <head>
     <title>Home</title>
@@ -83,18 +83,36 @@ function myFunction() {
 <h2>INFORMACION PERSONAL</j2>
   <legend></legend>
   <% 
+ 
   Session sesionHib = HibernateUtils.getSessionFactory().openSession();
 Usuarios user=(Usuarios)sesionHib.get(Usuarios.class,(String)sesion.getAttribute("emailLogueado")); 
+DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+String fechaNew = user.getFechaDeNac().format(formatter);
+
   %>
+  <table>
 <tr>
 <td>Nombre:</td>
+<td><%=user.getNombre()%></td>
 </tr>
+<tr>
+<td>Apellidos:</td>
+<td><%=user.getApellidos() %></td>
+</tr>
+<tr>
+<td>E-mail:</td>
+<td><%=user.getEmailUsuario()%></td>
+</tr>
+<tr>
+<td>Fecha de Nacimiento</td>
+<td><%=fechaNew%></td>
+</tr>
+
+
 
 </table>
 </div>
-<script>
-print
-</script>
+
 <script>
 var bool=true;
 function openNav() {

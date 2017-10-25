@@ -1,11 +1,19 @@
 package controlador;
 
 import modelo.hibernate.*;
+import sun.util.calendar.LocalGregorianCalendar;
 import utils.HibernateUtils;
 
 import java.io.IOException;
+import java.sql.Date;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Set;
 
 import javax.servlet.ServletContext;
@@ -136,6 +144,25 @@ public class servlet extends HttpServlet {
 		
 		
 	}
+	public void añadirUsuario(HttpServletRequest request) {
+		Session sesionHib = HibernateUtils.getSessionFactory().openSession();
+	    sesionHib.beginTransaction();
+	    String nombre=request.getParameter("nombreReg");
+	    String apellidos=request.getParameter("apellidoReg");
+	    String email=request.getParameter("emailReg");
+	    String pass=request.getParameter("passReg");
+	    String fecha1=request.getParameter("fechaReg");
+	    DateFormat format = new SimpleDateFormat("dd MM, yyyy", Locale.getDefault());
+	    Date date;
+		try {
+			date = (Date) format.parse(fecha1);
+			System.out.println(date);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	    
+	}
 	public boolean usuarioEnLista(HttpServletRequest request) {
 
 		Session sesionHib = HibernateUtils.getSessionFactory().openSession();
@@ -145,6 +172,7 @@ public class servlet extends HttpServlet {
 			String contra = lista.get(0).getContrasena();
 			if (request.getParameter("password").equals(contra)) {
 				HttpSession sesion = request.getSession(true);
+			
 				sesion.setAttribute("infoUsuario", lista);
 				return true;
 			}
@@ -153,6 +181,7 @@ public class servlet extends HttpServlet {
 
 		return false;
 	}
+	
 
 	public void listarGeneros(HttpServletRequest request) {
 		Session sesionHib = HibernateUtils.getSessionFactory().openSession();

@@ -15,7 +15,7 @@
         <property generated="never" lazy="false" name="contrasena" optimistic-lock="true" type="string" unique="false">
             <column name="contrasena" not-null="true"/>
         </property>
-        <property generated="never" lazy="false" name="fechaDeNac" optimistic-lock="true" type="date" unique="false">
+        <property generated="never" lazy="false" name="fechaDeNac" optimistic-lock="true" type="localDate" unique="false">
             <column length="10" name="fecha_de_nac" not-null="true"/>
         </property>
         <property generated="never" lazy="false" name="admin" optimistic-lock="true" type="int" unique="false">
