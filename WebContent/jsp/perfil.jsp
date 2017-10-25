@@ -83,7 +83,6 @@ function myFunction() {
 <h2>INFORMACION PERSONAL</j2>
   <legend></legend>
   <% 
- 
   Session sesionHib = HibernateUtils.getSessionFactory().openSession();
 Usuarios user=(Usuarios)sesionHib.get(Usuarios.class,(String)sesion.getAttribute("emailLogueado")); 
 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
