@@ -44,7 +44,7 @@
 			<h2>DIGITALGAME e-SHOP</h2>
 		</div>
 		<div class="topnav" id="myTopnav">
-			<a style="font-size: 30px; cursor: pointer" onclick="openNav()">&#9776;</a>
+			<a style=" cursor: pointer" onclick="openNav()">&#9776;</a>
 			<a href="<%=baseJsp%>?action=irInicio">Home</a> <a
 				href="<%=baseJsp%>?action=irArticulos">Juegos</a> <a href="<%=baseJsp%>?action=irLogin">Login</a>
 			<a href="<%=baseJsp%>?action=irRegistro">Registrarse</a> <a
@@ -79,8 +79,7 @@
 			%>
 			<a href="#">Services</a>
 		</div>
-		<form id="form" style="background-color: white"	<%-- action="<%=baseJsp%>?action=botonRegistro" --%>
-			action="javascript:void(0)"method="POST" class="form-horizontal">
+		<form id="form" style="background-color: white"	action="<%=baseJsp%>?action=botonRegistro"method="POST" class="form-horizontal">
 			<fieldset>
 
 				<!-- Form Name -->
@@ -92,7 +91,7 @@
 				<div class="control-group">
 					<label class="control-label" for="textinput">Nombre</label>
 					<div class="controls">
-						<input id="nombre" name="nombre" type="text"
+						<input id="nombreReg" name="nombreReg" type="text"
 							placeholder="placeholder" class="input-xlarge" required>
 
 					</div>
@@ -102,7 +101,7 @@
 				<div class="control-group">
 					<label class="control-label" for="textinput">Apellidos</label>
 					<div class="controls">
-						<input id="apellidos" name="apellidos" type="text"
+						<input id="apellidosReg" name="apellidosReg" type="text"
 							placeholder="placeholder" class="input-xlarge" required>
 
 					</div>
@@ -113,7 +112,7 @@
 					<label class="control-label" for="textinput">Correo
 						Electronico</label>
 					<div class="controls">
-						<input id="correo" name="correo" type="text"
+						<input id="correoReg" name="correoReg" type="text"
 							placeholder="placeholder" class="input-xlarge" required>
 
 					</div>
@@ -123,7 +122,7 @@
 				<div class="control-group">
 					<label class="control-label" for="password">Contraseña</label>
 					<div class="controls">
-						<input id="password" name="password" type="password"
+						<input id="password" name="passReg" type="passReg"
 							placeholder="placeholder" class="input-medium" required>
 
 					</div>
@@ -134,7 +133,7 @@
 					<label class="control-label" for="contraseñaRegistro">Repita
 						la Contraseña</label>
 					<div class="controls">
-						<input id="passwordRe" name="passwordRe" type="password"
+						<input id="passwordRe" name="pass2" type="pass2"
 							placeholder="placeholder" class="input-medium" required>
 
 					</div>
@@ -142,12 +141,11 @@
 
 				<!-- Appended checkbox -->
 				<div class="control-group">
-					<label class="control-label" for="appendedcheckbox">Fecha
-						de Nacimiento</label>
+					<label class="control-label" for="appendedcheckbox">Fecha de Nacimiento</label>
 					<div class="controls">
 						<div class="input-append">
 
-							<input type="date" id="fechaNac" name="fechaNac" required>
+							<input type="date" id="fechaReg" name="fechaReg" required>
 						</div>
 
 					</div>

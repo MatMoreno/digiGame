@@ -5,11 +5,12 @@ import sun.util.calendar.LocalGregorianCalendar;
 import utils.HibernateUtils;
 
 import java.io.IOException;
-import java.sql.Date;
+import java.util.Date;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -79,27 +80,30 @@ public class servlet extends HttpServlet {
 			case "irArticulos":
 				url = base + "articulos.jsp";
 				break;
+				
 			case "irCuenta":
 				listarUsuarios(request);
 				url = base + "perfil.jsp";
 				break;
+				
 			case "irInicio":
 				url = base + "inicioLog.jsp";
 				break;
+				
 			case "irLogin":
 				url = base + "login.jsp";
 				break;
+				
 			case "irRegistro":
 				url = base + "registro.jsp";
 				break;
 
 			case "botonLogin":
 				error = "false";
-				String emailCaja = request.getParameter("email");
+				String emailCaja = request.getParameter("emailLogin");
 				String passCaja = request.getParameter("password");
-				System.out.println(emailCaja + "---" + passCaja);
-
-				if (usuarioEnLista(request) == true) {
+				//System.out.println(emailCaja + "---" + passCaja);
+				if (usuarioEnLista(request) == emailCaja) {
 					HttpSession sesion = request.getSession();
 					sesion.setAttribute("emailLogueado", emailCaja);
 					String nombreLog=listarUsuarios(request).get(emailCaja).getNombre();
@@ -117,7 +121,12 @@ public class servlet extends HttpServlet {
 				url = base + "inicioLog.jsp";
 				break;
 			case "botonRegistro":
-				url = base + "registro.jsp";
+				if(añadirUsuario(request)==true) {
+					url = base + "inicioLog.jsp";
+				}else {
+					url = base + "registro.jsp";
+				}
+		
 				break;
 
 			default:
@@ -144,42 +153,61 @@ public class servlet extends HttpServlet {
 		
 		
 	}
-	public void añadirUsuario(HttpServletRequest request) {
+	public boolean añadirUsuario(HttpServletRequest request) {
 		Session sesionHib = HibernateUtils.getSessionFactory().openSession();
-	    sesionHib.beginTransaction();
+	   
 	    String nombre=request.getParameter("nombreReg");
-	    String apellidos=request.getParameter("apellidoReg");
-	    String email=request.getParameter("emailReg");
+	    String apellidos=request.getParameter("apellidosReg");
+	    String email=request.getParameter("correoReg");
 	    String pass=request.getParameter("passReg");
-	    String fecha1=request.getParameter("fechaReg");
-	    DateFormat format = new SimpleDateFormat("dd MM, yyyy", Locale.getDefault());
-	    Date date;
-		try {
-			date = (Date) format.parse(fecha1);
-			System.out.println(date);
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+	    String fechaReg=request.getParameter("fechaReg");
+	   // System.out.println(nombre+" "+apellidos+" "+email+" "+pass+" "+fechaReg);
+	    SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+	    LocalDate fechaNueva = null;
+	    try {
+	    Date fecha = (Date) formatter.parse(fechaReg);
+	    fechaNueva = fecha.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+            
+            //FECHA PASADA DE  date "YYYY-MM-DD" A  "DD-MM-YYYY"
+            /* SimpleDateFormat formatter2 = new SimpleDateFormat("dd-MM-yyyy");
+               Date fecha2=formatter2.parse(formatter.format(fecha));
+            String fechaBien =formatter2.format(fecha2);*/
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+	   //se inserta en lista si email no existe en la base de datos
+	    if(usuarioEnLista(request)=="") {
+	    	Usuarios user=new Usuarios(email,nombre,apellidos,pass,fechaNueva, 0); 
+	    	sesionHib.save(user);
+	    	HttpSession sesion = request.getSession();
+			sesion.setAttribute("usuarioLogueado", nombre);
+	    	 sesionHib.beginTransaction();
+	    	 sesionHib.getTransaction().commit();
+	    	 sesionHib.close();
+	    	 return true;
+	    } else
+	    return false;
 	    
 	}
-	public boolean usuarioEnLista(HttpServletRequest request) {
+	public String usuarioEnLista(HttpServletRequest request) {
 
 		Session sesionHib = HibernateUtils.getSessionFactory().openSession();
 		@SuppressWarnings("unchecked")
-		ArrayList<Usuarios> lista = (ArrayList<Usuarios>) sesionHib.createQuery("from Usuarios where emailUsuario='" + request.getParameter("email") + "'").list();
+		String email=request.getParameter("emailLogin");
+		ArrayList<Usuarios> lista = (ArrayList<Usuarios>) sesionHib.createQuery("from Usuarios where emailUsuario='" + email + "'").list();
 		if (lista.size() != 0) {
 			String contra = lista.get(0).getContrasena();
 			if (request.getParameter("password").equals(contra)) {
 				HttpSession sesion = request.getSession(true);
 			
 				sesion.setAttribute("infoUsuario", lista);
-				return true;
+				return email;
 			}
 		}
 		sesionHib.close();
 
-		return false;
+		return "";
 	}
 	
 

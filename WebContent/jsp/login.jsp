@@ -33,7 +33,7 @@
   <h2>DIGITALGAME e-SHOP</h2>
 </div>
 <div class="topnav" id="myTopnav">
-<a style="font-size:30px;cursor:pointer"   onclick="openNav()">&#9776;</a>
+<a style="cursor:pointer"   onclick="openNav()">&#9776;</a>
 <a href="<%=baseJsp%>?action=irInicio">Home</a>
 <a href="index-1.html">Juegos</a>
 <a   href="<%=baseJsp%>?action=irLogin">Login</a>
@@ -46,7 +46,7 @@
         
             <form   action="<%=baseJsp%>?action=botonLogin" method="POST">
                 <h2>Iniciar Sesión</h2>
-                <input type="text" class="input-block-level" placeholder="Email address" name="email" id='email' required>
+                <input type="text" class="input-block-level" placeholder="Email address" name="emailLogin" id='email' required>
                 <input type="password" class="input-block-level" placeholder="Password" name="password" id="password" required>
                 <label class="checkbox">
                     <input type="checkbox" value="remember-me" id="remember_me"> Remember me

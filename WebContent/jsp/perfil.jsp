@@ -9,9 +9,11 @@ HttpSession sesion = request.getSession();
 HashMap<String,Usuarios> mapUsuario=(HashMap<String,Usuarios>)sesion.getAttribute("mapUsuarios");
 
 pageContext.setAttribute("map", mapUsuario);
+
 if(sesion.getAttribute("usuarioLogueado")==null){
 	response.sendRedirect("/DigitalGame/servlet?action=irInicioLog");
-	}
+	out.print("NO HAY SESION");
+	} else{
 	
 	
   %>
@@ -24,7 +26,7 @@ if(sesion.getAttribute("usuarioLogueado")==null){
     <meta name="description" content="Your description">
     <meta name="keywords" content="Your keywords">
     <meta name="author" content="Your name">
-    <link rel="stylesheet" href="boot/css/bootstrap.css" type="text/css" media="screen">
+    <link rel="stylesheet" href="boot3/bootstrap.css" type="text/css" media="screen">
     <link rel="stylesheet" href="boot/css/style.css" type="text/css" media="screen">
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,600,700' rel='stylesheet' type='text/css'>
     <link  rel="stylesheet" href="css/estilos.css">
@@ -42,7 +44,7 @@ if(sesion.getAttribute("usuarioLogueado")==null){
   <h2>DIGITALGAME e-SHOP</h2>
 </div>
 <div class="topnav" id="myTopnav">
-<a style="font-size:30px;cursor:pointer"   onclick="openNav()">&#9776;</a>
+<a style="cursor:pointer"   onclick="openNav()">&#9776;</a>
 <a href="<%=baseJsp%>?action=irInicioLog">Home</a>
 <a href="<%=baseJsp%>?action=irArticulos">Juegos</a>
 <a   href="<%=baseJsp%>?action=irCuenta">Perfil de <%=(String) sesion.getAttribute("usuarioLogueado") %></a>
@@ -79,17 +81,17 @@ function myFunction() {
   <a href="#">Services</a>
 </div>
 <div style="margin-top:0;background-color:white;margin:auto;width:70%;height:600px">
-<table>
 <h2>INFORMACION PERSONAL</j2>
   <legend></legend>
   <% 
   Session sesionHib = HibernateUtils.getSessionFactory().openSession();
+ 
 Usuarios user=(Usuarios)sesionHib.get(Usuarios.class,(String)sesion.getAttribute("emailLogueado")); 
 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 String fechaNew = user.getFechaDeNac().format(formatter); 
 
   %>
-  <table>
+  <table class="table">
 <tr>
 <td>Nombre:</td>
 <td><%=user.getNombre()%></td>
@@ -130,4 +132,4 @@ function closeNav() {
 </script>
 
 </body>
-</html>
+</html><%}%>

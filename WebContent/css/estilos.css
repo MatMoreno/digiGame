@@ -1,20 +1,28 @@
-body{margin:0;background-image:url(../img/1.jpg)}
+body{margin:0;background-image:url(../img/4.jpg)}
 #fondo{
+	margin-top:0;
 	margin:auto;
 }
 #fondo legend h2{
 	padding-left: 5%;
 }
-header div h2{;color:white;}
+header div h2{color:white;}
 header{
 	width:70%;
 	margin:auto;
 	text-align:center
 }
-table td{
+table  tr{
+		margin-top:10%;
+	
+}
+table  td{
+	width:25%;
+
 	font-size:20px;
 	margin-right:10%;
-	border-bottom: 2px black dashed;
+	   border-bottom: 4px solid red;
+    background-color: lightgrey;
 }
 .p0 {
   padding-bottom: 0px !important;
@@ -28,7 +36,7 @@ table td{
     z-index: 1;
     top: 0;
     left: 0;
-    background-color: #111;
+  
     overflow-x: hidden;
     transition: 0.5s;
     padding-top: 60px;
@@ -85,7 +93,7 @@ table td{
   text-align: center;
   padding: 14px 16px;
   text-decoration: none;
-  font-size: 17px;
+  font-size: 20px;
 }
 
 .topnav a:hover {

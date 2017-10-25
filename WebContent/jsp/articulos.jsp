@@ -37,7 +37,7 @@
 			<h2>DIGITALGAME e-SHOP</h2>
 		</div>
 		<div class="topnav" id="myTopnav">
-			<a style="font-size: 30px; cursor: pointer" onclick="openNav()">&#9776;</a>
+			<a style=" cursor: pointer" onclick="openNav()">&#9776;</a>
 			<%if(sesion.getAttribute("usuarioLogueado")!=null){ %>
 <a href="<%=baseJsp%>?action=irInicioLog">Home</a>
 <a href="<%=baseJsp%>?action=irArticulos">Juegos</a>
