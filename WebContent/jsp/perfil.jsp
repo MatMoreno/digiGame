@@ -87,7 +87,7 @@ function myFunction() {
   Session sesionHib = HibernateUtils.getSessionFactory().openSession();
 Usuarios user=(Usuarios)sesionHib.get(Usuarios.class,(String)sesion.getAttribute("emailLogueado")); 
 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-String fechaNew = user.getFechaDeNac().format(formatter);
+String fechaNew = user.getFechaDeNac().format(formatter); 
 
   %>
   <table>
