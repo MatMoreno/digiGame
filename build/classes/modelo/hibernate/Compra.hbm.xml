@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Generated 23-oct-2017 11:55:10 by Hibernate Tools 5.2.5.Final --><!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping auto-import="true" default-access="property" default-cascade="none" default-lazy="true">
+    <class catalog="digitalgamedb" dynamic-insert="false" dynamic-update="false" mutable="true" name="modelo.hibernate.Compra" optimistic-lock="version" polymorphism="implicit" select-before-update="false" table="compra">
+        <id name="codigoCompra" type="int">
+            <column name="codigo_compra"/>
+            <generator class="assigned"/>
+        </id>
+        <property generated="never" lazy="false" name="emailUsuario" optimistic-lock="true" type="string" unique="false">
+            <column length="100" name="email_usuario" not-null="true"/>
+        </property>
+        <property generated="never" lazy="false" name="codigoArticulo" optimistic-lock="true" type="int" unique="false">
+            <column name="codigo_articulo" not-null="true"/>
+        </property>
+    </class>
+</hibernate-mapping>

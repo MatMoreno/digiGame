@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Generated 23-oct-2017 11:55:10 by Hibernate Tools 5.2.5.Final --><!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping auto-import="true" default-access="property" default-cascade="none" default-lazy="true">
+    <class catalog="digitalgamedb" dynamic-insert="false" dynamic-update="false" mutable="true" name="modelo.hibernate.Articulo" optimistic-lock="version" polymorphism="implicit" select-before-update="false" table="articulo">
+        <id name="codigoArticulo" type="java.lang.Integer">
+            <column name="codigo_articulo"/>
+            <generator class="identity"/>
+        </id>
+        <property generated="never" lazy="false" name="nombre" optimistic-lock="true" type="string" unique="false">
+            <column name="nombre" not-null="true"/>
+        </property>
+        <property generated="never" lazy="false" name="codigoGenero" optimistic-lock="true" type="int" unique="false">
+            <column name="codigo_genero" not-null="true"/>
+        </property>
+        <property generated="never" lazy="false" name="plataforma" optimistic-lock="true" type="string" unique="false">
+            <column name="plataforma" not-null="true"/>
+        </property>
+        <property generated="never" lazy="false" name="fechaDeLanzamiento" optimistic-lock="true" type="date" unique="false">
+            <column length="10" name="fecha_de_lanzamiento" not-null="true"/>
+        </property>
+        <property generated="never" lazy="false" name="informacionAdicional" optimistic-lock="true" type="string" unique="false">
+            <column name="informacion_adicional"/>
+        </property>
+        <property generated="never" lazy="false" name="disponibilidad" optimistic-lock="true" type="boolean" unique="false">
+            <column name="disponibilidad" not-null="true"/>
+        </property>
+        <property generated="never" lazy="false" name="clave" optimistic-lock="true" type="int" unique="false">
+            <column name="clave" not-null="true"/>
+        </property>
+    </class>
+</hibernate-mapping>

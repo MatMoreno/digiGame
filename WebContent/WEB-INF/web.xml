@@ -12,6 +12,10 @@
    <servlet>
     <servlet-name>servlet</servlet-name>
     <servlet-class>controlador.servlet</servlet-class>
+     <init-param>
+  <param-name>base</param-name>
+  <param-value>/jsp/</param-value>
+  </init-param>
    </servlet>
   <servlet-mapping>
     <servlet-name>servlet</servlet-name>
