@@ -64,7 +64,7 @@ public class servlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		
+		listarArticulos(request);
 		listarGeneros(request);
 		String error = "false";
 		String baseJsp = "/DigitalGame/servlet";
@@ -200,7 +200,6 @@ public class servlet extends HttpServlet {
 			String contra = lista.get(0).getContrasena();
 			if (request.getParameter("password").equals(contra)) {
 				HttpSession sesion = request.getSession(true);
-			
 				sesion.setAttribute("infoUsuario", lista);
 				return email;
 			}
@@ -209,6 +208,16 @@ public class servlet extends HttpServlet {
 
 		return "";
 	}
+	public void listarArticulos(HttpServletRequest request) {
+		Session sesionHib = HibernateUtils.getSessionFactory().openSession();
+		ArrayList<Articulo> lista = (ArrayList<Articulo>) sesionHib.createQuery("from Articulo").list();
+		
+		System.out.println(lista.get(0).getNombre());
+		request.setAttribute("arrayJuegos", lista);
+		
+		
+	}
+	
 	
 
 	public void listarGeneros(HttpServletRequest request) {

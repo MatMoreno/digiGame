@@ -21,8 +21,8 @@
         <property generated="never" lazy="false" name="informacionAdicional" optimistic-lock="true" type="string" unique="false">
             <column name="informacion_adicional"/>
         </property>
-        <property generated="never" lazy="false" name="disponibilidad" optimistic-lock="true" type="boolean" unique="false">
-            <column name="disponibilidad" not-null="true"/>
+        <property generated="never" lazy="false" name="stock" optimistic-lock="true" type="int" unique="false">
+            <column name="stock" not-null="true"/>
         </property>
         <property generated="never" lazy="false" name="clave" optimistic-lock="true" type="int" unique="false">
             <column name="clave" not-null="true"/>

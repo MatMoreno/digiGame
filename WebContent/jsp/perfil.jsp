@@ -12,7 +12,6 @@ pageContext.setAttribute("map", mapUsuario);
 
 if(sesion.getAttribute("usuarioLogueado")==null){
 	response.sendRedirect("/DigitalGame/servlet?action=irInicioLog");
-	out.print("NO HAY SESION");
 	} else{
 	
 	
@@ -85,7 +84,6 @@ function myFunction() {
   <legend></legend>
   <% 
   Session sesionHib = HibernateUtils.getSessionFactory().openSession();
- 
 Usuarios user=(Usuarios)sesionHib.get(Usuarios.class,(String)sesion.getAttribute("emailLogueado")); 
 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 String fechaNew = user.getFechaDeNac().format(formatter); 
