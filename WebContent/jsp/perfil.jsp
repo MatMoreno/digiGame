@@ -91,7 +91,7 @@ DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 String fechaNew = user.getFechaDeNac().format(formatter); 
 
   %>
-  <table class="table">
+  <table   >
 <tr>
 <td>Nombre:</td>
 <td><%=user.getNombre()%></td>
