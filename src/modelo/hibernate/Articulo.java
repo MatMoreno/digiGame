@@ -1,6 +1,7 @@
 package modelo.hibernate;
 // Generated 23-oct-2017 11:55:10 by Hibernate Tools 5.2.5.Final
 
+import java.time.LocalDate;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -27,19 +28,21 @@ public class Articulo implements java.io.Serializable {
 	@Column(name="plataforma")
 	private String plataforma;
 	@Column(name="fecha_de_lanzamiento")
-	private Date fechaDeLanzamiento;
+	private LocalDate fechaDeLanzamiento;
 	@Column(name="informacion_adicional")
 	private String informacionAdicional;
 	@Column(name="stock")
 	private int stock;
 	@Column(name="clave")
 	private int clave;
+	@Column(name="precio")
+	private float precio;
 
 	public Articulo() {
 		
 	}
 
-	public Articulo(String nombre, int codigoGenero, String plataforma, Date fechaDeLanzamiento, int stock,
+	public Articulo(String nombre, int codigoGenero, String plataforma,LocalDate fechaDeLanzamiento, int stock,
 			int clave) {
 		this.nombre = nombre;
 		this.codigoGenero = codigoGenero;
@@ -49,7 +52,7 @@ public class Articulo implements java.io.Serializable {
 		this.clave = clave;
 	}
 
-	public Articulo(String nombre, int codigoGenero, String plataforma, Date fechaDeLanzamiento,
+	public Articulo(String nombre, int codigoGenero, String plataforma, LocalDate fechaDeLanzamiento,
 			String informacionAdicional, int stock, int clave) {
 		this.nombre = nombre;
 		this.codigoGenero = codigoGenero;
@@ -92,11 +95,11 @@ public class Articulo implements java.io.Serializable {
 		this.plataforma = plataforma;
 	}
 
-	public Date getFechaDeLanzamiento() {
+	public LocalDate getFechaDeLanzamiento() {
 		return this.fechaDeLanzamiento;
 	}
 
-	public void setFechaDeLanzamiento(Date fechaDeLanzamiento) {
+	public void setFechaDeLanzamiento(LocalDate fechaDeLanzamiento) {
 		this.fechaDeLanzamiento = fechaDeLanzamiento;
 	}
 
@@ -131,6 +134,14 @@ public class Articulo implements java.io.Serializable {
 	 */
 	public void setStock(int stock) {
 		this.stock = stock;
+	}
+
+	public float getPrecio() {
+		return precio;
+	}
+
+	public void setPrecio(float precio) {
+		this.precio = precio;
 	}
 
 }

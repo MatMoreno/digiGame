@@ -8,8 +8,6 @@ ArrayList<Genero> lista=(ArrayList<Genero>) request.getAttribute("arrayGenero");
 HttpSession sesion = request.getSession();
 HashMap<String,Usuarios> mapUsuario=(HashMap<String,Usuarios>)sesion.getAttribute("mapUsuarios");
 
-pageContext.setAttribute("map", mapUsuario);
-
 if(sesion.getAttribute("usuarioLogueado")==null){
 	response.sendRedirect("/DigitalGame/servlet?action=irInicioLog");
 	} else{
@@ -52,7 +50,19 @@ if(sesion.getAttribute("usuarioLogueado")==null){
 <a href="javascript:void(0);" style="font-size:15px;" class="icon" onclick="myFunction()">&#9776;</a>
 </div>
 </header>
+	<div id="mySidenav" class="sidenav">
+		<a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+		<p>Género</p>
+		<legend></legend>
+		<%
+			for (int i = 0; i < lista.size(); i++) {%>
+		<a
+			href="<%=baseJsp%>?action=irGenero&idGen=<%=lista.get(i).getCodigoGenero()%> "><%= lista.get(i).getNombre() %></a>
+		<%
+				}
+		%>
 
+	</div>
 <script>
 function myFunction() {
     var x = document.getElementById("myTopnav");
@@ -85,8 +95,7 @@ function myFunction() {
   <% 
   Session sesionHib = HibernateUtils.getSessionFactory().openSession();
 Usuarios user=(Usuarios)sesionHib.get(Usuarios.class,(String)sesion.getAttribute("emailLogueado")); 
-DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-String fechaNew = user.getFechaDeNac().format(formatter); 
+String fechaNew = user.getFechaDeNac().format(DateTimeFormatter.ofPattern("dd-MM-yyyy")); 
 
   %>
   <table   >

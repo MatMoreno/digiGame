@@ -1,13 +1,16 @@
 
 <!DOCTYPE html>
 <%@page
-	import="modelo.hibernate.Usuarios,modelo.hibernate.Articulo,modelo.hibernate.Genero, utils.HibernateUtils, org.hibernate.Session, java.util.ArrayList"%>
+	import="java.time.format.DateTimeFormatter ,modelo.hibernate.Usuarios,modelo.hibernate.Articulo,modelo.hibernate.Genero, utils.HibernateUtils, org.hibernate.Session, java.util.ArrayList"%>
 <%
 	String baseJsp = (String) request.getAttribute("baseJsp");
 	ArrayList<Genero> lista = (ArrayList<Genero>) request.getAttribute("arrayGenero");
 	HttpSession sesion = request.getSession();
-	ArrayList<Articulo> listaJuegos=(ArrayList<Articulo>) request.getAttribute("arrayJuegos");
-
+	ArrayList<Articulo> listaJuegos = (ArrayList<Articulo>) request.getAttribute("arrayJuegos");
+	if (request.getAttribute("articuloGenero") != null) {
+		out.print(request.getAttribute("articuloGenero"));
+		listaJuegos = (ArrayList<Articulo>) request.getAttribute("articuloGenero");
+	}
 %>
 
 <html>
@@ -30,6 +33,34 @@
 <script src="js/jquery.ui.totop.js" type="text/javascript"></script>
 <script type="text/javascript" src="js/bootstrap.js"></script>
 
+<script>
+	function myFunction() {
+		var x = document.getElementById("myTopnav");
+		if (x.className === "topnav") {
+			x.className += " responsive";
+			document.getElementById("mySidenav").style.marginTop = "400px";
+		} else {
+			document.getElementById("mySidenav").style.marginTop = "143px";
+			x.className = "topnav";
+		}
+	}
+</script>
+<script>
+	var bool = false;
+	function openNav() {
+		if (bool == true) {
+			document.getElementById("mySidenav").style.width = "15%";
+			bool = false;
+		} else {
+			bool = true;
+			closeNav();
+		}
+	}
+
+	function closeNav() {
+		document.getElementById("mySidenav").style.width = "0";
+	}
+</script>
 </head>
 
 <body id="fondo">
@@ -45,7 +76,7 @@
 				if (sesion.getAttribute("usuarioLogueado") != null) {
 			%>
 			<a href="<%=baseJsp%>?action=irInicioLog">Home</a> <a
-				href="<%=baseJsp%>?action=irArticulos">Juegos</a> <a
+				href="<%=baseJsp%>?action=irArticulos">Catálogo</a> <a
 				href="<%=baseJsp%>?action=irPerfil">Perfil de <%=(String) sesion.getAttribute("usuarioLogueado")%></a>
 			<a href="<%=baseJsp%>?action=irCarrito">Carrito()</a> <a
 				href="<%=baseJsp%>?action=cerrarSesion">cerrar sesión</a>
@@ -53,7 +84,7 @@
 				} else {
 			%>
 			<a href="<%=baseJsp%>?action=irInicio">Home</a> <a
-				href="<%=baseJsp%>?action=irArticulos">Juegos</a> <a
+				href="<%=baseJsp%>?action=irArticulos">Catálogo</a> <a
 				href="<%=baseJsp%>?action=irLogin">Login</a> <a
 				href="<%=baseJsp%>?action=irRegistro">Registrarse</a>
 			<%
@@ -66,81 +97,114 @@
 
 	<div id="mySidenav" class="sidenav">
 		<a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-		<p href="#">Generos</p>
+		<p>Género</p>
 		<legend></legend>
 		<%
-			for (int i = 0; i < lista.size(); i++) {
-				out.print(" <a href=''> " + lista.get(i).getNombre() + "</a>");
+			for (int i = 0; i < lista.size(); i++) {%>
+		<a
+			href="<%=baseJsp%>?action=irGenero&idGen=<%=lista.get(i).getCodigoGenero()%> "><%=lista.get(i).getNombre()%></a>
+		<%
 			}
 		%>
 
 	</div>
-	
-	<div
-		style="overflow: auto; background-color: white; margin: auto; width: 70%;; padding-top: 5%">
-		
-			<%for(int i=0;i<listaJuegos.size();i++) {%>
+
+	<div style="overflow: auto; background: linear-gradient(to right, rgba(255, 255, 255, 1) 0, rgba(239, 239, 239, 1) 100%); margin: auto; width: 70%; padding-top: 2%">
+		<h2 style="text-align: center;">Catálogo de juegos</h2>
+		<legend></legend>
+		<%
+			if (request.getAttribute("articuloElegido") != null) {
+				Articulo juego = (Articulo) request.getAttribute("articuloElegido");
+				String fecha = juego.getFechaDeLanzamiento().format(DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+		%>
 		<div
-			style=" margin: auto; width: 80%; height: 300px; overflow: hidden; margin-bottom: 5%">
-			<span
-				style=" float: left; width: 35%; height: 300px">
-				<img src="img/imgArticulos/0.jpg" alt="Cod:WWII" style="width: 100%;height: 100%" />
-			</span> 
-			<span class="infoJuego"> 
-			<h2>Informacion adicional</h2> 
-					<legend></legend>
-				<span style="float:left;width: 50%">
-					<p>Stock</p>
-					<p>Nombre</p>
-					<p>Plataforma</p>
-					<p>Fecha de Lanzamiento</p>
-					<p>Informacion Adicional</p>
-				</span>
-				
-				<span style="float:right;height:300px; width: 50%;">
-					<p><%=listaJuegos.get(i).getStock() %></p>
-					<p><%=listaJuegos.get(i).getNombre() %></p>
-					<p><%=listaJuegos.get(i).getPlataforma() %></p>
-					<p><%=listaJuegos.get(i).getFechaDeLanzamiento() %></p>
-					<textarea disabled style="color:black"><%=listaJuegos.get(i).getInformacionAdicional() %></textarea>
+			style="margin: auto; width: 80%; height: 460px; overflow: hidden; margin-bottom: 5%">
+			<span style="float: left; width: 30%; height: 400px"> <img
+				src="img/imgArticulos/<%=juego.getCodigoArticulo()%>.jpg"
+				alt="Cod:WWII" style="width: 100%; height: 100%" />
+			</span> <span class="infoJuego"> <legend>
+					<h3 style="color: black;">Detalles</h3>
+				</legend> <span class="infoJuego1">
+					<p>Stock:</p>
+					<p>Nombre:</p>
+					<p>Plataforma:</p>
+					<p>Fecha de Lanzamiento:</p>
+					<p>Informacion Adicional:</p> </br>
+					<p>Precio</p>
+			</span> <span style="float: right; height: 400px; width: 45%;">
+					<p><%=juego.getStock()%></p>
+					<p><%=juego.getNombre().toUpperCase()%></p>
+					<p><%=juego.getPlataforma()%></p>
+					<p><%=fecha%></p> <textarea disabled
+						style="color: black; background-color: white"><%=juego.getInformacionAdicional()%></textarea>
+					<p style="font-size: 20px; font-weight: bold"><%=juego.getPrecio() + "&euro;"%></p>
+					</br> <a
+					href="<%=baseJsp%>?action=irJuego&idProd=<%=juego.getCodigoArticulo()%>"
+					style="cursor: pointer; font-size: 16px; color: red;">Adquirir
+						Key&nbsp;</a> <a
+					href="<%=baseJsp%>?action=irJuego&idProd=<%=juego.getCodigoArticulo()%>"
+					style="cursor: pointer; font-size: 16px; color: red;">Añadir al
+						carrito</a>
 			</span>
 			</span>
 		</div>
-		<%} %>
+		<%
+			} else {
+				if (listaJuegos.size() != 0) {
+					for (int i = 0; i < listaJuegos.size(); i++) {
+						String fecha = listaJuegos.get(i).getFechaDeLanzamiento()
+								.format(DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+		%>
+		<div
+			style="margin: auto; width: 80%; height: 400px; overflow: hidden; margin-bottom: 5%">
+			<span style="float: left; width: 30%; height: 400px"> <img
+				src="img/imgArticulos/<%=listaJuegos.get(i).getCodigoArticulo()%>.jpg"
+				alt="Cod:WWII" style="width: 100%; height: 100%" />
+			</span> <span class="infoJuego">
+				<h2>Informacion adicional</h2> <legend></legend> <span
+				class="infoJuego1">
+					<p>Stock:</p>
+					<p>Nombre:</p>
+					<p>Plataforma:</p>
+					<p>Fecha de Lanzamiento:</p>
+					<p>Informacion Adicional:</p> </br>
+					<p>Precio</p>
+			</span> <span style="float: right; height: 400px; width: 45%;">
+					<p><%=listaJuegos.get(i).getStock()%></p>
+					<p><%=listaJuegos.get(i).getNombre().toUpperCase()%></p>
+					<p><%=listaJuegos.get(i).getPlataforma()%></p>
+					<p><%=fecha%></p> <textarea disabled
+						style="color: black; background-color: white"><%=listaJuegos.get(i).getInformacionAdicional()%></textarea>
+					<p style="font-size: 20px; font-weight: bold"><%=listaJuegos.get(i).getPrecio() + "&euro;"%></p>
+					<a
+					href="<%=baseJsp%>?action=irJuego&idProd=<%=listaJuegos.get(i).getCodigoArticulo()%>"
+					style="cursor: pointer; font-size: 16px; color: red;">Ver más
+						detalles</a>
+			</span>
+			</span>
+		</div>
+		<legend></legend>
+		<%
+			}
+				} else {
+		%>
+		<div
+			style="text-align: center; margin: auto; width: 80%; height: 100px; overflow: hidden; margin-bottom: 5%">
+			<p style="font-size: 18px">No hay articulos de este género</p>
+		</div>
+
+		<%
+			}
+			}
+		%>
+
+
 
 
 	</div>
 
 
 
-	<script>
-		function myFunction() {
-			var x = document.getElementById("myTopnav");
-			if (x.className === "topnav") {
-				x.className += " responsive";
-				document.getElementById("mySidenav").style.marginTop = "400px";
-			} else {
-				document.getElementById("mySidenav").style.marginTop = "143px";
-				x.className = "topnav";
-			}
-		}
-	</script>
-	<script>
-		var bool = true;
-		function openNav() {
-			if (bool == true) {
-				document.getElementById("mySidenav").style.width = "15%";
-				bool = false;
-			} else {
-				bool = true;
-				closeNav();
-			}
-		}
-
-		function closeNav() {
-			document.getElementById("mySidenav").style.width = "0";
-		}
-	</script>
 
 </body>
 </html>

@@ -66,20 +66,9 @@
 		}
 	</script>
 
-	<div
-		style="background-color: white; margin: auto; width: 70%; height: 600px">
-		<div id="mySidenav" class="sidenav">
-			<a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-			<p href="#">Generos</p>
-			<legend></legend>
-			<%
-				for (int i = 0; i < lista.size(); i++) {
-					out.print(" <a href=''> " + lista.get(i).getNombre() + "</a>");
-				}
-			%>
-			<a href="#">Services</a>
-		</div>
-		<form id="form" style="background-color: white"	action="<%=baseJsp%>?action=botonRegistro"method="POST" class="form-horizontal">
+	<div style="background: linear-gradient(to right, rgba(255, 255, 255, 1) 0, rgba(239, 239, 239, 1) 100%); margin: auto; width: 70%; height: 600px">
+		
+		<form id="form" 	action="<%=baseJsp%>?action=botonRegistro"method="POST" class="form-horizontal">
 			<fieldset>
 
 				<!-- Form Name -->
@@ -163,22 +152,7 @@
 			</fieldset>
 		</form>
 	</div>
-	<script>
-		var bool = true;
-		function openNav() {
-			if (bool == true) {
-				document.getElementById("mySidenav").style.width = "15%";
-				bool = false;
-			} else {
-				bool = true;
-				closeNav();
-			}
-		}
 
-		function closeNav() {
-			document.getElementById("mySidenav").style.width = "0";
-		}
-	</script>
 	<script>
 		$(function() {
 			$("#form").datepicker({

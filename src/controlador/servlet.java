@@ -128,7 +128,19 @@ public class servlet extends HttpServlet {
 				}
 		
 				break;
-
+			
+			case "irJuego":
+		request.setAttribute("articuloElegido", articuloPorCod(request));
+				
+				url = base + "articulos.jsp";
+				break;
+			case "irGenero":
+				ArrayList<Articulo> listaPorGenero=listarArticulosPorGenero(request);
+				request.setAttribute("articuloGenero", listaPorGenero);
+						url = base + "articulos.jsp";
+						break;
+						
+				
 			default:
 				break;
 			}
@@ -211,11 +223,14 @@ public class servlet extends HttpServlet {
 	public void listarArticulos(HttpServletRequest request) {
 		Session sesionHib = HibernateUtils.getSessionFactory().openSession();
 		ArrayList<Articulo> lista = (ArrayList<Articulo>) sesionHib.createQuery("from Articulo").list();
-		
-		System.out.println(lista.get(0).getNombre());
 		request.setAttribute("arrayJuegos", lista);
 		
 		
+	}
+	public Articulo articuloPorCod(HttpServletRequest request) {
+		Session sesionHib = HibernateUtils.getSessionFactory().openSession();
+		Articulo user=(Articulo)sesionHib.get(Articulo.class,Integer.parseInt(request.getParameter("idProd")));
+		return user;
 	}
 	
 	
@@ -226,5 +241,11 @@ public class servlet extends HttpServlet {
 		request.setAttribute("arrayGenero", lista);
 
 	}
+	public ArrayList<Articulo> listarArticulosPorGenero(HttpServletRequest request) {
+		Session sesionHib = HibernateUtils.getSessionFactory().openSession();
+		ArrayList<Articulo> lista = (ArrayList<Articulo>) sesionHib.createQuery("from Articulo where codigoGenero="+request.getParameter("idGen")).list();
+		return lista;
+	}
+	
 
 }

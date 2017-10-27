@@ -1,9 +1,12 @@
 <!DOCTYPE html>
+
 <%
   String baseJsp = (String)request.getAttribute("baseJsp");
   String error=(String)request.getAttribute("error");
-
+  ArrayList<Genero> lista=(ArrayList<Genero>) request.getAttribute("arrayGenero");
 %>
+<%@page import="java.time.format.DateTimeFormatter,java.util.HashMap,java.util.Set,modelo.hibernate.Usuarios,modelo.hibernate.Genero, utils.HibernateUtils, org.hibernate.Session, java.util.ArrayList"%>
+
 <html>
 <head>
     <title>Home</title>
@@ -35,14 +38,14 @@
 <div class="topnav" id="myTopnav">
 <a style="cursor:pointer"   onclick="openNav()">&#9776;</a>
 <a href="<%=baseJsp%>?action=irInicio">Home</a>
-<a href="index-1.html">Juegos</a>
+<a href="<%=baseJsp%>?action=irArticulos">Juegos</a>
 <a   href="<%=baseJsp%>?action=irLogin">Login</a>
 <a href="<%=baseJsp%>?action=irRegistro">Registrarse</a>
 <a href="javascript:void(0);" style="font-size:15px;" class="icon" onclick="myFunction()">&#9776;</a>
 </div>
 </header>
 <div id="fondoL">
-<div  style="margin:auto;padding:5%;width: 35%;border: 3px black thin; -webkit-box-shadow: 0px 0px 41px 18px white; border-radius:20px;background-color: white">
+<div  style="margin:auto;padding:5%;width: 35%;border: 3px black thin;  border-radius:20px;background: linear-gradient(to right, rgba(255, 255, 255, 1) 0, rgba(239, 239, 239, 1) 100%);">
         
             <form   action="<%=baseJsp%>?action=botonLogin" method="POST">
                 <h2>Iniciar Sesión</h2>

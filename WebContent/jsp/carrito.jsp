@@ -64,18 +64,19 @@ function myFunction() {
 </script>
 
 
-<div id="mySidenav" class="sidenav">
-  <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-  <p href="#">Generos</p>
-  <legend></legend>
-  <%
-	for(int i=0;i<lista.size();i++){
-		out.print(" <a href=''> "+lista.get(i).getNombre()+"</a>");
-	}
-  
-  %>
-  <a href="#">Services</a>
-</div>
+	<div id="mySidenav" class="sidenav">
+		<a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+		<p>Género</p>
+		<legend></legend>
+		<%
+			for (int i = 0; i < lista.size(); i++) {%>
+		<a
+			href="<%=baseJsp%>?action=irGenero&idGen=<%=lista.get(i).getCodigoGenero()%> "><%= lista.get(i).getNombre() %></a>
+		<%
+				}
+		%>
+
+	</div>
 <div style="background-color:white;margin:auto;width:70%;height:600px">
 <table>
 <c:forEach var="type" items="${mapUsuario}">
@@ -90,7 +91,7 @@ function myFunction() {
 print
 </script>
 <script>
-var bool=true;
+var bool=false;
 function openNav() {
 if(bool==true){
     document.getElementById("mySidenav").style.width = "15%";
