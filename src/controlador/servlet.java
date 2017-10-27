@@ -64,7 +64,7 @@ public class servlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		listarArticulos(request);
+		
 		listarGeneros(request);
 		String error = "false";
 		String baseJsp = "/DigitalGame/servlet";
