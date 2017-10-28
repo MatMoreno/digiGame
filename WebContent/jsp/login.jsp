@@ -38,7 +38,7 @@
 <div class="topnav" id="myTopnav">
 <a style="cursor:pointer"   onclick="openNav()">&#9776;</a>
 <a href="<%=baseJsp%>?action=irInicio">Home</a>
-<a href="<%=baseJsp%>?action=irArticulos">Juegos</a>
+<a href="<%=baseJsp%>?action=irArticulos">Catálogo</a>
 <a   href="<%=baseJsp%>?action=irLogin">Login</a>
 <a href="<%=baseJsp%>?action=irRegistro">Registrarse</a>
 <a href="javascript:void(0);" style="font-size:15px;" class="icon" onclick="myFunction()">&#9776;</a>

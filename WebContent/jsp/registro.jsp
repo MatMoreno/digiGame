@@ -46,7 +46,7 @@
 		<div class="topnav" id="myTopnav">
 			<a style=" cursor: pointer" onclick="openNav()">&#9776;</a>
 			<a href="<%=baseJsp%>?action=irInicio">Home</a> <a
-				href="<%=baseJsp%>?action=irArticulos">Juegos</a> <a href="<%=baseJsp%>?action=irLogin">Login</a>
+				href="<%=baseJsp%>?action=irArticulos">Catálogo</a> <a href="<%=baseJsp%>?action=irLogin">Login</a>
 			<a href="<%=baseJsp%>?action=irRegistro">Registrarse</a> <a
 				href="javascript:void(0);" style="font-size: 15px;" class="icon"
 				onclick="myFunction()">&#9776;</a>
@@ -148,7 +148,12 @@
 							class="btn btn-success">Enviar</button>
 					</div>
 				</div>
-
+				<%
+				HttpSession sesion = request.getSession();
+				String error=(String)sesion.getAttribute("errorReg");
+				if (error=="1"){ %>
+				<p style="margin-left:10%;color:red">Este correo electrónico ya esta registrado en nuestra base de datos</p>
+<%} sesion.invalidate(); %>
 			</fieldset>
 		</form>
 	</div>

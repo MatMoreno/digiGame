@@ -1,6 +1,9 @@
 package controlador;
 
 import modelo.hibernate.*;
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import sun.util.calendar.LocalGregorianCalendar;
 import utils.HibernateUtils;
 
@@ -34,7 +37,7 @@ import jdk.nashorn.internal.ir.RuntimeNode.Request;
 
 public class servlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-
+	Usuarios user;
 	public void init(HttpServletRequest request) throws ServletException {
 		listarGeneros(request);
 		super.init();
@@ -78,6 +81,7 @@ public class servlet extends HttpServlet {
 				url = base + "inicioLog.jsp";
 				break;
 			case "irArticulos":
+				listarArticulos(request);
 				url = base + "articulos.jsp";
 				break;
 				
@@ -94,6 +98,10 @@ public class servlet extends HttpServlet {
 				url = base + "login.jsp";
 				break;
 				
+			case "irPanelAdmin":
+				url= base + "panelAdmin.jsp";
+				break;
+				
 			case "irRegistro":
 				url = base + "registro.jsp";
 				break;
@@ -107,7 +115,12 @@ public class servlet extends HttpServlet {
 					HttpSession sesion = request.getSession();
 					sesion.setAttribute("emailLogueado", emailCaja);
 					String nombreLog=listarUsuarios(request).get(emailCaja).getNombre();
+					int admin=listarUsuarios(request).get(emailCaja).isAdmin();
+					sesion.setAttribute("codAdmin", admin);
 					sesion.setAttribute("usuarioLogueado", nombreLog);
+					if((Integer)sesion.getAttribute("isAdmin")==1) {
+						url = base + "inicioAdmin.jsp";
+					}else
 					url = base + "inicioLog.jsp";
 				} else {
 					url = base + "login.jsp";
@@ -120,10 +133,15 @@ public class servlet extends HttpServlet {
 				sesion.invalidate();
 				url = base + "inicioLog.jsp";
 				break;
+				
 			case "botonRegistro":
-				if(añadirUsuario(request)==true) {
+				if(usuarioEnLista(request)==request.getParameter("correoReg")&&añadirUsuario(request)==true) {
 					url = base + "inicioLog.jsp";
-				}else {
+				
+				}
+				else {
+					HttpSession session = request.getSession();
+					session.setAttribute("errorReg", "1");
 					url = base + "registro.jsp";
 				}
 		
@@ -152,88 +170,91 @@ public class servlet extends HttpServlet {
 
 	public HashMap<String, Usuarios> listarUsuarios(HttpServletRequest request) {
 		Session sesionHib = HibernateUtils.getSessionFactory().openSession();
-		HashMap<String,Usuarios> map=new HashMap<>();
+		HashMap<String, Usuarios> map = new HashMap<>();
 		@SuppressWarnings("unchecked")
 		ArrayList<Usuarios> lista = (ArrayList<Usuarios>) sesionHib.createQuery("from Usuarios").list();
 		for (int i = 0; i < lista.size(); i++) {
-			map.put(lista.get(i).getEmailUsuario(), new Usuarios(lista.get(i).getEmailUsuario(),lista.get(i).getNombre(),lista.get(i).getApellidos(),lista.get(i).getContrasena(),lista.get(i).getFechaDeNac(),lista.get(i).isAdmin()));
+			map.put(lista.get(i).getEmailUsuario(),
+					new Usuarios(lista.get(i).getEmailUsuario(), lista.get(i).getNombre(), lista.get(i).getApellidos(),
+							lista.get(i).getContrasena(), lista.get(i).getFechaDeNac(), lista.get(i).isAdmin()));
 		}
 		HttpSession sesion = request.getSession();
 		sesion.setAttribute("mapUsuarios", map);
-		return map; 
-			
-		
-		
+		return map;
+
 	}
+
 	public boolean añadirUsuario(HttpServletRequest request) {
 		Session sesionHib = HibernateUtils.getSessionFactory().openSession();
-	   
-	    String nombre=request.getParameter("nombreReg");
-	    String apellidos=request.getParameter("apellidosReg");
-	    String email=request.getParameter("correoReg");
-	    String pass=request.getParameter("passReg");
-	    String fechaReg=request.getParameter("fechaReg");
-	   // System.out.println(nombre+" "+apellidos+" "+email+" "+pass+" "+fechaReg);
-	    SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-	    LocalDate fechaNueva = null;
-	    try {
-	    Date fecha = (Date) formatter.parse(fechaReg);
-	    fechaNueva = fecha.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-            
-            //FECHA PASADA DE  date "YYYY-MM-DD" A  "DD-MM-YYYY"
-            /* SimpleDateFormat formatter2 = new SimpleDateFormat("dd-MM-yyyy");
-               Date fecha2=formatter2.parse(formatter.format(fecha));
-            String fechaBien =formatter2.format(fecha2);*/
 
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-	   //se inserta en lista si email no existe en la base de datos
-	    if(usuarioEnLista(request)=="") {
-	    	Usuarios user=new Usuarios(email,nombre,apellidos,pass,fechaNueva, 0); 
-	    	sesionHib.save(user);
-	    	HttpSession sesion = request.getSession();
+		String nombre = request.getParameter("nombreReg");
+		String apellidos = request.getParameter("apellidosReg");
+		String email = request.getParameter("correoReg");
+		String pass = request.getParameter("passReg");
+		String fechaReg = request.getParameter("fechaReg");
+		// System.out.println(nombre+" "+apellidos+" "+email+" "+pass+" "+fechaReg);
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+		LocalDate fechaNueva = null;
+		try {
+			Date fecha = (Date) formatter.parse(fechaReg);
+			fechaNueva = fecha.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+
+			// FECHA PASADA DE date "YYYY-MM-DD" A "DD-MM-YYYY"
+			/*
+			 * SimpleDateFormat formatter2 = new SimpleDateFormat("dd-MM-yyyy"); Date
+			 * fecha2=formatter2.parse(formatter.format(fecha)); String fechaBien
+			 * =formatter2.format(fecha2);
+			 */
+
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		// se inserta en lista si email no existe en la base de datos
+		if (usuarioEnLista(request) == "") {
+			Usuarios user = new Usuarios(email, nombre, apellidos, passMD5(pass), fechaNueva, 0);
+			sesionHib.save(user);
+			HttpSession sesion = request.getSession();
 			sesion.setAttribute("usuarioLogueado", nombre);
-	    	 sesionHib.beginTransaction();
-	    	 sesionHib.getTransaction().commit();
-	    	 sesionHib.close();
-	    	 return true;
-	    } else
-	    return false;
-	    
-	}
-	public String usuarioEnLista(HttpServletRequest request) {
+			sesionHib.beginTransaction();
+			sesionHib.getTransaction().commit();
+			sesionHib.close();
+			return true;
+		} else
+			return false;
 
+	}
+
+	public String usuarioEnLista(HttpServletRequest request) {
+		HttpSession sesion = request.getSession();
 		Session sesionHib = HibernateUtils.getSessionFactory().openSession();
 		@SuppressWarnings("unchecked")
-		String email=request.getParameter("emailLogin");
-		ArrayList<Usuarios> lista = (ArrayList<Usuarios>) sesionHib.createQuery("from Usuarios where emailUsuario='" + email + "'").list();
+		String email = request.getParameter("emailLogin");
+		ArrayList<Usuarios> lista = (ArrayList<Usuarios>) sesionHib.createQuery("from Usuarios where emailUsuario='"
+				+ email + "' and contrasena=md5('" + request.getParameter("password") + "')").list();
 		if (lista.size() != 0) {
-			String contra = lista.get(0).getContrasena();
-			if (request.getParameter("password").equals(contra)) {
-				HttpSession sesion = request.getSession(true);
-				sesion.setAttribute("infoUsuario", lista);
-				return email;
-			}
+			sesion.setAttribute("isAdmin",lista.get(0).isAdmin());
+			sesion.setAttribute("infoUsuario", lista);
+			return email;
+
 		}
+		
 		sesionHib.close();
 
 		return "";
 	}
+
 	public void listarArticulos(HttpServletRequest request) {
 		Session sesionHib = HibernateUtils.getSessionFactory().openSession();
 		ArrayList<Articulo> lista = (ArrayList<Articulo>) sesionHib.createQuery("from Articulo").list();
 		request.setAttribute("arrayJuegos", lista);
-		
-		
+
 	}
+
 	public Articulo articuloPorCod(HttpServletRequest request) {
 		Session sesionHib = HibernateUtils.getSessionFactory().openSession();
-		Articulo user=(Articulo)sesionHib.get(Articulo.class,Integer.parseInt(request.getParameter("idProd")));
+		Articulo user = (Articulo) sesionHib.get(Articulo.class, Integer.parseInt(request.getParameter("idProd")));
 		return user;
 	}
-	
-	
 
 	public void listarGeneros(HttpServletRequest request) {
 		Session sesionHib = HibernateUtils.getSessionFactory().openSession();
@@ -241,11 +262,28 @@ public class servlet extends HttpServlet {
 		request.setAttribute("arrayGenero", lista);
 
 	}
+
 	public ArrayList<Articulo> listarArticulosPorGenero(HttpServletRequest request) {
 		Session sesionHib = HibernateUtils.getSessionFactory().openSession();
-		ArrayList<Articulo> lista = (ArrayList<Articulo>) sesionHib.createQuery("from Articulo where codigoGenero="+request.getParameter("idGen")).list();
+		ArrayList<Articulo> lista = (ArrayList<Articulo>) sesionHib
+				.createQuery("from Articulo where codigoGenero=" + request.getParameter("idGen")).list();
 		return lista;
 	}
-	
+
+	public String passMD5(String input) {
+		try {
+			MessageDigest md = MessageDigest.getInstance("MD5");
+			byte[] messageDigest = md.digest(input.getBytes());
+			BigInteger number = new BigInteger(1, messageDigest);
+			String hashtext = number.toString(16);
+
+			while (hashtext.length() < 32) {
+				hashtext = "0" + hashtext;
+			}
+			return hashtext;
+		} catch (NoSuchAlgorithmException e) {
+			throw new RuntimeException(e);
+		}
+	}
 
 }

@@ -42,7 +42,7 @@ out.print("ERROOOOOOOOOOOOOOOOOOR USUARIO NO LOGUEADOO");
 <div class="topnav" id="myTopnav">
 <a style="cursor:pointer"   onclick="openNav()">&#9776;</a>
 <a href="<%=baseJsp%>?action=irInicioLog">Home</a>
-<a href="<%=baseJsp%>?action=irArticulos">Juegos</a>
+<a href="<%=baseJsp%>?action=irArticulos">Catálogo</a>
 <a   href="<%=baseJsp%>?action=irCuenta">Perfil de <%=(String) sesion.getAttribute("usuarioLogueado") %></a>
 <a href="<%=baseJsp%>?action=irCarrito">Carrito()</a>
 <a href="<%=baseJsp%>?action=cerrarSesion">cerrar sesión</a>

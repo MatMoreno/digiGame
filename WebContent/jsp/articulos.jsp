@@ -7,6 +7,7 @@
 	ArrayList<Genero> lista = (ArrayList<Genero>) request.getAttribute("arrayGenero");
 	HttpSession sesion = request.getSession();
 	ArrayList<Articulo> listaJuegos = (ArrayList<Articulo>) request.getAttribute("arrayJuegos");
+	Articulo juego = (Articulo) request.getAttribute("articuloElegido");
 	if (request.getAttribute("articuloGenero") != null) {
 		out.print(request.getAttribute("articuloGenero"));
 		listaJuegos = (ArrayList<Articulo>) request.getAttribute("articuloGenero");
@@ -44,6 +45,12 @@
 			x.className = "topnav";
 		}
 	}
+	var numCarrito=0;
+	function sumCarrito(){
+		numCarrito++;
+		document.getElementById("numeroCarrito").innerHTML="Carrito("+numCarrito+")";
+		
+	}
 </script>
 <script>
 	var bool = false;
@@ -77,8 +84,8 @@
 			%>
 			<a href="<%=baseJsp%>?action=irInicioLog">Home</a> <a
 				href="<%=baseJsp%>?action=irArticulos">Catálogo</a> <a
-				href="<%=baseJsp%>?action=irPerfil">Perfil de <%=(String) sesion.getAttribute("usuarioLogueado")%></a>
-			<a href="<%=baseJsp%>?action=irCarrito">Carrito()</a> <a
+				href="<%=baseJsp%>?action=irCuenta">Perfil de <%=(String) sesion.getAttribute("usuarioLogueado")%></a>
+			<a id="numeroCarrito" href="<%=baseJsp%>?action=irCarrito">Carrito()</a> <a
 				href="<%=baseJsp%>?action=cerrarSesion">cerrar sesión</a>
 			<%
 				} else {
@@ -110,11 +117,11 @@
 	</div>
 
 	<div style="overflow: auto; background: linear-gradient(to right, rgba(255, 255, 255, 1) 0, rgba(239, 239, 239, 1) 100%); margin: auto; width: 70%; padding-top: 2%">
-		<h2 style="text-align: center;">Catálogo de juegos</h2>
+		<h2 style="text-align: center;"><%if (request.getAttribute("articuloElegido") != null) { out.print(juego.getNombre());}else{%>Catálogo de juegos<%} %></h2>
 		<legend></legend>
 		<%
 			if (request.getAttribute("articuloElegido") != null) {
-				Articulo juego = (Articulo) request.getAttribute("articuloElegido");
+				
 				String fecha = juego.getFechaDeLanzamiento().format(DateTimeFormatter.ofPattern("dd-MM-yyyy"));
 		%>
 		<div
@@ -135,15 +142,16 @@
 					<p><%=juego.getStock()%></p>
 					<p><%=juego.getNombre().toUpperCase()%></p>
 					<p><%=juego.getPlataforma()%></p>
-					<p><%=fecha%></p> <textarea disabled
-						style="color: black; background-color: white"><%=juego.getInformacionAdicional()%></textarea>
+					<p><%=fecha%></p> 
+					<textarea disabled
+						style="color: black; background-color: white"><%=juego.getInformacionAdicional()%></textarea> </br> </br>
 					<p style="font-size: 20px; font-weight: bold"><%=juego.getPrecio() + "&euro;"%></p>
-					</br> <a
+					</br> 
+					<a
 					href="<%=baseJsp%>?action=irJuego&idProd=<%=juego.getCodigoArticulo()%>"
 					style="cursor: pointer; font-size: 16px; color: red;">Adquirir
-						Key&nbsp;</a> <a
-					href="<%=baseJsp%>?action=irJuego&idProd=<%=juego.getCodigoArticulo()%>"
-					style="cursor: pointer; font-size: 16px; color: red;">Añadir al
+						Key&nbsp;</a>
+						 <a	onClick="sumCarrito()" style="cursor: pointer; font-size: 16px; color: red;" >Añadir al
 						carrito</a>
 			</span>
 			</span>
@@ -178,8 +186,7 @@
 					<p style="font-size: 20px; font-weight: bold"><%=listaJuegos.get(i).getPrecio() + "&euro;"%></p>
 					<a
 					href="<%=baseJsp%>?action=irJuego&idProd=<%=listaJuegos.get(i).getCodigoArticulo()%>"
-					style="cursor: pointer; font-size: 16px; color: red;">Ver más
-						detalles</a>
+					style="cursor: pointer; font-size: 16px; color: red;">Ver más detalles</a>
 			</span>
 			</span>
 		</div>
@@ -192,19 +199,10 @@
 			style="text-align: center; margin: auto; width: 80%; height: 100px; overflow: hidden; margin-bottom: 5%">
 			<p style="font-size: 18px">No hay articulos de este género</p>
 		</div>
-
 		<%
 			}
 			}
 		%>
-
-
-
-
 	</div>
-
-
-
-
 </body>
 </html>
