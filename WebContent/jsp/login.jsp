@@ -49,8 +49,8 @@
         
             <form   action="<%=baseJsp%>?action=botonLogin" method="POST">
                 <h2>Iniciar Sesión</h2>
-                <input type="text" class="input-block-level" placeholder="Email address" name="emailLogin" id='email' required>
-                <input type="password" class="input-block-level" placeholder="Password" name="password" id="password" required>
+                <input type="text" class="input-block-level" placeholder="correo electrónico" name="emailLogin" id='email' required>
+                <input type="password" class="input-block-level" placeholder="contraseña" name="password" id="password" required>
                 <label class="checkbox">
                     <input type="checkbox" value="remember-me" id="remember_me"> Remember me
                 </label>

@@ -41,52 +41,24 @@
 <div class="topnav" id="myTopnav">
 <a style="cursor:pointer"   onclick="openNav()">&#9776;</a>
 <%if(sesion.getAttribute("usuarioLogueado")!=null){ %>
-<a href="<%=baseJsp%>?action=irInicioLog">Home</a>
-<a href="<%=baseJsp%>?action=irArticulos">Catálogo</a>
+<a href="">Home</a>
+<a href="">Catálogo</a>
 <a   href="<%=baseJsp%>?action=irCuenta">Perfil de <%=(String) sesion.getAttribute("usuarioLogueado") %></a>
 <a href="<%=baseJsp%>?action=irPanelAdmin">Panel de Control</a>
 <a href="<%=baseJsp%>?action=cerrarSesion">cerrar sesión</a>
-<%}else{ %>
-<a href="<%=baseJsp%>?action=irInicio">Home</a>
-<a href="<%=baseJsp%>?action=irArticulos">Catálogo</a>
-<a   href="<%=baseJsp%>?action=irLogin">Login</a>
-<a href="<%=baseJsp%>?action=irRegistro">Registrarse</a>
-<%} %>
 <a href="javascript:void(0);" style="font-size:15px;" class="icon" onclick="myFunction()">&#9776;</a>
 </div>
 </header>
-<div id="fondoL">
-<div  style="margin:auto;padding:5%;width: 35%;border: 3px black thin;  border-radius:20px;background: linear-gradient(to right, rgba(255, 255, 255, 1) 0, rgba(239, 239, 239, 1) 100%);">
-        
-            <form   action="<%=baseJsp%>?action=botonLogin" method="POST">
-                <h2>Iniciar Sesión</h2>
-                <input type="text" class="input-block-level" placeholder="Email address" name="emailLogin" id='email' required>
-                <input type="password" class="input-block-level" placeholder="Password" name="password" id="password" required>
-                <label class="checkbox">
-                    <input type="checkbox" value="remember-me" id="remember_me"> Remember me
-                </label>
-                <button  type="submit">Sign in</button><label style="display:inline;margin-left: 5px; "><a style="color: black" href="<%=baseJsp%>?action=irRegistro" >Registrate ahora!</a></label>
-            </form>
-            <%
-          
-            if(error.equals("true")){
-            	%>
-            	<p style="color: red">El email o contraseña introducidos no coinciden</p>
-            	<%
-            }
-            %>
-        
-</div>
-</div>
+
 
 
 </body>
 </html>
-  <%} %>
+  <%}else{ %>
   <html>
   <head></head>
   <body>
   <h1 style="margin:auto">NO TIENES PERMISOS SUFICIENTES PARA ENTRAR A ESTA ZONA!</h1>
   </body>
   </html>
-  
+   <%} %>
