@@ -42,7 +42,7 @@
 <a style="cursor:pointer"   onclick="openNav()">&#9776;</a>
 <a href="">Home</a>
 <a href="">Catálogo</a>
-<a href="<%=baseJsp%>?action=irCuenta">Perfil de Admin <%=(String) sesion.getAttribute("usuarioLogueado") %></a>
+<a href="<%=baseJsp%>?action=irCuenta">Perfil de <b>Admin</b> <%=(String) sesion.getAttribute("usuarioLogueado") %></a>
 <a href="<%=baseJsp%>?action=irPanelAdmin">Panel de Control</a>
 <a href="<%=baseJsp%>?action=cerrarSesion">cerrar sesión</a>
 <a href="javascript:void(0);" style="font-size:15px;" class="icon" onclick="myFunction()">&#9776;</a>

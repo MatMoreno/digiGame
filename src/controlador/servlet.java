@@ -135,7 +135,7 @@ public class servlet extends HttpServlet {
 				break;
 				
 			case "botonRegistro":
-				if(usuarioEnLista(request)==request.getParameter("correoReg")&&añadirUsuario(request)==true) {
+				if(añadirUsuario(request)==true) {
 					url = base + "inicioLog.jsp";
 				
 				}
@@ -186,13 +186,11 @@ public class servlet extends HttpServlet {
 
 	public boolean añadirUsuario(HttpServletRequest request) {
 		Session sesionHib = HibernateUtils.getSessionFactory().openSession();
-
 		String nombre = request.getParameter("nombreReg");
 		String apellidos = request.getParameter("apellidosReg");
 		String email = request.getParameter("correoReg");
 		String pass = request.getParameter("passReg");
 		String fechaReg = request.getParameter("fechaReg");
-		// System.out.println(nombre+" "+apellidos+" "+email+" "+pass+" "+fechaReg);
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 		LocalDate fechaNueva = null;
 		try {
@@ -209,12 +207,19 @@ public class servlet extends HttpServlet {
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
-		// se inserta en lista si email no existe en la base de datos
-		if (usuarioEnLista(request) == "") {
+		
+		System.out.println(email);
+		ArrayList<Usuarios> lista = (ArrayList<Usuarios>) sesionHib.createQuery("from Usuarios where emailUsuario='"+
+				email+"'").list();
+		
+	
+		if (lista.size() ==0) {
 			Usuarios user = new Usuarios(email, nombre, apellidos, passMD5(pass), fechaNueva, 0);
 			sesionHib.save(user);
 			HttpSession sesion = request.getSession();
 			sesion.setAttribute("usuarioLogueado", nombre);
+			sesion.setAttribute("emailLogueado",email);
+			sesion.setAttribute("isAdmin",0);
 			sesionHib.beginTransaction();
 			sesionHib.getTransaction().commit();
 			sesionHib.close();
@@ -231,17 +236,19 @@ public class servlet extends HttpServlet {
 		String email = request.getParameter("emailLogin");
 		ArrayList<Usuarios> lista = (ArrayList<Usuarios>) sesionHib.createQuery("from Usuarios where emailUsuario='"
 				+ email + "' and contrasena=md5('" + request.getParameter("password") + "')").list();
+		System.out.println(email);
 		if (lista.size() != 0) {
 			sesion.setAttribute("isAdmin",lista.get(0).isAdmin());
 			sesion.setAttribute("infoUsuario", lista);
 			return email;
 
-		}
+		}else {
 		
 		sesionHib.close();
 
 		return "";
 	}
+		}
 
 	public void listarArticulos(HttpServletRequest request) {
 		Session sesionHib = HibernateUtils.getSessionFactory().openSession();

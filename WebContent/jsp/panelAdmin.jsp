@@ -40,21 +40,27 @@
 </div>
 <div class="topnav" id="myTopnav">
 <a style="cursor:pointer"   onclick="openNav()">&#9776;</a>
-<%if(sesion.getAttribute("usuarioLogueado")!=null){ %>
+>
 <a href="">Home</a>
 <a href="">Catálogo</a>
-<a   href="<%=baseJsp%>?action=irCuenta">Perfil de <%=(String) sesion.getAttribute("usuarioLogueado") %></a>
+<a   href="<%=baseJsp%>?action=irCuenta">Perfil de <b>Admin</b> <%=(String) sesion.getAttribute("usuarioLogueado") %></a>
 <a href="<%=baseJsp%>?action=irPanelAdmin">Panel de Control</a>
 <a href="<%=baseJsp%>?action=cerrarSesion">cerrar sesión</a>
 <a href="javascript:void(0);" style="font-size:15px;" class="icon" onclick="myFunction()">&#9776;</a>
 </div>
 </header>
+<div style="background: linear-gradient(to right, rgba(255, 255, 255, 1) 0, rgba(239, 239, 239, 1) 100%); width: 70%;margin:auto;height: 400px">
 
+<input style="margin-top:10%;margin-left:20%;margin-right: 8%;font-size: 18px" type="button" id="gestionUsuarios" value="Administrar Usuarios" ></input>
+<input style="margin-top:10%;margin-right: 8%;font-size: 18px" type="button"  id="gestionGeneros" value="Administrar Generos" ></input>
+<input  style="margin-top:10%;margin-right: 8%;font-size: 18px" type="button" id="GestionArticulos" value="Administrar Articulos" ></input>
+
+</div>
 
 
 </body>
 </html>
-  <%}else{ %>
+  <% }else{ %>
   <html>
   <head></head>
   <body>
