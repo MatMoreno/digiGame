@@ -50,11 +50,16 @@
 </div>
 </header>
 <div style="background: linear-gradient(to right, rgba(255, 255, 255, 1) 0, rgba(239, 239, 239, 1) 100%); width: 70%;margin:auto;height: 400px">
-
-<input style="margin-top:10%;margin-left:20%;margin-right: 8%;font-size: 18px" type="button" id="gestionUsuarios" value="Administrar Usuarios" ></input>
-<input style="margin-top:10%;margin-right: 8%;font-size: 18px" type="button"  id="gestionGeneros" value="Administrar Generos" ></input>
-<input  style="margin-top:10%;margin-right: 8%;font-size: 18px" type="button" id="GestionArticulos" value="Administrar Articulos" ></input>
-
+<legend style="font-size:28px;">Panel de Control</legend>
+<span style="width: 22%" >
+<input style="margin-top:10%;margin-left:9%;font-size: 22px" class="btn " type="button" id="gestionUsuarios" value="Administrar Usuarios" ></input>
+</span>
+<span style="width: 22%">
+<input style="margin-top:10%;margin-left:15%;font-size: 22px" type="button"   class="btn " id="gestionGeneros" value="Administrar Generos" ></input>
+</span>
+<span style="width: 22%">
+<input  style="margin-top:10%;margin-left:15%;font-size: 22px" class="btn " type="button" id="GestionArticulos" value="Administrar Articulos" ></input>
+</span>
 </div>
 
 

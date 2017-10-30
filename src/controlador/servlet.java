@@ -96,6 +96,12 @@ public class servlet extends HttpServlet {
 				url = base + "perfil.jsp";
 				break;
 				
+			case "updateUsuario":
+				updateUsuario(request);
+				sesion.setAttribute("panelEdit", false);
+				url = base + "perfil.jsp";
+				break;
+				
 			case "irInicio":
 				url = base + "inicioLog.jsp";
 				break;
@@ -108,7 +114,7 @@ public class servlet extends HttpServlet {
 				url= base + "panelAdmin.jsp";
 				break;
 				
-			case "botonIrRegistro":
+			case "irRegistro":
 				
 				url = base + "registro.jsp";
 				break;
@@ -192,14 +198,32 @@ public class servlet extends HttpServlet {
 	public void updateUsuario(HttpServletRequest request) {
 		Session sesionHib = HibernateUtils.getSessionFactory().openSession();
 		HttpSession sesion = request.getSession();
-		String emailLogueado=(String) sesion.getAttribute("emailLogueado");
+		Usuarios user=sesionHib.get(Usuarios.class,(String)sesion.getAttribute("emailLogueado"));
+		
 		String nombre = request.getParameter("nombreUpdate");
 		String apellidos = request.getParameter("apellidosUpdate");
 		String email = request.getParameter("correoUpdate");
-		String pass = request.getParameter("passUpdate");
-		String fechaReg = request.getParameter("fechaUpdate");
-		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 		
+		try {
+		String fechaUp = request.getParameter("fechaUpdate");
+		System.out.println(fechaUp);
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+		Date fecha;
+		
+			fecha = (Date) formatter.parse(fechaUp);
+		
+		user.setNombre(nombre);
+		user.setApellidos(apellidos);
+		user.setEmailUsuario(email);
+		user.setFechaDeNac(fecha.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		sesionHib.beginTransaction();
+		sesionHib.update(user);
+		sesionHib.getTransaction().commit();
+		sesionHib.close();
 	}
 
 	public boolean añadirUsuario(HttpServletRequest request) {
@@ -231,12 +255,13 @@ public class servlet extends HttpServlet {
 	
 		if (lista.size() ==0) {
 			Usuarios user = new Usuarios(email, nombre, apellidos, passMD5(pass), fechaNueva, 0);
+			sesionHib.beginTransaction();
 			sesionHib.save(user);
 			HttpSession sesion = request.getSession();
 			sesion.setAttribute("usuarioLogueado", nombre);
 			sesion.setAttribute("emailLogueado",email);
 			sesion.setAttribute("isAdmin",0);
-			sesionHib.beginTransaction();
+		
 			sesionHib.getTransaction().commit();
 			sesionHib.close();
 			return true;
@@ -252,7 +277,7 @@ public class servlet extends HttpServlet {
 		String email = request.getParameter("emailLogin");
 		ArrayList<Usuarios> lista = (ArrayList<Usuarios>) sesionHib.createQuery("from Usuarios where emailUsuario='"
 				+ email + "' and contrasena=md5('" + request.getParameter("password") + "')").list();
-		System.out.println(email);
+	
 		if (lista.size() != 0) {
 			sesion.setAttribute("isAdmin",lista.get(0).isAdmin());
 			sesion.setAttribute("infoUsuario", lista);

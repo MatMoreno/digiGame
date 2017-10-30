@@ -119,13 +119,14 @@
 				<input onClick="window.location.href='<%=baseJsp%>?action=irEditarPerfil'" class="btn:hover" type="button" value="Editar perfil"></input>
 			</span>
 			<% }else{%>
-			<form>
+			<form action="<%=baseJsp%>?action=updateUsuario" method="POST">
 			<span style="float: right; width: 70%; height: 400px">
 				<input type="text" name="nombreUpdate" value="<%=user.getNombre()%>"></input></br>
 				<input type="text" name="apellidosUpdate" value="<%=user.getApellidos()%>"></input></br>
-				<input type="text" name="emailpdate" value="<%=user.getEmailUsuario()%>"></input></br>
-				<input type="text" name="fechaUpdate" value="<%=fechaNew%>"></input></br>
-				<input onclick="<%=baseJsp%>?action=updateUsuario-" class="btn:hover" type="submit" value="Guardar Cambios"></input>
+				<input type="text" name="correoUpdate" value="<%=user.getEmailUsuario()%>"></input></br>
+				<input type="date" name="fechaUpdate" id="fechaUpdate" value="<%=user.getFechaDeNac()%>"></input></br>
+			
+				<input  class="btn:hover" type="submit" value="Guardar Cambios"></input>
 			</span>
 			</form>
 			<%}%>
