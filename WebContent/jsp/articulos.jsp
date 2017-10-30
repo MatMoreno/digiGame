@@ -1,5 +1,6 @@
 
 <!DOCTYPE html>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@page
 	import="java.time.format.DateTimeFormatter ,modelo.hibernate.Usuarios,modelo.hibernate.Articulo,modelo.hibernate.Genero, utils.HibernateUtils, org.hibernate.Session, java.util.ArrayList"%>
 <%
@@ -106,6 +107,7 @@
 		<a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
 		<p>Género</p>
 		<legend></legend>
+	
 		<%
 			for (int i = 0; i < lista.size(); i++) {%>
 		<a
@@ -160,14 +162,13 @@
 			} else {
 				if (listaJuegos.size() != 0) {
 					for (int i = 0; i < listaJuegos.size(); i++) {
-						String fecha = listaJuegos.get(i).getFechaDeLanzamiento()
-								.format(DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+						String fecha = listaJuegos.get(i).getFechaDeLanzamiento().format(DateTimeFormatter.ofPattern("dd-MM-yyyy"));
 		%>
 		<div
 			style="margin: auto; width: 80%; height: 400px; overflow: hidden; margin-bottom: 5%">
 			<span style="float: left; width: 30%; height: 400px"> <img
 				src="img/imgArticulos/<%=listaJuegos.get(i).getCodigoArticulo()%>.jpg"
-				alt="Cod:WWII" style="width: 100%; height: 100%" />
+				 style="width: 100%; height: 100%" />
 			</span> <span class="infoJuego">
 				<h2>Informacion adicional</h2> <legend></legend> <span
 				class="infoJuego1">
@@ -177,15 +178,15 @@
 					<p>Fecha de Lanzamiento:</p>
 					<p>Informacion Adicional:</p> </br>
 					<p>Precio</p>
-			</span> <span style="float: right; height: 400px; width: 45%;">
+			</span>
+			 <span style="float: right; height: 400px; width: 45%;">
 					<p><%=listaJuegos.get(i).getStock()%></p>
 					<p><%=listaJuegos.get(i).getNombre().toUpperCase()%></p>
 					<p><%=listaJuegos.get(i).getPlataforma()%></p>
 					<p><%=fecha%></p> <textarea disabled
 						style="color: black; background-color: white"><%=listaJuegos.get(i).getInformacionAdicional()%></textarea>
 					<p style="font-size: 20px; font-weight: bold"><%=listaJuegos.get(i).getPrecio() + "&euro;"%></p>
-					<a
-					href="<%=baseJsp%>?action=irJuego&idProd=<%=listaJuegos.get(i).getCodigoArticulo()%>"
+					<a		href="<%=baseJsp%>?action=irJuego&idProd=<%=listaJuegos.get(i).getCodigoArticulo()%>"
 					style="cursor: pointer; font-size: 16px; color: red;">Ver más detalles</a>
 			</span>
 			</span>

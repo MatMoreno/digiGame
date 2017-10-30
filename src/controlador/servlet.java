@@ -67,7 +67,7 @@ public class servlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		
+		HttpSession sesion = request.getSession();
 		listarGeneros(request);
 		String error = "false";
 		String baseJsp = "/DigitalGame/servlet";
@@ -82,11 +82,17 @@ public class servlet extends HttpServlet {
 				break;
 			case "irArticulos":
 				listarArticulos(request);
+				
 				url = base + "articulos.jsp";
 				break;
 				
 			case "irCuenta":
+				sesion.setAttribute("panelEdit", false);
 				listarUsuarios(request);
+				url = base + "perfil.jsp";
+				break;
+			case "irEditarPerfil":
+				sesion.setAttribute("panelEdit", true);
 				url = base + "perfil.jsp";
 				break;
 				
@@ -102,7 +108,8 @@ public class servlet extends HttpServlet {
 				url= base + "panelAdmin.jsp";
 				break;
 				
-			case "irRegistro":
+			case "botonIrRegistro":
+				
 				url = base + "registro.jsp";
 				break;
 
@@ -112,7 +119,7 @@ public class servlet extends HttpServlet {
 				String passCaja = request.getParameter("password");
 				//System.out.println(emailCaja + "---" + passCaja);
 				if (usuarioEnLista(request) == emailCaja) {
-					HttpSession sesion = request.getSession();
+				
 					sesion.setAttribute("emailLogueado", emailCaja);
 					String nombreLog=listarUsuarios(request).get(emailCaja).getNombre();
 					int admin=listarUsuarios(request).get(emailCaja).isAdmin();
@@ -129,7 +136,7 @@ public class servlet extends HttpServlet {
 
 				break;
 			case "cerrarSesion":
-				HttpSession sesion = request.getSession();
+			
 				sesion.invalidate();
 				url = base + "inicioLog.jsp";
 				break;
@@ -140,8 +147,7 @@ public class servlet extends HttpServlet {
 				
 				}
 				else {
-					HttpSession session = request.getSession();
-					session.setAttribute("errorReg", "1");
+					sesion.setAttribute("errorReg", "1");
 					url = base + "registro.jsp";
 				}
 		
@@ -183,6 +189,18 @@ public class servlet extends HttpServlet {
 		return map;
 
 	}
+	public void updateUsuario(HttpServletRequest request) {
+		Session sesionHib = HibernateUtils.getSessionFactory().openSession();
+		HttpSession sesion = request.getSession();
+		String emailLogueado=(String) sesion.getAttribute("emailLogueado");
+		String nombre = request.getParameter("nombreUpdate");
+		String apellidos = request.getParameter("apellidosUpdate");
+		String email = request.getParameter("correoUpdate");
+		String pass = request.getParameter("passUpdate");
+		String fechaReg = request.getParameter("fechaUpdate");
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+		
+	}
 
 	public boolean añadirUsuario(HttpServletRequest request) {
 		Session sesionHib = HibernateUtils.getSessionFactory().openSession();
@@ -207,8 +225,6 @@ public class servlet extends HttpServlet {
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
-		
-		System.out.println(email);
 		ArrayList<Usuarios> lista = (ArrayList<Usuarios>) sesionHib.createQuery("from Usuarios where emailUsuario='"+
 				email+"'").list();
 		

@@ -6,7 +6,7 @@
 	ArrayList<Genero> lista = (ArrayList<Genero>) request.getAttribute("arrayGenero");
 	HttpSession sesion = request.getSession();
 	HashMap<String, Usuarios> mapUsuario = (HashMap<String, Usuarios>) sesion.getAttribute("mapUsuarios");
-
+	Boolean panelEdit=(Boolean)sesion.getAttribute("panelEdit"); 
 	if (sesion.getAttribute("usuarioLogueado") == null) {
 		response.sendRedirect("/DigitalGame/servlet?action=irInicioLog");
 	} else {
@@ -21,7 +21,7 @@
 <meta name="description" content="Your description">
 <meta name="keywords" content="Your keywords">
 <meta name="author" content="Your name">
-<link rel="stylesheet" href="boot3/bootstrap.css" type="text/css"
+<link rel="stylesheet" href="boot/css/bootstrap.css" type="text/css"
 	media="screen"><link rel="stylesheet" href="boot/css/style.css" type="text/css"
 	media="screen">
 
@@ -32,6 +32,22 @@
 <script type="text/javascript" src="js/jquery.js"></script>
 <script src="js/jquery.ui.totop.js" type="text/javascript"></script>
 <script type="text/javascript" src="js/bootstrap.js"></script>
+<script>
+		var bool = true;
+		function openNav() {
+			if (bool == true) {
+				document.getElementById("mySidenav").style.width = "15%";
+				bool = false;
+			} else {
+				bool = true;
+				closeNav();
+			}
+		}
+
+		function closeNav() {
+			document.getElementById("mySidenav").style.width = "0";
+		}
+	</script>
 <script>
 	function myFunction() {
 		var x = document.getElementById("myTopnav");
@@ -93,31 +109,30 @@
 				<p>Apellidos:</p>
 				<p>E-mail:</p>
 				<p>Fecha de Nacimiento:</p>
-			</span> <span style="float: right; width: 70%; height: 400px">
+			</span>
+			<%if(panelEdit==false||panelEdit==null){ %> 
+			<span style="float: right; width: 70%; height: 400px">
 				<p><%=user.getNombre()%></p>
 				<p><%=user.getApellidos()%></p>
 				<p><%=user.getEmailUsuario()%></p>
 				<p><%=fechaNew%></p>
+				<input onClick="window.location.href='<%=baseJsp%>?action=irEditarPerfil'" class="btn:hover" type="button" value="Editar perfil"></input>
 			</span>
+			<% }else{%>
+			<form>
+			<span style="float: right; width: 70%; height: 400px">
+				<input type="text" name="nombreUpdate" value="<%=user.getNombre()%>"></input></br>
+				<input type="text" name="apellidosUpdate" value="<%=user.getApellidos()%>"></input></br>
+				<input type="text" name="emailpdate" value="<%=user.getEmailUsuario()%>"></input></br>
+				<input type="text" name="fechaUpdate" value="<%=fechaNew%>"></input></br>
+				<input onclick="<%=baseJsp%>?action=updateUsuario-" class="btn:hover" type="submit" value="Guardar Cambios"></input>
+			</span>
+			</form>
+			<%}%>
 		</div>
 	</div>
 
-	<script>
-		var bool = true;
-		function openNav() {
-			if (bool == true) {
-				document.getElementById("mySidenav").style.width = "15%";
-				bool = false;
-			} else {
-				bool = true;
-				closeNav();
-			}
-		}
-
-		function closeNav() {
-			document.getElementById("mySidenav").style.width = "0";
-		}
-	</script>
+	
 </body>
 </html>
 <%
