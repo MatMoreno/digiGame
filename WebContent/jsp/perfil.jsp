@@ -6,7 +6,7 @@
 	ArrayList<Genero> lista = (ArrayList<Genero>) request.getAttribute("arrayGenero");
 	HttpSession sesion = request.getSession();
 	HashMap<String, Usuarios> mapUsuario = (HashMap<String, Usuarios>) sesion.getAttribute("mapUsuarios");
-	Boolean panelEdit=(Boolean)sesion.getAttribute("panelEdit"); 
+	Boolean panelEdit = (Boolean) sesion.getAttribute("panelEdit");
 	if (sesion.getAttribute("usuarioLogueado") == null) {
 		response.sendRedirect("/DigitalGame/servlet?action=irInicioLog");
 	} else {
@@ -22,38 +22,37 @@
 <meta name="keywords" content="Your keywords">
 <meta name="author" content="Your name">
 <link rel="stylesheet" href="boot/css/bootstrap.css" type="text/css"
-	media="screen"><link rel="stylesheet" href="boot/css/style.css" type="text/css"
+	media="screen">
+<link rel="stylesheet" href="boot/css/style.css" type="text/css"
 	media="screen">
 
 <link
-	href='http://fonts.googleapis.com/css?family=Open+Sans:400,600,700'
+	href='http://fonts.googleapis.com/css?family=Open+Sans:500,600,700'
 	rel='stylesheet' type='text/css'>
 <link rel="stylesheet" href="css/estilos.css">
 <script type="text/javascript" src="js/jquery.js"></script>
-<script src="js/jquery.ui.totop.js" type="text/javascript"></script>
-<script type="text/javascript" src="js/bootstrap.js"></script>
 <script>
-		var bool = true;
-		function openNav() {
-			if (bool == true) {
-				document.getElementById("mySidenav").style.width = "15%";
-				bool = false;
-			} else {
-				bool = true;
-				closeNav();
-			}
+	var bool = true;
+	function openNav() {
+		if (bool == true) {
+			document.getElementById("mySidenav").style.width = "15%";
+			bool = false;
+		} else {
+			bool = true;
+			closeNav();
 		}
+	}
 
-		function closeNav() {
-			document.getElementById("mySidenav").style.width = "0";
-		}
-	</script>
+	function closeNav() {
+		document.getElementById("mySidenav").style.width = "0";
+	}
+</script>
 <script>
 	function myFunction() {
 		var x = document.getElementById("myTopnav");
 		if (x.className === "topnav") {
 			x.className += " responsive";
-			document.getElementById("mySidenav").style.marginTop = "400px";
+			document.getElementById("mySidenav").style.marginTop = "500px";
 		} else {
 			document.getElementById("mySidenav").style.marginTop = "143px";
 			x.className = "topnav";
@@ -89,51 +88,102 @@
 				href="<%=baseJsp%>?action=cerrarSesion">cerrar sesión</a>
 			<%
 				}
-			%><a href="javascript:void(0);" style="font-size: 15px;" class="icon" onclick="myFunction()">&#9776;</a>
+			%><a href="javascript:void(0);" style="font-size: 15px;" class="icon"
+				onclick="myFunction()">&#9776;</a>
 		</div>
 	</header>
 
 	<div
-		style="margin-top: 0; background: linear-gradient(to right, rgba(255, 255, 255, 1) 0, rgba(239, 239, 239, 1) 100%); margin: auto; width: 70%; height: 350px">
+		style="margin-top: 0; background: linear-gradient(to right, rgba(255, 255, 255, 1) 0, rgba(239, 239, 239, 1) 100%); margin: auto; width: 70%; height: 400px">
 		<h2>INFORMACION PERSONAL</h2>
 		<legend></legend>
 		<%
 			Session sesionHib = HibernateUtils.getSessionFactory().openSession();
 				Usuarios user = (Usuarios) sesionHib.get(Usuarios.class, (String) sesion.getAttribute("emailLogueado"));
 				String fechaNew = user.getFechaDeNac().format(DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+				if (panelEdit == false || panelEdit == null) {
 		%>
 		<div
-			style="margin: auto; width: 80%; height: 400px; overflow: hidden; margin-bottom: 5%">
-			<span style="float: left; width: 30%; height: 400px">
+			style="margin: auto; width: 80%; height: 500px; overflow: hidden; margin-bottom: 5%">
+			<span style="float: left; width: 30%; height: 500px">
 				<p>Nombre:</p>
 				<p>Apellidos:</p>
 				<p>E-mail:</p>
 				<p>Fecha de Nacimiento:</p>
-			</span>
-			<%if(panelEdit==false||panelEdit==null){ %> 
-			<span style="float: right; width: 70%; height: 400px">
+			</span> <span style="float: right; width: 70%; height: 500px">
 				<p><%=user.getNombre()%></p>
 				<p><%=user.getApellidos()%></p>
 				<p><%=user.getEmailUsuario()%></p>
-				<p><%=fechaNew%></p>
-				<input onClick="window.location.href='<%=baseJsp%>?action=irEditarPerfil'" class="btn:hover" type="button" value="Editar perfil"></input>
+				<p><%=fechaNew%></p> <input
+				onClick="window.location.href='<%=baseJsp%>?action=irEditarPerfil'"
+				class="btn:hover" type="button" value="Editar perfil"></input>
 			</span>
-			<% }else{%>
-			<form action="<%=baseJsp%>?action=updateUsuario" method="POST">
-			<span style="float: right; width: 70%; height: 400px">
-				<input type="text" name="nombreUpdate" value="<%=user.getNombre()%>"></input></br>
-				<input type="text" name="apellidosUpdate" value="<%=user.getApellidos()%>"></input></br>
-				<input type="text" name="correoUpdate" value="<%=user.getEmailUsuario()%>"></input></br>
-				<input type="date" name="fechaUpdate" id="fechaUpdate" value="<%=user.getFechaDeNac()%>"></input></br>
-			
-				<input  class="btn:hover" type="submit" value="Guardar Cambios"></input>
-			</span>
-			</form>
-			<%}%>
+			<%
+				} else {
+			%>
+			<div
+				style="margin: auto; width: 80%; height: 500px; overflow: hidden; margin-bottom: 5%">
+				<span style="float: left; width: 30%; height: 500px">
+					<p>Nombre:</p>
+					<p>Apellidos:</p>
+					<p>Fecha de Nacimiento:</p>
+					</br>
+					<p>Contraseña antigua:</p>
+					<p>Nueva Contraseña:</p>
+				</span>
+				<!-- onsubmit="return valida()" -->
+				<form action="<%=baseJsp%>?action=updateUsuario" method="POST"      >
+					<span style="float: right; width: 70%; height: 500px"> <input
+						type="text" pattern="[A-Za-z]{3,15}" name="nombreUpdate"
+						value="<%=user.getNombre()%>" required></input></br> <input type="text"
+						pattern="[A-Za-z ]{5,15}[A-Za-z]" name="apellidosUpdate"
+						value="<%=user.getApellidos()%>" required></input></br> 
+						<%-- <input
+						type="email" name="correoUpdate"
+						value="<%=user.getEmailUsuario()%>" required disabled></input></br> --%> 
+						<input	type="date" name="fechaUpdate" id="fechaUpdate"
+						value="<%=user.getFechaDeNac()%>" required></input></br> <a
+						style="color: black; cursor: pointer" onclick="cambiaContra()">Cambiar	contraseña</a>
+						<div id="vermasdiv" style="display: none;">
+							<input type="password" pattern=".{6,}" title="6 o más caracteres" id="passUpdate1" name="passUpdate1"></input></br>
+							<input type="password" pattern=".{6,}"  title="6 o más caracteres" id="passUpdate2" name="passUpdate2"></input></br>	
+							</div> 
+							<input class="btn:hover" type="submit" value="Guardar Cambios"></input>
+						
+					</span>
+				</form>
+				<%
+					}
+				%>
+			</div>
 		</div>
-	</div>
+		<script>
+			var abierto = false;
+			function cambiaContra() {
+				var eldiv = document.getElementById("vermasdiv");
 
-	
+				if (abierto == false) {
+					eldiv.style.display = "block";
+					abierto = true;
+				} else {
+					
+					eldiv.style.display = "none";
+					document.getElementById("passUpdate1").value="";
+					document.getElementById("passUpdate2").value="";
+					abierto = false;
+					
+				}
+
+			}
+			function valida(){
+				if (document.getElementById("passHidden")!=document.getElementById("passUpdate1")){
+					return false;
+				}else{
+					return true;
+				}
+				
+			}
+		</script>
 </body>
 </html>
 <%

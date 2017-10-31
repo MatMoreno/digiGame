@@ -51,20 +51,12 @@ public class servlet extends HttpServlet {
 		// TODO Auto-generated constructor stub
 	}
 
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
-	 *      response)
-	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		doPost(request, response);
 	}
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
-	 *      response)
-	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		HttpSession sesion = request.getSession();
@@ -82,9 +74,10 @@ public class servlet extends HttpServlet {
 				break;
 			case "irArticulos":
 				listarArticulos(request);
-				
 				url = base + "articulos.jsp";
 				break;
+			case "irArticulosAdmin":
+				url = base + "articulosAdmin.jsp";
 				
 			case "irCuenta":
 				sesion.setAttribute("panelEdit", false);
@@ -118,6 +111,10 @@ public class servlet extends HttpServlet {
 				
 				url = base + "registro.jsp";
 				break;
+			case "irModificarGeneros":
+				
+				url = base + "modificaGeneros.jsp";
+				break;
 
 			case "botonLogin":
 				error = "false";
@@ -132,7 +129,7 @@ public class servlet extends HttpServlet {
 					sesion.setAttribute("codAdmin", admin);
 					sesion.setAttribute("usuarioLogueado", nombreLog);
 					if((Integer)sesion.getAttribute("isAdmin")==1) {
-						url = base + "inicioAdmin.jsp";
+						url = base + "panelAdmin.jsp";
 					}else
 					url = base + "inicioLog.jsp";
 				} else {
@@ -199,10 +196,14 @@ public class servlet extends HttpServlet {
 		Session sesionHib = HibernateUtils.getSessionFactory().openSession();
 		HttpSession sesion = request.getSession();
 		Usuarios user=sesionHib.get(Usuarios.class,(String)sesion.getAttribute("emailLogueado"));
-		
+		String pass=user.getContrasena();
+		if(request.getParameter("passUpdate1")!=null && request.getParameter("passUpdate2")!=null) {
+			pass=passMD5(request.getParameter("passUpdate2"));
+		}
+		System.out.println(pass);
 		String nombre = request.getParameter("nombreUpdate");
 		String apellidos = request.getParameter("apellidosUpdate");
-		String email = request.getParameter("correoUpdate");
+		/*String email = request.getParameter("correoUpdate");*/
 		
 		try {
 		String fechaUp = request.getParameter("fechaUpdate");
@@ -213,9 +214,10 @@ public class servlet extends HttpServlet {
 			fecha = (Date) formatter.parse(fechaUp);
 		
 		user.setNombre(nombre);
+		sesion.setAttribute("usuarioLogueado", nombre);
 		user.setApellidos(apellidos);
-		user.setEmailUsuario(email);
 		user.setFechaDeNac(fecha.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+		user.setContrasena(pass);
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

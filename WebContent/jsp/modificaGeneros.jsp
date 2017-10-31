@@ -5,7 +5,7 @@
   String error=(String)request.getAttribute("error");
   ArrayList<Genero> lista=(ArrayList<Genero>) request.getAttribute("arrayGenero");
   HttpSession sesion = request.getSession();
-  if(sesion.getAttribute("usuarioLogueado")!=null && (Integer)sesion.getAttribute("isAdmin")==1){ 
+  if(sesion.getAttribute("usuarioLogueado")!=null && (Integer)sesion.getAttribute("codAdmin")==1){ 
 %>
 <!DOCTYPE html>
 <%@page import="java.time.format.DateTimeFormatter,java.util.HashMap,java.util.Set,modelo.hibernate.Usuarios,modelo.hibernate.Genero, utils.HibernateUtils, org.hibernate.Session, java.util.ArrayList"%>
@@ -40,28 +40,31 @@
 </div>
 <div class="topnav" id="myTopnav">
 <a style="cursor:pointer"   onclick="openNav()">&#9776;</a>
-<a href="">Home</a>
-<a href="<%=baseJsp%>?action=irArticulosAdmin">Catálogo</a>
-<a href="<%=baseJsp%>?action=irCuenta">Perfil de <b>Admin</b> <%=(String) sesion.getAttribute("usuarioLogueado") %></a>
+<a   href="<%=baseJsp%>?action=irCuenta">Perfil de <b>Admin</b> <%=(String) sesion.getAttribute("usuarioLogueado") %></a>
 <a href="<%=baseJsp%>?action=irPanelAdmin">Panel de Control</a>
 <a href="<%=baseJsp%>?action=cerrarSesion">cerrar sesión</a>
 <a href="javascript:void(0);" style="font-size:15px;" class="icon" onclick="myFunction()">&#9776;</a>
 </div>
 </header>
-<div id="fondoL">
-<div  style="margin:auto;padding:5%;width: 35%;border: 3px black thin;  border-radius:20px;background: linear-gradient(to right, rgba(255, 255, 255, 1) 0, rgba(239, 239, 239, 1) 100%);">
-        
+<div style="background: linear-gradient(to right, rgba(255, 255, 255, 1) 0, rgba(239, 239, 239, 1) 100%); width: 70%;margin:auto;height: 400px">
+<legend style="font-size:28px;">Modificar Géneros</legend>
+<div>
+<p>Genero</p>
+<select >
+<option >generos</option>
+<option >generos2</option>
+</select>
 </div>
 </div>
 
 
 </body>
 </html>
-  <%}else{ %>
+  <% }else{%>
   <html>
   <head></head>
   <body>
   <h1 style="margin:auto">NO TIENES PERMISOS SUFICIENTES PARA ENTRAR A ESTA ZONA!</h1>
   </body>
   </html>
-  <%} %>
+   <%} %>

@@ -40,9 +40,6 @@
 </div>
 <div class="topnav" id="myTopnav">
 <a style="cursor:pointer"   onclick="openNav()">&#9776;</a>
->
-<a href="">Home</a>
-<a href="">Catálogo</a>
 <a   href="<%=baseJsp%>?action=irCuenta">Perfil de <b>Admin</b> <%=(String) sesion.getAttribute("usuarioLogueado") %></a>
 <a href="<%=baseJsp%>?action=irPanelAdmin">Panel de Control</a>
 <a href="<%=baseJsp%>?action=cerrarSesion">cerrar sesión</a>
@@ -52,20 +49,20 @@
 <div style="background: linear-gradient(to right, rgba(255, 255, 255, 1) 0, rgba(239, 239, 239, 1) 100%); width: 70%;margin:auto;height: 400px">
 <legend style="font-size:28px;">Panel de Control</legend>
 <span style="width: 22%" >
-<input style="margin-top:10%;margin-left:9%;font-size: 22px" class="btn " type="button" id="gestionUsuarios" value="Administrar Usuarios" ></input>
+<input onclick="window.Location.href='<%=baseJsp%>?action=irModificarUsuarios'" style="margin-top:10%;margin-left:5%;font-size: 22px" class="btn " type="button" id="gestionUsuarios" value="Administrar Usuarios" ></input>
 </span>
 <span style="width: 22%">
-<input style="margin-top:10%;margin-left:15%;font-size: 22px" type="button"   class="btn " id="gestionGeneros" value="Administrar Generos" ></input>
+<input onClick="window.location.href='<%=baseJsp%>?action=irModificarGeneros'"  style="margin-top:10%;margin-left:10%;font-size: 22px" type="button"   class="btn " id="gestionGeneros" value="Administrar Generos" ></input>
 </span>
 <span style="width: 22%">
-<input  style="margin-top:10%;margin-left:15%;font-size: 22px" class="btn " type="button" id="GestionArticulos" value="Administrar Articulos" ></input>
+<input onclick="window.Location.href='<%=baseJsp%>?action=irModificararticulos'"   style="margin-top:10%;margin-left:10%;font-size: 22px" class="btn " type="button" id="GestionArticulos" value="Administrar Articulos" ></input>
 </span>
 </div>
 
 
 </body>
 </html>
-  <% }else{ %>
+  <% }else{%>
   <html>
   <head></head>
   <body>
