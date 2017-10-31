@@ -115,8 +115,7 @@
 				<p><%=user.getApellidos()%></p>
 				<p><%=user.getEmailUsuario()%></p>
 				<p><%=fechaNew%></p> <input
-				onClick="window.location.href='<%=baseJsp%>?action=irEditarPerfil'"
-				class="btn:hover" type="button" value="Editar perfil"></input>
+				onClick="window.location.href='<%=baseJsp%>?action=irEditarPerfil'"	class="btn:hover" type="button" value="Editar perfil"></input>
 			</span>
 			<%
 				} else {
