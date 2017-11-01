@@ -59,8 +59,8 @@ public class servlet extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		HttpSession sesion = request.getSession();
 		listarGeneros(request);
+		HttpSession sesion = request.getSession();
 		String error = "false";
 		String baseJsp = "/DigitalGame/servlet";
 		request.setAttribute("baseJsp", baseJsp);
@@ -78,7 +78,12 @@ public class servlet extends HttpServlet {
 				break;
 			case "irArticulosAdmin":
 				url = base + "articulosAdmin.jsp";
-				
+				break;
+			case "botonBorrarArticulo":
+				String codArticulo=request.getParameter("codArticulo");
+				deleteArticulo(codArticulo);
+				url = base + "articulosAdmin.jsp";	
+				break;
 			case "irCuenta":
 				sesion.setAttribute("panelEdit", false);
 				listarUsuarios(request);
@@ -110,6 +115,20 @@ public class servlet extends HttpServlet {
 			case "irRegistro":
 				
 				url = base + "registro.jsp";
+				break;
+			case "cambiarNombreGenero":
+				int codGenero=Integer.parseInt(request.getParameter("genero"));
+				String nuevoNombre=request.getParameter("nuevoNombre");
+				System.out.println(codGenero+" "+nuevoNombre);
+				updateGenero(codGenero, nuevoNombre);
+				
+			url = base + "modificaGeneros.jsp";
+			break;
+				case "irCambiarNombreGeneros":
+					int genero=Integer.parseInt(request.getParameter("genero"));
+					sesion.setAttribute("generoElegido", genero);
+					
+				url = base + "modificaGeneros.jsp";
 				break;
 			case "irModificarGeneros":
 				
@@ -302,8 +321,8 @@ public class servlet extends HttpServlet {
 
 	public Articulo articuloPorCod(HttpServletRequest request) {
 		Session sesionHib = HibernateUtils.getSessionFactory().openSession();
-		Articulo user = (Articulo) sesionHib.get(Articulo.class, Integer.parseInt(request.getParameter("idProd")));
-		return user;
+		Articulo articulo = (Articulo) sesionHib.get(Articulo.class, Integer.parseInt(request.getParameter("idProd")));
+		return articulo;
 	}
 
 	public void listarGeneros(HttpServletRequest request) {
@@ -318,6 +337,33 @@ public class servlet extends HttpServlet {
 		ArrayList<Articulo> lista = (ArrayList<Articulo>) sesionHib
 				.createQuery("from Articulo where codigoGenero=" + request.getParameter("idGen")).list();
 		return lista;
+	}
+	public void updateGenero(int codGenero,String nuevoNombre) {
+	Session sesionHib = HibernateUtils.getSessionFactory().openSession();	
+	Genero genero=sesionHib.get(Genero.class,codGenero);
+	genero.setNombre(nuevoNombre);
+	sesionHib.beginTransaction();
+	sesionHib.update(genero);
+	sesionHib.getTransaction().commit();
+	sesionHib.close();
+	}
+	public void deleteUsuario(String emailUsuario) {
+		Session sesionHib = HibernateUtils.getSessionFactory().openSession();
+		Usuarios user=sesionHib.get(Usuarios.class,emailUsuario);
+		sesionHib.beginTransaction();
+		sesionHib.delete(user);
+		sesionHib.getTransaction().commit();
+		sesionHib.close();
+
+	}
+	
+	public void deleteArticulo(String codArticulo) {
+		Session sesionHib = HibernateUtils.getSessionFactory().openSession();
+		Articulo articulo=(Articulo) sesionHib.get(Articulo.class, codArticulo);
+		sesionHib.beginTransaction();
+		sesionHib.delete(articulo);
+		sesionHib.getTransaction().commit();
+		sesionHib.close();
 	}
 
 	public String passMD5(String input) {

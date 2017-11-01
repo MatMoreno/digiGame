@@ -4,9 +4,11 @@
   String baseJsp = (String)request.getAttribute("baseJsp");
   String error=(String)request.getAttribute("error");
   ArrayList<Genero> lista=(ArrayList<Genero>) request.getAttribute("arrayGenero");
+  pageContext.setAttribute("listaGenero", lista);
   HttpSession sesion = request.getSession();
   if(sesion.getAttribute("usuarioLogueado")!=null && (Integer)sesion.getAttribute("codAdmin")==1){ 
 %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt" %> 
 <!DOCTYPE html>
 <%@page import="java.time.format.DateTimeFormatter,java.util.HashMap,java.util.Set,modelo.hibernate.Usuarios,modelo.hibernate.Genero, utils.HibernateUtils, org.hibernate.Session, java.util.ArrayList"%>
 
@@ -30,6 +32,11 @@
     <script src="js/jquery.ui.totop.js" type="text/javascript"></script>	
     <script type="text/javascript" src="js/jquery.mobile.customized.min.js"></script>
     <script type="text/javascript" src="js/bootstrap.js"></script>
+    <script>
+    function mensajeExito(){
+    	document.getElementById("form2").visibility="hidden";
+    }
+    </script>
 </head>
 
 <body >
@@ -48,12 +55,27 @@
 </header>
 <div style="background: linear-gradient(to right, rgba(255, 255, 255, 1) 0, rgba(239, 239, 239, 1) 100%); width: 70%;margin:auto;height: 400px">
 <legend style="font-size:28px;">Modificar Géneros</legend>
-<div>
-<p>Genero</p>
-<select >
-<option >generos</option>
-<option >generos2</option>
+<div style="margin-left: 20px">
+<%if(request.getParameter("genero")==null){ %>
+<form action="<%=baseJsp%>?action=irCambiarNombreGeneros" method="POST">
+<select name="genero" >
+<c:set var="listaGenero1"  value="${listaGenero}"/> 
+ 
+ <c:forEach items="${listaGenero}" var="list">
+          <option value="${list.codigoGenero}" >${list.nombre} </option>
+</c:forEach>
+
 </select>
+<br><input type="submit" value="Cambiar nombre" >
+</form>
+<%}else{ %>
+<form id="form2" action="<%=baseJsp%>?action=cambiarNombreGenero&genero=<%=request.getParameter("genero")%>" method="POST">
+<h2><%=lista.get(Integer.parseInt(request.getParameter("genero"))-1).getNombre()%></h2>
+<input name="nuevoNombre" type="text" placeholder="Nuevo nombre" required >
+<br><input type="submit" value="enviar" onclick="mensajeExito()" >
+</form>
+<input type="button" name="volverlistaGeneros" value="volver" onClick="window.location.href='<%=baseJsp%>?action=irModificarGeneros'">
+<%}%>
 </div>
 </div>
 
@@ -67,4 +89,5 @@
   <h1 style="margin:auto">NO TIENES PERMISOS SUFICIENTES PARA ENTRAR A ESTA ZONA!</h1>
   </body>
   </html>
-   <%} %>
+   <%}
+  out.print(request.getParameter("genero"));%>
