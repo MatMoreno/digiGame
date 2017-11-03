@@ -38,6 +38,7 @@ import jdk.nashorn.internal.ir.RuntimeNode.Request;
 public class servlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	Usuarios user;
+
 	public void init(HttpServletRequest request) throws ServletException {
 		listarGeneros(request);
 		super.init();
@@ -77,12 +78,19 @@ public class servlet extends HttpServlet {
 				url = base + "articulos.jsp";
 				break;
 			case "irArticulosAdmin":
+				listarArticulos(request);
+				url = base + "articulosAdmin.jsp";
+				break;
+			case "irJuegoAdmin":
+				request.setAttribute("articuloElegido", articuloPorCod(request));
+				sesion.setAttribute("articuloE",articuloPorCod(request));
 				url = base + "articulosAdmin.jsp";
 				break;
 			case "botonBorrarArticulo":
-				String codArticulo=request.getParameter("codArticulo");
-				deleteArticulo(codArticulo);
-				url = base + "articulosAdmin.jsp";	
+				//mirar
+				Articulo articulo = (Articulo) sesion.getAttribute("articuloE");
+				deleteArticulo(articulo);
+				url = base + "articulosAdmin.jsp";
 				break;
 			case "irCuenta":
 				sesion.setAttribute("panelEdit", false);
@@ -93,45 +101,46 @@ public class servlet extends HttpServlet {
 				sesion.setAttribute("panelEdit", true);
 				url = base + "perfil.jsp";
 				break;
-				
+
 			case "updateUsuario":
 				updateUsuario(request);
 				sesion.setAttribute("panelEdit", false);
 				url = base + "perfil.jsp";
 				break;
-				
+
 			case "irInicio":
 				url = base + "inicioLog.jsp";
 				break;
-				
+
 			case "irLogin":
 				url = base + "login.jsp";
 				break;
-				
+
 			case "irPanelAdmin":
-				url= base + "panelAdmin.jsp";
+				url = base + "panelAdmin.jsp";
 				break;
-				
+
 			case "irRegistro":
-				
+
 				url = base + "registro.jsp";
 				break;
+
 			case "cambiarNombreGenero":
-				int codGenero=Integer.parseInt(request.getParameter("genero"));
-				String nuevoNombre=request.getParameter("nuevoNombre");
-				System.out.println(codGenero+" "+nuevoNombre);
+				int codGenero = Integer.parseInt(request.getParameter("genero"));
+				String nuevoNombre = request.getParameter("nuevoNombre");
+				System.out.println(codGenero + " " + nuevoNombre);
 				updateGenero(codGenero, nuevoNombre);
-				
-			url = base + "modificaGeneros.jsp";
-			break;
-				case "irCambiarNombreGeneros":
-					int genero=Integer.parseInt(request.getParameter("genero"));
-					sesion.setAttribute("generoElegido", genero);
-					
+				response.sendRedirect("/DigitalGame/servlet?action=irModificarGeneros");
+				return;
+
+			case "irCambiarNombreGeneros":
+				int genero = Integer.parseInt(request.getParameter("genero"));
+				sesion.setAttribute("generoElegido", genero);
+
 				url = base + "modificaGeneros.jsp";
 				break;
 			case "irModificarGeneros":
-				
+
 				url = base + "modificaGeneros.jsp";
 				break;
 
@@ -139,18 +148,18 @@ public class servlet extends HttpServlet {
 				error = "false";
 				String emailCaja = request.getParameter("emailLogin");
 				String passCaja = request.getParameter("password");
-				//System.out.println(emailCaja + "---" + passCaja);
+				// System.out.println(emailCaja + "---" + passCaja);
 				if (usuarioEnLista(request) == emailCaja) {
-				
+
 					sesion.setAttribute("emailLogueado", emailCaja);
-					String nombreLog=listarUsuarios(request).get(emailCaja).getNombre();
-					int admin=listarUsuarios(request).get(emailCaja).isAdmin();
+					String nombreLog = listarUsuarios(request).get(emailCaja).getNombre();
+					int admin = listarUsuarios(request).get(emailCaja).isAdmin();
 					sesion.setAttribute("codAdmin", admin);
 					sesion.setAttribute("usuarioLogueado", nombreLog);
-					if((Integer)sesion.getAttribute("isAdmin")==1) {
+					if ((Integer) sesion.getAttribute("isAdmin") == 1) {
 						url = base + "panelAdmin.jsp";
-					}else
-					url = base + "inicioLog.jsp";
+					} else
+						url = base + "inicioLog.jsp";
 				} else {
 					url = base + "login.jsp";
 					error = "true";
@@ -158,35 +167,32 @@ public class servlet extends HttpServlet {
 
 				break;
 			case "cerrarSesion":
-			
+
 				sesion.invalidate();
 				url = base + "inicioLog.jsp";
 				break;
-				
+
 			case "botonRegistro":
-				if(añadirUsuario(request)==true) {
+				if (añadirUsuario(request) == true) {
 					url = base + "inicioLog.jsp";
-				
-				}
-				else {
+
+				} else {
 					sesion.setAttribute("errorReg", "1");
 					url = base + "registro.jsp";
 				}
-		
+
 				break;
-			
+
 			case "irJuego":
-		request.setAttribute("articuloElegido", articuloPorCod(request));
-				
+				request.setAttribute("articuloElegido", articuloPorCod(request));
 				url = base + "articulos.jsp";
 				break;
 			case "irGenero":
-				ArrayList<Articulo> listaPorGenero=listarArticulosPorGenero(request);
+				ArrayList<Articulo> listaPorGenero = listarArticulosPorGenero(request);
 				request.setAttribute("articuloGenero", listaPorGenero);
-						url = base + "articulos.jsp";
-						break;
-						
-				
+				url = base + "articulos.jsp";
+				break;
+
 			default:
 				break;
 			}
@@ -211,32 +217,34 @@ public class servlet extends HttpServlet {
 		return map;
 
 	}
+
 	public void updateUsuario(HttpServletRequest request) {
 		Session sesionHib = HibernateUtils.getSessionFactory().openSession();
 		HttpSession sesion = request.getSession();
-		Usuarios user=sesionHib.get(Usuarios.class,(String)sesion.getAttribute("emailLogueado"));
-		String pass=user.getContrasena();
-		if(request.getParameter("passUpdate1")!=null && request.getParameter("passUpdate2")!=null) {
-			pass=passMD5(request.getParameter("passUpdate2"));
+		Usuarios user = sesionHib.get(Usuarios.class, (String) sesion.getAttribute("emailLogueado"));
+		String pass = user.getContrasena();
+		/* Arreglar si contraseña esta en la base de datos */
+		if (request.getParameter("passUpdate1") != null && request.getParameter("passUpdate2") != null) {
+			pass = passMD5(request.getParameter("passUpdate2"));
 		}
 		System.out.println(pass);
 		String nombre = request.getParameter("nombreUpdate");
 		String apellidos = request.getParameter("apellidosUpdate");
-		/*String email = request.getParameter("correoUpdate");*/
-		
+		/* String email = request.getParameter("correoUpdate"); */
+
 		try {
-		String fechaUp = request.getParameter("fechaUpdate");
-		System.out.println(fechaUp);
-		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-		Date fecha;
-		
+			String fechaUp = request.getParameter("fechaUpdate");
+			System.out.println(fechaUp);
+			SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+			Date fecha;
+
 			fecha = (Date) formatter.parse(fechaUp);
-		
-		user.setNombre(nombre);
-		sesion.setAttribute("usuarioLogueado", nombre);
-		user.setApellidos(apellidos);
-		user.setFechaDeNac(fecha.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
-		user.setContrasena(pass);
+
+			user.setNombre(nombre);
+			sesion.setAttribute("usuarioLogueado", nombre);
+			user.setApellidos(apellidos);
+			user.setFechaDeNac(fecha.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+			user.setContrasena(pass);
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -270,19 +278,18 @@ public class servlet extends HttpServlet {
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
-		ArrayList<Usuarios> lista = (ArrayList<Usuarios>) sesionHib.createQuery("from Usuarios where emailUsuario='"+
-				email+"'").list();
-		
-	
-		if (lista.size() ==0) {
+		ArrayList<Usuarios> lista = (ArrayList<Usuarios>) sesionHib
+				.createQuery("from Usuarios where emailUsuario='" + email + "'").list();
+
+		if (lista.size() == 0) {
 			Usuarios user = new Usuarios(email, nombre, apellidos, passMD5(pass), fechaNueva, 0);
 			sesionHib.beginTransaction();
 			sesionHib.save(user);
 			HttpSession sesion = request.getSession();
 			sesion.setAttribute("usuarioLogueado", nombre);
-			sesion.setAttribute("emailLogueado",email);
-			sesion.setAttribute("isAdmin",0);
-		
+			sesion.setAttribute("emailLogueado", email);
+			sesion.setAttribute("isAdmin", 0);
+
 			sesionHib.getTransaction().commit();
 			sesionHib.close();
 			return true;
@@ -298,19 +305,19 @@ public class servlet extends HttpServlet {
 		String email = request.getParameter("emailLogin");
 		ArrayList<Usuarios> lista = (ArrayList<Usuarios>) sesionHib.createQuery("from Usuarios where emailUsuario='"
 				+ email + "' and contrasena=md5('" + request.getParameter("password") + "')").list();
-	
+
 		if (lista.size() != 0) {
-			sesion.setAttribute("isAdmin",lista.get(0).isAdmin());
+			sesion.setAttribute("isAdmin", lista.get(0).isAdmin());
 			sesion.setAttribute("infoUsuario", lista);
 			return email;
 
-		}else {
-		
-		sesionHib.close();
+		} else {
 
-		return "";
-	}
+			sesionHib.close();
+
+			return "";
 		}
+	}
 
 	public void listarArticulos(HttpServletRequest request) {
 		Session sesionHib = HibernateUtils.getSessionFactory().openSession();
@@ -338,28 +345,29 @@ public class servlet extends HttpServlet {
 				.createQuery("from Articulo where codigoGenero=" + request.getParameter("idGen")).list();
 		return lista;
 	}
-	public void updateGenero(int codGenero,String nuevoNombre) {
-	Session sesionHib = HibernateUtils.getSessionFactory().openSession();	
-	Genero genero=sesionHib.get(Genero.class,codGenero);
-	genero.setNombre(nuevoNombre);
-	sesionHib.beginTransaction();
-	sesionHib.update(genero);
-	sesionHib.getTransaction().commit();
-	sesionHib.close();
+
+	public void updateGenero(int codGenero, String nuevoNombre) {
+		Session sesionHib = HibernateUtils.getSessionFactory().openSession();
+		Genero genero = sesionHib.get(Genero.class, codGenero);
+		genero.setNombre(nuevoNombre);
+		sesionHib.beginTransaction();
+		sesionHib.update(genero);
+		sesionHib.getTransaction().commit();
+		sesionHib.close();
 	}
+
 	public void deleteUsuario(String emailUsuario) {
 		Session sesionHib = HibernateUtils.getSessionFactory().openSession();
-		Usuarios user=sesionHib.get(Usuarios.class,emailUsuario);
+		Usuarios user = sesionHib.get(Usuarios.class, emailUsuario);
 		sesionHib.beginTransaction();
 		sesionHib.delete(user);
 		sesionHib.getTransaction().commit();
 		sesionHib.close();
 
 	}
-	
-	public void deleteArticulo(String codArticulo) {
+
+	public void deleteArticulo(Articulo articulo) {
 		Session sesionHib = HibernateUtils.getSessionFactory().openSession();
-		Articulo articulo=(Articulo) sesionHib.get(Articulo.class, codArticulo);
 		sesionHib.beginTransaction();
 		sesionHib.delete(articulo);
 		sesionHib.getTransaction().commit();

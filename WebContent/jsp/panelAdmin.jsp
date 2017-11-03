@@ -55,7 +55,7 @@
 <input onClick="window.location.href='<%=baseJsp%>?action=irModificarGeneros'"  style="margin-top:10%;margin-left:10%;font-size: 22px" type="button"   class="btn " id="gestionGeneros" value="Administrar Generos" ></input>
 </span>
 <span style="width: 22%">
-<input onclick="window.Location.href='<%=baseJsp%>?action=irModificararticulos'"   style="margin-top:10%;margin-left:10%;font-size: 22px" class="btn " type="button" id="GestionArticulos" value="Administrar Articulos" ></input>
+<input onClick="window.location.href='<%=baseJsp%>?action=irArticulosAdmin'"   style="margin-top:10%;margin-left:10%;font-size: 22px" class="btn " type="button" id="GestionArticulos" value="Administrar Articulos" ></input>
 </span>
 </div>
 

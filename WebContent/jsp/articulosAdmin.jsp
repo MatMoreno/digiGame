@@ -46,12 +46,6 @@
 			x.className = "topnav";
 		}
 	}
-	var numCarrito=0;
-	function sumCarrito(){
-		numCarrito++;
-		document.getElementById("numeroCarrito").innerHTML="Carrito("+numCarrito+")";
-		
-	}
 </script>
 <script>
 	var bool = false;
@@ -68,6 +62,16 @@
 	function closeNav() {
 		document.getElementById("mySidenav").style.width = "0";
 	}
+	
+	function eliminarProducto(){
+		if(!confirm("Desea eliminar este producto?")){
+			}else{
+				document.location.href="/DigitalGame/servlet?action=botonBorrarArticulo'";	
+			}
+		}
+			
+		
+	
 </script>
 </head>
 
@@ -133,12 +137,8 @@
 						style="color: black; background-color: white"><%=juego.getInformacionAdicional()%></textarea> </br> </br>
 					<p style="font-size: 20px; font-weight: bold"><%=juego.getPrecio() + "&euro;"%></p>
 					</br> 
-					<a
-					href="<%=baseJsp%>?action=irJuego&idProd=<%=juego.getCodigoArticulo()%>"
-					style="cursor: pointer; font-size: 16px; color: red;">Adquirir
-						Key&nbsp;</a>
-						 <a	onClick="sumCarrito()" style="cursor: pointer; font-size: 16px; color: red;" >Añadir al
-						carrito</a>
+					<a	href="<%=baseJsp%>?action=irJuego&idProd=<%=juego.getCodigoArticulo()%>" style="cursor: pointer; font-size: 16px; color: red;">Modificar producto</a>
+						 <a	onClick="eliminarProducto()" style="cursor: pointer; font-size: 16px; color: red;" >Eliminar producto</a>
 			</span>
 			</span>
 		</div>
@@ -170,7 +170,7 @@
 					<p><%=fecha%></p> <textarea disabled
 						style="color: black; background-color: white"><%=listaJuegos.get(i).getInformacionAdicional()%></textarea>
 					<p style="font-size: 20px; font-weight: bold"><%=listaJuegos.get(i).getPrecio() + "&euro;"%></p>
-					<a		href="<%=baseJsp%>?action=irJuego&idProd=<%=listaJuegos.get(i).getCodigoArticulo()%>"
+					<a		href="<%=baseJsp%>?action=irJuegoAdmin&idProd=<%=listaJuegos.get(i).getCodigoArticulo()%>"
 					style="cursor: pointer; font-size: 16px; color: red;">Ver más detalles</a>
 			</span>
 			</span>
