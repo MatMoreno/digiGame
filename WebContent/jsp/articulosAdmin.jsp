@@ -9,10 +9,12 @@
 	HttpSession sesion = request.getSession();
 	ArrayList<Articulo> listaJuegos = (ArrayList<Articulo>) request.getAttribute("arrayJuegos");
 	Articulo juego = (Articulo) request.getAttribute("articuloElegido");
+	 if(sesion.getAttribute("usuarioLogueado")!=null && (Integer)sesion.getAttribute("codAdmin")==1){ 
 	if (request.getAttribute("articuloGenero") != null) {
 		out.print(request.getAttribute("articuloGenero"));
 		listaJuegos = (ArrayList<Articulo>) request.getAttribute("articuloGenero");
 	}
+	
 %>
 
 <html>
@@ -66,7 +68,7 @@
 	function eliminarProducto(){
 		if(!confirm("Desea eliminar este producto?")){
 			}else{
-				document.location.href="/DigitalGame/servlet?action=botonBorrarArticulo'";	
+				document.location.href="/DigitalGame/servlet?action=botonBorrarArticulo";	
 			}
 		}
 			
@@ -137,8 +139,8 @@
 						style="color: black; background-color: white"><%=juego.getInformacionAdicional()%></textarea> </br> </br>
 					<p style="font-size: 20px; font-weight: bold"><%=juego.getPrecio() + "&euro;"%></p>
 					</br> 
-					<a	href="<%=baseJsp%>?action=irJuego&idProd=<%=juego.getCodigoArticulo()%>" style="cursor: pointer; font-size: 16px; color: red;">Modificar producto</a>
-						 <a	onClick="eliminarProducto()" style="cursor: pointer; font-size: 16px; color: red;" >Eliminar producto</a>
+					<a	href="<%=baseJsp%>?action=irModificaArticulo&idProd=<%=juego.getCodigoArticulo()%>" style="cursor: pointer; font-size: 16px; color: red;">Modificar producto</a></br>
+					<a	onClick="eliminarProducto()" style="cursor: pointer; font-size: 16px; color: red;" >Eliminar producto</a>
 			</span>
 			</span>
 		</div>
@@ -187,6 +189,7 @@
 		<%
 			}
 			}
+	 }
 		%>
 	</div>
 </body>

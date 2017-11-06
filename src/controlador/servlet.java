@@ -18,14 +18,18 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Locale;
+import java.util.Scanner;
 import java.util.Set;
+import java.util.logging.Level;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.servlet.http.Part;
 
 import org.hibernate.Session;
 
@@ -34,7 +38,7 @@ import jdk.nashorn.internal.ir.RuntimeNode.Request;
 /**
  * Servlet implementation class servlet
  */
-
+@MultipartConfig
 public class servlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	Usuarios user;
@@ -83,15 +87,25 @@ public class servlet extends HttpServlet {
 				break;
 			case "irJuegoAdmin":
 				request.setAttribute("articuloElegido", articuloPorCod(request));
-				sesion.setAttribute("articuloE",articuloPorCod(request));
+				sesion.setAttribute("articuloE", articuloPorCod(request));
 				url = base + "articulosAdmin.jsp";
 				break;
 			case "botonBorrarArticulo":
-				//mirar
 				Articulo articulo = (Articulo) sesion.getAttribute("articuloE");
 				deleteArticulo(articulo);
+				listarArticulos(request);
 				url = base + "articulosAdmin.jsp";
 				break;
+
+			case "irModificaArticulo":
+				request.setAttribute("articuloElegido", articuloPorCod(request));
+				url = base + "modificaArticulos.jsp";
+				break;
+			case "botonModificaArticulo":
+				updateArticulo(request);
+				url = base + "modificaArticulos.jsp";
+				break;
+				
 			case "irCuenta":
 				sesion.setAttribute("panelEdit", false);
 				listarUsuarios(request);
@@ -388,6 +402,39 @@ public class servlet extends HttpServlet {
 		} catch (NoSuchAlgorithmException e) {
 			throw new RuntimeException(e);
 		}
+	}
+
+	public void updateArticulo(HttpServletRequest request) {
+		Session sesionHib = HibernateUtils.getSessionFactory().openSession();
+		int idProd=Integer.parseInt(request.getParameter("idProd"));
+		System.out.println(" ds"+idProd);
+		Articulo articulo = sesionHib.get(Articulo.class, idProd);
+		/* Arreglar si contraseña esta en la base de datos */
+		String nombre = request.getParameter("nombreU");
+		String plataforma = request.getParameter("plataformaU");
+		int stock = Integer.parseInt(request.getParameter("stockU"));		
+		String info=request.getParameter("infoU");
+		float precio=Float.parseFloat(request.getParameter("precioU"));
+		try {
+			String fechaUp = request.getParameter("fechaU");
+			System.out.println(fechaUp);
+			SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+			Date fecha;
+			fecha = (Date) formatter.parse(fechaUp);
+			articulo.setNombre(nombre);
+			articulo.setPlataforma(plataforma);
+			articulo.setInformacionAdicional(info);
+			articulo.setPrecio(precio);
+			articulo.setFechaDeLanzamiento(fecha.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+			articulo.setStock(stock);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		sesionHib.beginTransaction();
+		sesionHib.update(articulo);
+		sesionHib.getTransaction().commit();
+		sesionHib.close();
 	}
 
 }
