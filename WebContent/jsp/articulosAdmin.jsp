@@ -109,6 +109,7 @@
 	</div>
 
 	<div style="overflow: auto; background: linear-gradient(to right, rgba(255, 255, 255, 1) 0, rgba(239, 239, 239, 1) 100%); margin: auto; width: 70%; padding-top: 2%">
+
 		<h2 style="text-align: center;"><%if (request.getAttribute("articuloElegido") != null) { out.print(juego.getNombre());}else{%>Catálogo de juegos<%} %></h2>
 		<legend></legend>
 		<%
@@ -116,8 +117,10 @@
 				
 				String fecha = juego.getFechaDeLanzamiento().format(DateTimeFormatter.ofPattern("dd-MM-yyyy"));
 		%>
+		
 		<div
 			style="margin: auto; width: 80%; height: 460px; overflow: hidden; margin-bottom: 5%">
+			
 			<span style="float: left; width: 30%; height: 400px"> <img
 				src="img/imgArticulos/<%=juego.getCodigoArticulo()%>.jpg"
 				alt="Cod:WWII" style="width: 100%; height: 100%" />
@@ -141,6 +144,7 @@
 					</br> 
 					<a	href="<%=baseJsp%>?action=irModificaArticulo&idProd=<%=juego.getCodigoArticulo()%>" style="cursor: pointer; font-size: 16px; color: red;">Modificar producto</a></br>
 					<a	onClick="eliminarProducto()" style="cursor: pointer; font-size: 16px; color: red;" >Eliminar producto</a>
+					<input  class="btn " type="button" value="Añadir un artículo" onClick="window.Location.href='<%=baseJsp%>?action=irAddArticulo'" style="font-size:20px;cursor:pointer;color :black;float:right;margin-right: 15px">
 			</span>
 			</span>
 		</div>
@@ -173,7 +177,7 @@
 						style="color: black; background-color: white"><%=listaJuegos.get(i).getInformacionAdicional()%></textarea>
 					<p style="font-size: 20px; font-weight: bold"><%=listaJuegos.get(i).getPrecio() + "&euro;"%></p>
 					<a		href="<%=baseJsp%>?action=irJuegoAdmin&idProd=<%=listaJuegos.get(i).getCodigoArticulo()%>"
-					style="cursor: pointer; font-size: 16px; color: red;">Ver más detalles</a>
+					style="cursor: pointer; font-size: 16px; color: red;">Editar</a>
 			</span>
 			</span>
 		</div>

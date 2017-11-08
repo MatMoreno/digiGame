@@ -4,7 +4,6 @@
 	ArrayList<Genero> lista = (ArrayList<Genero>) request.getAttribute("arrayGenero");
 	String baseJsp = (String) request.getAttribute("baseJsp");
 	String error = (String) request.getAttribute("error");
-	Articulo juego = (Articulo) request.getAttribute("articuloElegido");
 	HttpSession sesion = request.getSession();
 	if (sesion.getAttribute("usuarioLogueado") != null && (Integer) sesion.getAttribute("codAdmin") == 1) {
 %>
@@ -39,11 +38,6 @@
 <script src="js/jquery.ui.totop.js" type="text/javascript"></script>
 <script type="text/javascript" src="js/jquery.mobile.customized.min.js"></script>
 <script type="text/javascript" src="js/bootstrap.js"></script>
-<script>
-	function mensajeExito() {
-		document.getElementById("form2").visibility = "hidden";
-	}
-</script>
 </head>
 
 <body>
@@ -65,7 +59,7 @@
 		style="background: linear-gradient(to right, rgba(255, 255, 255, 1) 0, rgba(239, 239, 239, 1) 100%); margin: auto; width: 70%; height: 600px">
 
 		<form id="form"
-			action="<%=baseJsp%>?action=botonModificaArticulo&idProd=<%=juego.getCodigoArticulo()%>"
+			action="<%=baseJsp%>?action=AñadirArticulo"
 			method="POST" class="form-horizontal" enctype="multipart/form-data">
 			<fieldset>
 
@@ -78,8 +72,8 @@
 				<div class="control-group">
 					<label class="control-label" for="textinput">Nombre:</label>
 					<div class="controls">
-						<input id="nombreU" name="nombreU" type="text"
-							value="<%=juego.getNombre()%>" placeholder="Nombre"
+						<input id="nombreAdd" name="nombreAdd" type="text"
+							 placeholder="Nombre"
 							class="input-xlarge" required>
 
 					</div>
@@ -89,8 +83,8 @@
 				<div class="control-group">
 					<label class="control-label" for="textinput">Plataforma:</label>
 					<div class="controls">
-						<input id="plataformaU" name="plataformaU" type="text"
-							value="<%=juego.getPlataforma()%>" pattern="[A-Za-z]{3,15}"
+						<input id="plataformaAdd" name="plataformaAdd" type="text"
+							 pattern="[A-Za-z]{3,15}"
 							title="Al menos 3 caracteres" placeholder="plataforma"
 							class="input-xlarge" required>
 
@@ -102,23 +96,20 @@
 					<label class="control-label" for="textinput">Información
 						adicional</label>
 					<div class="controls">
-						<input id="infoU" name="infoU" type="text"
-							value="<%=juego.getInformacionAdicional()%>" placeholder="info"
+						<input id="infoAdd" name="infoAdd" type="text"
+							 placeholder="info"
 							class="input-xlarge" required>
 
 					</div>
 				</div>
 				<div class="control-group">
-					<label class="control-label" for="stockU">Género</label>
+					<label class="control-label" for="stockAdd">Género</label>
 					<div class="controls">
-						<select id="generoU" name="generoU"  title="solo se permiten números"
+						<select id="generoAdd" name="generoAdd"  title="solo se permiten números"
 							type="text" placeholder="stock" class="input-medium" required>
-							<%for(int i =0;i<lista.size();i++){ 
-							if(lista.get(i).getCodigoGenero()==juego.getCodigoGenero()){%>
-							<option value="<%=lista.get(i).getCodigoGenero()%>" selected><%=lista.get(i).getNombre() %></option>
-							<%}else{ %>
+							<%for(int i =0;i<lista.size();i++){ %>
 							<option value="<%=lista.get(i).getCodigoGenero()%>"><%=lista.get(i).getNombre() %></option>
-							<%} }%>
+							<% }%>
 							</select>
 					</div>
 				</div>
@@ -126,17 +117,17 @@
 				<div class="control-group">
 					<label class="control-label" for="textinput">Clave</label>
 					<div class="controls">
-						<input id="infoU" name="infoU" type="text"
-							value="<%=juego.getClave()%>" placeholder="info"
+						<input id="infoAdd" name="infoAdd" type="text"
+							 placeholder="info"
 							class="input-xlarge" required>
 					</div>
 				</div>
 				
 				<div class="control-group">
-					<label class="control-label" for="stockU">Stock</label>
+					<label class="control-label" for="stockAdd">Stock</label>
 					<div class="controls">
-						<input id="stockU" name="stockU" pattern="[0-9]{1,4}"
-							value="<%=juego.getStock()%>" title="solo se permiten números"
+						<input id="stockAdd" name="stockAdd" pattern="[0-9]{1,4}"
+							 title="solo se permiten números"
 							type="text" placeholder="stock" class="input-medium" required>
 					</div>
 				</div>
@@ -147,17 +138,17 @@
 					<div class="controls">
 						<div class="input-append">
 
-							<input type="date" id="fechaU"
-								value="<%=juego.getFechaDeLanzamiento()%>" name="fechaU"
+							<input type="date" id="fechaAdd"
+								 name="fechaAdd"
 								required>
 						</div>
 
 					</div>
 				</div>
 				<div class="control-group">
-					<label class="control-label" for="stockU">Precio</label>
+					<label class="control-label" for="stockAdd">Precio</label>
 					<div class="controls">
-						<input id="precioU" value="<%=juego.getPrecio()%>" name="precioU"
+						<input id="precioAdd"  name="precioAdd"
 							pattern="[0-9]{1,5}[.][0-9]{0,2}"
 							title="solo se permiten números" type="text" placeholder="precio"
 							class="input-medium" required>
@@ -169,7 +160,7 @@
 						imagen</label>
 					<div class="controls">
 						<div class="input-append">
-							<input type="file" id="imagenU" name="imagenU">
+							<input type="file" id="imagenAdd" name="imagenAdd">
 						</div>
 					</div>
 

@@ -2,12 +2,17 @@ package controlador;
 
 import modelo.hibernate.*;
 import java.math.BigInteger;
+import java.nio.file.Paths;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import sun.util.calendar.LocalGregorianCalendar;
 import utils.HibernateUtils;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.PrintWriter;
 import java.util.Date;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -17,13 +22,16 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Scanner;
 import java.util.Set;
+import java.util.StringTokenizer;
 import java.util.logging.Level;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
+import javax.servlet.ServletResponse;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -31,6 +39,10 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
 
+import org.apache.tomcat.util.http.fileupload.FileItem;
+import org.apache.tomcat.util.http.fileupload.RequestContext;
+import org.apache.tomcat.util.http.fileupload.disk.DiskFileItemFactory;
+import org.apache.tomcat.util.http.fileupload.servlet.ServletFileUpload;
 import org.hibernate.Session;
 
 import jdk.nashorn.internal.ir.RuntimeNode.Request;
@@ -41,7 +53,7 @@ import jdk.nashorn.internal.ir.RuntimeNode.Request;
 @MultipartConfig
 public class servlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	Usuarios user;
+	
 
 	public void init(HttpServletRequest request) throws ServletException {
 		listarGeneros(request);
@@ -103,7 +115,11 @@ public class servlet extends HttpServlet {
 				break;
 			case "botonModificaArticulo":
 				updateArticulo(request);
-				url = base + "modificaArticulos.jsp";
+				request.setAttribute("articuloElegido", articuloPorCod(request));
+				url = base + "articulosAdmin.jsp";
+				break;
+			case "irAddArticulo":
+				url = base + "addArticulo.jsp";
 				break;
 				
 			case "irCuenta":
@@ -403,6 +419,16 @@ public class servlet extends HttpServlet {
 			throw new RuntimeException(e);
 		}
 	}
+	public void añadirArticulo(HttpServletRequest request) {
+		Session sesionHib = HibernateUtils.getSessionFactory().openSession();
+		String nombre = request.getParameter("nombreAdd");
+		String plataforma = request.getParameter("plataformaAdd");
+		int stock = Integer.parseInt(request.getParameter("stockAdd"));		
+		String info=request.getParameter("infoAdd");
+		float precio=Float.parseFloat(request.getParameter("precioAdd"));
+		int genero=Integer.parseInt(request.getParameter("generoAdd"));
+		
+	}
 
 	public void updateArticulo(HttpServletRequest request) {
 		Session sesionHib = HibernateUtils.getSessionFactory().openSession();
@@ -415,6 +441,7 @@ public class servlet extends HttpServlet {
 		int stock = Integer.parseInt(request.getParameter("stockU"));		
 		String info=request.getParameter("infoU");
 		float precio=Float.parseFloat(request.getParameter("precioU"));
+		int genero=Integer.parseInt(request.getParameter("generoU"));
 		try {
 			String fechaUp = request.getParameter("fechaU");
 			System.out.println(fechaUp);
@@ -424,9 +451,11 @@ public class servlet extends HttpServlet {
 			articulo.setNombre(nombre);
 			articulo.setPlataforma(plataforma);
 			articulo.setInformacionAdicional(info);
+			articulo.setCodigoGenero(genero);
 			articulo.setPrecio(precio);
 			articulo.setFechaDeLanzamiento(fecha.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
 			articulo.setStock(stock);
+			imagen(request);
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -436,5 +465,30 @@ public class servlet extends HttpServlet {
 		sesionHib.getTransaction().commit();
 		sesionHib.close();
 	}
-
+	public void imagen(HttpServletRequest request) {
+		try {
+			String nombre=request.getParameter("idProd")+".jpg";
+			Part file=request.getPart("imagenU");
+			InputStream is=file.getInputStream();
+			File directorio=new File("C:\\Users\\mat\\git\\digiGame\\WebContent\\img\\imgArticulos\\"+nombre);
+			FileOutputStream os=new FileOutputStream(directorio);
+			int dato=is.read();
+			while(dato != -1) {
+				os.write(dato);
+				dato=is.read();
+			}
+			os.close();
+			is.close();
+		} catch (IllegalStateException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ServletException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	
+		}
 }
