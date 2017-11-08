@@ -109,7 +109,7 @@
 	</div>
 
 	<div style="overflow: auto; background: linear-gradient(to right, rgba(255, 255, 255, 1) 0, rgba(239, 239, 239, 1) 100%); margin: auto; width: 70%; padding-top: 2%">
-
+			<input  class="btn " type="button" value="Añadir un nuevo artículo" onClick="window.location.href='<%=baseJsp%>?action=irAddArticulo'" style="font-size:20px;cursor:pointer;color :black;float:right;margin-right: 15px">
 		<h2 style="text-align: center;"><%if (request.getAttribute("articuloElegido") != null) { out.print(juego.getNombre());}else{%>Catálogo de juegos<%} %></h2>
 		<legend></legend>
 		<%
@@ -144,8 +144,7 @@
 					</br> 
 					<a	href="<%=baseJsp%>?action=irModificaArticulo&idProd=<%=juego.getCodigoArticulo()%>" style="cursor: pointer; font-size: 16px; color: red;">Modificar producto</a></br>
 					<a	onClick="eliminarProducto()" style="cursor: pointer; font-size: 16px; color: red;" >Eliminar producto</a>
-					<input  class="btn " type="button" value="Añadir un artículo" onClick="window.Location.href='<%=baseJsp%>?action=irAddArticulo'" style="font-size:20px;cursor:pointer;color :black;float:right;margin-right: 15px">
-			</span>
+					</span>
 			</span>
 		</div>
 		<%
@@ -156,8 +155,8 @@
 		%>
 		
 		<div style="margin: auto; width: 80%; height: 400px; overflow: hidden; margin-bottom: 5%">
-			<span style="float: left; width: 30%; height: 400px"> <img
-				src="img/imgArticulos/<%=listaJuegos.get(i).getCodigoArticulo()%>.jpg"
+			<span style="float: left; width: 30%; height: 400px"> 
+			<img src="img/imgArticulos/<%=listaJuegos.get(i).getCodigoArticulo()%>.jpg"
 				 style="width: 100%; height: 100%" />
 			</span> <span class="infoJuego">
 				<h2>Informacion adicional</h2> <legend></legend> <span

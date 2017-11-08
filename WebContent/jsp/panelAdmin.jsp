@@ -49,7 +49,7 @@
 <div style="background: linear-gradient(to right, rgba(255, 255, 255, 1) 0, rgba(239, 239, 239, 1) 100%); width: 70%;margin:auto;height: 400px">
 <legend style="font-size:28px;">Panel de Control</legend>
 <span style="width: 22%" >
-<input onclick="window.Location.href='<%=baseJsp%>?action=irModificarUsuarios'" style="margin-top:10%;margin-left:5%;font-size: 22px" class="btn " type="button" id="gestionUsuarios" value="Administrar Usuarios" ></input>
+<input onClick="window.location.href='<%=baseJsp%>?action=irUsuariosAdmin'" style="margin-top:10%;margin-left:5%;font-size: 22px" class="btn " type="button" id="gestionUsuarios" value="Administrar Usuarios" ></input>
 </span>
 <span style="width: 22%">
 <input onClick="window.location.href='<%=baseJsp%>?action=irModificarGeneros'"  style="margin-top:10%;margin-left:10%;font-size: 22px" type="button"   class="btn " id="gestionGeneros" value="Administrar Generos" ></input>

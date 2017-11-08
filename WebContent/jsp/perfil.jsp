@@ -82,8 +82,7 @@
 			<%
 				} else {
 			%>
-			<a href="">Home</a> <a href="">Catálogo</a> <a
-				href="<%=baseJsp%>?action=irCuenta">Perfil de Admin <%=(String) sesion.getAttribute("usuarioLogueado")%></a>
+			 <a	href="<%=baseJsp%>?action=irCuenta">Perfil de Admin <%=(String) sesion.getAttribute("usuarioLogueado")%></a>
 			<a href="<%=baseJsp%>?action=irPanelAdmin">Panel de Control</a> <a
 				href="<%=baseJsp%>?action=cerrarSesion">cerrar sesión</a>
 			<%

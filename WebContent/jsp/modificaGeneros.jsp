@@ -59,7 +59,6 @@
 <%if(request.getParameter("genero")==null){ %>
 <form action="<%=baseJsp%>?action=irCambiarNombreGeneros" method="POST">
 <select name="genero" >
-<c:set var="listaGenero1"  value="${listaGenero}"/> 
  
  <c:forEach items="${listaGenero}" var="list">
           <option value="${list.codigoGenero}" >${list.nombre} </option>

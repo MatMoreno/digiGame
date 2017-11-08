@@ -17,8 +17,12 @@ import javax.persistence.Table;
 @Entity
 @Table(name="articulo")
 public class Articulo implements java.io.Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="codigo_articulo")
 	private Integer codigoArticulo;
 	@Column(name="nombre")
@@ -43,17 +47,18 @@ public class Articulo implements java.io.Serializable {
 	}
 
 	public Articulo(String nombre, int codigoGenero, String plataforma,LocalDate fechaDeLanzamiento, int stock,
-			int clave) {
+			int clave,float precio) {
 		this.nombre = nombre;
 		this.codigoGenero = codigoGenero;
 		this.plataforma = plataforma;
 		this.fechaDeLanzamiento = fechaDeLanzamiento;
 		this.stock = stock;
 		this.clave = clave;
+		this.precio=precio;
 	}
 
 	public Articulo(String nombre, int codigoGenero, String plataforma, LocalDate fechaDeLanzamiento,
-			String informacionAdicional, int stock, int clave) {
+			String informacionAdicional, int stock, int clave,float precio) {
 		this.nombre = nombre;
 		this.codigoGenero = codigoGenero;
 		this.plataforma = plataforma;
@@ -61,6 +66,7 @@ public class Articulo implements java.io.Serializable {
 		this.informacionAdicional = informacionAdicional;
 		this.stock = stock;
 		this.clave = clave;
+		this.precio = precio;
 	}
 
 	public Integer getCodigoArticulo() {

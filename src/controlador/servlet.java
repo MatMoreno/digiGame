@@ -76,6 +76,7 @@ public class servlet extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		listarArticulos(request);
 		listarGeneros(request);
 		HttpSession sesion = request.getSession();
 		String error = "false";
@@ -94,7 +95,7 @@ public class servlet extends HttpServlet {
 				url = base + "articulos.jsp";
 				break;
 			case "irArticulosAdmin":
-				listarArticulos(request);
+				
 				url = base + "articulosAdmin.jsp";
 				break;
 			case "irJuegoAdmin":
@@ -118,9 +119,24 @@ public class servlet extends HttpServlet {
 				request.setAttribute("articuloElegido", articuloPorCod(request));
 				url = base + "articulosAdmin.jsp";
 				break;
+				
 			case "irAddArticulo":
 				url = base + "addArticulo.jsp";
 				break;
+			case "addArticulo":
+				if(addArticulo(request)==true) {
+				imagen(request);
+				response.sendRedirect("/DigitalGame/servlet?action=irArticulosAdmin");
+				return;
+				}else {
+					response.sendRedirect("/DigitalGame/servlet?action=irAddArticulo&errorG=true");
+					return;
+				}
+				
+			case "irUsuariosAdmin":
+				listarUsuarios(request);
+				url = base + "usuariosAdmin.jsp";
+				break;			
 				
 			case "irCuenta":
 				sesion.setAttribute("panelEdit", false);
@@ -197,13 +213,12 @@ public class servlet extends HttpServlet {
 
 				break;
 			case "cerrarSesion":
-
 				sesion.invalidate();
 				url = base + "inicioLog.jsp";
 				break;
 
 			case "botonRegistro":
-				if (añadirUsuario(request) == true) {
+				if (addUsuario(request) == true) {
 					url = base + "inicioLog.jsp";
 
 				} else {
@@ -285,7 +300,7 @@ public class servlet extends HttpServlet {
 		sesionHib.close();
 	}
 
-	public boolean añadirUsuario(HttpServletRequest request) {
+	public boolean addUsuario(HttpServletRequest request) {
 		Session sesionHib = HibernateUtils.getSessionFactory().openSession();
 		String nombre = request.getParameter("nombreReg");
 		String apellidos = request.getParameter("apellidosReg");
@@ -419,15 +434,43 @@ public class servlet extends HttpServlet {
 			throw new RuntimeException(e);
 		}
 	}
-	public void añadirArticulo(HttpServletRequest request) {
+	public boolean addArticulo(HttpServletRequest request) {
 		Session sesionHib = HibernateUtils.getSessionFactory().openSession();
+		
 		String nombre = request.getParameter("nombreAdd");
 		String plataforma = request.getParameter("plataformaAdd");
 		int stock = Integer.parseInt(request.getParameter("stockAdd"));		
 		String info=request.getParameter("infoAdd");
 		float precio=Float.parseFloat(request.getParameter("precioAdd"));
 		int genero=Integer.parseInt(request.getParameter("generoAdd"));
-		
+		int clave=Integer.parseInt(request.getParameter("claveAdd"));
+		String fechaLanz=request.getParameter("fechaAdd");
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+		LocalDate fechaNueva=null;
+		try {
+			Date fecha = (Date) formatter.parse(fechaLanz);
+			fechaNueva = fecha.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		@SuppressWarnings("unchecked")
+		ArrayList<Usuarios> lista = (ArrayList<Usuarios>) sesionHib.createQuery("from Articulo where nombre='" + nombre + "'").list();
+		if (lista.size() == 0) {
+			Articulo articulo=new Articulo(nombre, genero, plataforma, fechaNueva, info, stock, clave,precio);
+			sesionHib.beginTransaction();
+			sesionHib.save(articulo);
+			HttpSession sesion = request.getSession();
+			sesionHib.getTransaction().commit();
+			sesionHib.close();
+			System.out.println(articulo.getCodigoArticulo());
+			sesion.setAttribute("idProdNuevo", articulo.getCodigoArticulo());
+			
+
+			return true;
+		}else {
+			return false;
+		}
 	}
 
 	public void updateArticulo(HttpServletRequest request) {
@@ -466,11 +509,22 @@ public class servlet extends HttpServlet {
 		sesionHib.close();
 	}
 	public void imagen(HttpServletRequest request) {
+		HttpSession sesion = request.getSession();
+		String nombre="default.jpg";
+		Part file = null;
 		try {
-			String nombre=request.getParameter("idProd")+".jpg";
-			Part file=request.getPart("imagenU");
+			if(sesion.getAttribute("idProdNuevo")!=null) {
+				System.out.println("IDPRODNUEVO");
+				nombre=sesion.getAttribute("idProdNuevo")+".jpg";
+				file=request.getPart("imagenAdd");
+				
+			}else {
+			file=request.getPart("imagenU");
+			nombre=request.getParameter("idProd")+".jpg";
+			}
+		
 			InputStream is=file.getInputStream();
-			File directorio=new File("C:\\Users\\mat\\git\\digiGame\\WebContent\\img\\imgArticulos\\"+nombre);
+			File directorio=new File("C:\\Users\\alumno_m\\git\\digiGame\\WebContent\\img\\imgArticulos\\"+nombre);
 			FileOutputStream os=new FileOutputStream(directorio);
 			int dato=is.read();
 			while(dato != -1) {

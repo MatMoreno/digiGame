@@ -58,14 +58,12 @@
 	<div
 		style="background: linear-gradient(to right, rgba(255, 255, 255, 1) 0, rgba(239, 239, 239, 1) 100%); margin: auto; width: 70%; height: 600px">
 
-		<form id="form"
-			action="<%=baseJsp%>?action=AñadirArticulo"
-			method="POST" class="form-horizontal" enctype="multipart/form-data">
+		<form id="form"	action="<%=baseJsp%>?action=addArticulo" method="POST" class="form-horizontal" enctype="multipart/form-data">
 			<fieldset>
 
 				<!-- Form Name -->
 				<legend>
-					<h2>Articulo</h2>
+					<h2>Nuevo Artículo</h2>
 				</legend>
 
 				<!-- Text input-->
@@ -103,10 +101,10 @@
 					</div>
 				</div>
 				<div class="control-group">
-					<label class="control-label" for="stockAdd">Género</label>
+					<label class="control-label" for="generoAdd">Género</label>
 					<div class="controls">
 						<select id="generoAdd" name="generoAdd"  title="solo se permiten números"
-							type="text" placeholder="stock" class="input-medium" required>
+							type="text"  class="input-medium" required>
 							<%for(int i =0;i<lista.size();i++){ %>
 							<option value="<%=lista.get(i).getCodigoGenero()%>"><%=lista.get(i).getNombre() %></option>
 							<% }%>
@@ -117,7 +115,7 @@
 				<div class="control-group">
 					<label class="control-label" for="textinput">Clave</label>
 					<div class="controls">
-						<input id="infoAdd" name="infoAdd" type="text"
+						<input id="claveAdd" name="claveAdd" type="text"
 							 placeholder="info"
 							class="input-xlarge" required>
 					</div>
@@ -149,7 +147,7 @@
 					<label class="control-label" for="stockAdd">Precio</label>
 					<div class="controls">
 						<input id="precioAdd"  name="precioAdd"
-							pattern="[0-9]{1,5}[.][0-9]{0,2}"
+							pattern="[0-9]{1,5}[.][0-9]{1,2}||[0-9]{1,5}"
 							title="solo se permiten números" type="text" placeholder="precio"
 							class="input-medium" required>
 					</div>
@@ -173,14 +171,16 @@
 							class="btn btn-success"></input>
 					</div>
 				</div>
-				<div class="control-group">
-					<div >
-						<input type="button" id="btn" name="singlebutton"
-							class="btn btn-success" value="Volver"></input>
-					</div>
+			
 				</div>
-				</div>
-
+	 <%
+            if(request.getParameter("errorG")!=null){
+            	
+            	%>
+            	<p style="color: red">Este articulo ya existe en la base de datos</p>
+            	<%
+            }
+            %>
 
 			</fieldset>
 		</form>
