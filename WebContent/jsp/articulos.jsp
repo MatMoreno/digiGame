@@ -2,11 +2,13 @@
 <!DOCTYPE html>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@page
-	import="java.time.format.DateTimeFormatter ,modelo.hibernate.Usuarios,modelo.hibernate.Articulo,modelo.hibernate.Genero, utils.HibernateUtils, org.hibernate.Session, java.util.ArrayList"%>
+	import="java.util.HashMap,java.time.format.DateTimeFormatter ,modelo.control.CarritoItem,modelo.hibernate.Usuarios,modelo.hibernate.Articulo,modelo.hibernate.Genero, utils.HibernateUtils, org.hibernate.Session, java.util.ArrayList"%>
 <%
+
 	String baseJsp = (String) request.getAttribute("baseJsp");
 	ArrayList<Genero> lista = (ArrayList<Genero>) request.getAttribute("arrayGenero");
 	HttpSession sesion = request.getSession();
+	HashMap<Integer, CarritoItem> carrito = (HashMap<Integer, CarritoItem>) sesion.getAttribute("carrito");
 	ArrayList<Articulo> listaJuegos = (ArrayList<Articulo>) request.getAttribute("arrayJuegos");
 	Articulo juego = (Articulo) request.getAttribute("articuloElegido");
 	if (request.getAttribute("articuloGenero") != null) {
@@ -86,7 +88,7 @@
 			<a href="<%=baseJsp%>?action=irInicioLog">Home</a> <a
 				href="<%=baseJsp%>?action=irArticulos">Catálogo</a> <a
 				href="<%=baseJsp%>?action=irCuenta">Perfil de <%=(String) sesion.getAttribute("usuarioLogueado")%></a>
-			<a id="numeroCarrito" href="<%=baseJsp%>?action=irCarrito">Carrito()</a> <a
+			<a id="numeroCarrito" href="<%=baseJsp%>?action=irCarrito">Carrito[<%=carrito.size() %>]</a> <a
 				href="<%=baseJsp%>?action=cerrarSesion">cerrar sesión</a>
 			<%
 				} else {
@@ -148,13 +150,15 @@
 					<textarea disabled
 						style="color: black; background-color: white"><%=juego.getInformacionAdicional()%></textarea> </br> </br>
 					<p style="font-size: 20px; font-weight: bold"><%=juego.getPrecio() + "&euro;"%></p>
-					</br> 
+					</br>
+					<%if(sesion.getAttribute("usuarioLogueado") != null){ %> 
 					<a
 					href="<%=baseJsp%>?action=irJuego&idProd=<%=juego.getCodigoArticulo()%>"
 					style="cursor: pointer; font-size: 16px; color: red;">Adquirir
 						Key&nbsp;</a>
-						 <a	onClick="sumCarrito()" style="cursor: pointer; font-size: 16px; color: red;" >Añadir al
+						 <a	onClick="sumCarrito()" href="<%=baseJsp%>?action=addToCarrito&addIdProd=<%=juego.getCodigoArticulo()%>&cantidad=1" style="cursor: pointer; font-size: 16px; color: red;" >Añadir al
 						carrito</a>
+						<%} %>
 			</span>
 			</span>
 		</div>

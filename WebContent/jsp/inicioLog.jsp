@@ -5,9 +5,10 @@
   String baseJsp = (String)request.getAttribute("baseJsp");
 ArrayList<Genero> lista=(ArrayList<Genero>) request.getAttribute("arrayGenero");
 HttpSession sesion = request.getSession();
+HashMap<Integer, CarritoItem> carrito = (HashMap<Integer, CarritoItem>) sesion.getAttribute("carrito");
   %>
-<%@page import="modelo.hibernate.Usuarios,modelo.hibernate.Genero, utils.HibernateUtils, org.hibernate.Session, java.util.ArrayList"%>
-<html>
+<%@page
+	import="java.util.HashMap,java.time.format.DateTimeFormatter ,modelo.control.CarritoItem,modelo.hibernate.Usuarios,modelo.hibernate.Articulo,modelo.hibernate.Genero, utils.HibernateUtils, org.hibernate.Session, java.util.ArrayList"%><html>
 <head>
     <title>Home</title>
     <meta charset="utf-8">
@@ -38,7 +39,7 @@ HttpSession sesion = request.getSession();
 <a href="<%=baseJsp%>?action=irInicioLog">Home</a>
 <a href="<%=baseJsp%>?action=irArticulos">Catálogo</a>
 <a   href="<%=baseJsp%>?action=irCuenta">Perfil de <%=(String) sesion.getAttribute("usuarioLogueado") %></a>
-<a href="<%=baseJsp%>?action=irCarrito">Carrito()</a>
+<a href="<%=baseJsp%>?action=irCarrito">Carrito[<%if(carrito!=null){out.print(carrito.size());} %>]</a>
 <a href="<%=baseJsp%>?action=cerrarSesion">cerrar sesión</a>
 <%}else{ %>
 <a href="<%=baseJsp%>?action=irInicio">Home</a>

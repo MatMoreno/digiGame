@@ -1,5 +1,6 @@
 package controlador;
 
+import modelo.control.CarritoItem;
 import modelo.hibernate.*;
 import java.math.BigInteger;
 import java.nio.file.Paths;
@@ -53,7 +54,6 @@ import jdk.nashorn.internal.ir.RuntimeNode.Request;
 @MultipartConfig
 public class servlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	
 
 	public void init(HttpServletRequest request) throws ServletException {
 		listarGeneros(request);
@@ -95,7 +95,7 @@ public class servlet extends HttpServlet {
 				url = base + "articulos.jsp";
 				break;
 			case "irArticulosAdmin":
-				
+
 				url = base + "articulosAdmin.jsp";
 				break;
 			case "irJuegoAdmin":
@@ -119,25 +119,25 @@ public class servlet extends HttpServlet {
 				request.setAttribute("articuloElegido", articuloPorCod(request));
 				url = base + "articulosAdmin.jsp";
 				break;
-				
+
 			case "irAddArticulo":
 				url = base + "addArticulo.jsp";
 				break;
 			case "addArticulo":
-				if(addArticulo(request)==true) {
-				imagen(request);
-				response.sendRedirect("/DigitalGame/servlet?action=irArticulosAdmin");
-				return;
-				}else {
+				if (addArticulo(request) == true) {
+					imagen(request);
+					response.sendRedirect("/DigitalGame/servlet?action=irArticulosAdmin");
+					return;
+				} else {
 					response.sendRedirect("/DigitalGame/servlet?action=irAddArticulo&errorG=true");
 					return;
 				}
-				
+
 			case "irUsuariosAdmin":
 				listarUsuarios(request);
 				url = base + "usuariosAdmin.jsp";
-				break;			
-				
+				break;
+
 			case "irCuenta":
 				sesion.setAttribute("panelEdit", false);
 				listarUsuarios(request);
@@ -199,7 +199,7 @@ public class servlet extends HttpServlet {
 
 					sesion.setAttribute("emailLogueado", emailCaja);
 					String nombreLog = listarUsuarios(request).get(emailCaja).getNombre();
-					int admin = listarUsuarios(request).get(emailCaja).isAdmin();
+					int admin = listarUsuarios(request).get(emailCaja).getAdmin();
 					sesion.setAttribute("codAdmin", admin);
 					sesion.setAttribute("usuarioLogueado", nombreLog);
 					if ((Integer) sesion.getAttribute("isAdmin") == 1) {
@@ -237,6 +237,15 @@ public class servlet extends HttpServlet {
 				request.setAttribute("articuloGenero", listaPorGenero);
 				url = base + "articulos.jsp";
 				break;
+			case "irCarrito":
+				url = base + "carrito.jsp";
+				break;
+			case "addToCarrito":
+				HashMap<Integer,CarritoItem> cart = addToCarrito(request);
+				sesion.setAttribute("carrito", cart);
+				System.out.println(cart.toString());
+				url = base + "carrito.jsp";
+				break;
 
 			default:
 				break;
@@ -255,7 +264,7 @@ public class servlet extends HttpServlet {
 		for (int i = 0; i < lista.size(); i++) {
 			map.put(lista.get(i).getEmailUsuario(),
 					new Usuarios(lista.get(i).getEmailUsuario(), lista.get(i).getNombre(), lista.get(i).getApellidos(),
-							lista.get(i).getContrasena(), lista.get(i).getFechaDeNac(), lista.get(i).isAdmin()));
+							lista.get(i).getContrasena(), lista.get(i).getFechaDeNac(), lista.get(i).getAdmin()));
 		}
 		HttpSession sesion = request.getSession();
 		sesion.setAttribute("mapUsuarios", map);
@@ -352,7 +361,7 @@ public class servlet extends HttpServlet {
 				+ email + "' and contrasena=md5('" + request.getParameter("password") + "')").list();
 
 		if (lista.size() != 0) {
-			sesion.setAttribute("isAdmin", lista.get(0).isAdmin());
+			sesion.setAttribute("isAdmin", lista.get(0).getAdmin());
 			sesion.setAttribute("infoUsuario", lista);
 			return email;
 
@@ -434,19 +443,20 @@ public class servlet extends HttpServlet {
 			throw new RuntimeException(e);
 		}
 	}
+
 	public boolean addArticulo(HttpServletRequest request) {
 		Session sesionHib = HibernateUtils.getSessionFactory().openSession();
-		
+
 		String nombre = request.getParameter("nombreAdd");
 		String plataforma = request.getParameter("plataformaAdd");
-		int stock = Integer.parseInt(request.getParameter("stockAdd"));		
-		String info=request.getParameter("infoAdd");
-		float precio=Float.parseFloat(request.getParameter("precioAdd"));
-		int genero=Integer.parseInt(request.getParameter("generoAdd"));
-		int clave=Integer.parseInt(request.getParameter("claveAdd"));
-		String fechaLanz=request.getParameter("fechaAdd");
+		int stock = Integer.parseInt(request.getParameter("stockAdd"));
+		String info = request.getParameter("infoAdd");
+		float precio = Float.parseFloat(request.getParameter("precioAdd"));
+		int genero = Integer.parseInt(request.getParameter("generoAdd"));
+		int clave = Integer.parseInt(request.getParameter("claveAdd"));
+		String fechaLanz = request.getParameter("fechaAdd");
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-		LocalDate fechaNueva=null;
+		LocalDate fechaNueva = null;
 		try {
 			Date fecha = (Date) formatter.parse(fechaLanz);
 			fechaNueva = fecha.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
@@ -455,9 +465,10 @@ public class servlet extends HttpServlet {
 			e.printStackTrace();
 		}
 		@SuppressWarnings("unchecked")
-		ArrayList<Usuarios> lista = (ArrayList<Usuarios>) sesionHib.createQuery("from Articulo where nombre='" + nombre + "'").list();
+		ArrayList<Usuarios> lista = (ArrayList<Usuarios>) sesionHib
+				.createQuery("from Articulo where nombre='" + nombre + "'").list();
 		if (lista.size() == 0) {
-			Articulo articulo=new Articulo(nombre, genero, plataforma, fechaNueva, info, stock, clave,precio);
+			Articulo articulo = new Articulo(nombre, genero, plataforma, fechaNueva, info, stock, clave, precio);
 			sesionHib.beginTransaction();
 			sesionHib.save(articulo);
 			HttpSession sesion = request.getSession();
@@ -465,26 +476,25 @@ public class servlet extends HttpServlet {
 			sesionHib.close();
 			System.out.println(articulo.getCodigoArticulo());
 			sesion.setAttribute("idProdNuevo", articulo.getCodigoArticulo());
-			
 
 			return true;
-		}else {
+		} else {
 			return false;
 		}
 	}
 
 	public void updateArticulo(HttpServletRequest request) {
 		Session sesionHib = HibernateUtils.getSessionFactory().openSession();
-		int idProd=Integer.parseInt(request.getParameter("idProd"));
-		System.out.println(" ds"+idProd);
+		int idProd = Integer.parseInt(request.getParameter("idProd"));
+		System.out.println(" ds" + idProd);
 		Articulo articulo = sesionHib.get(Articulo.class, idProd);
 		/* Arreglar si contraseña esta en la base de datos */
 		String nombre = request.getParameter("nombreU");
 		String plataforma = request.getParameter("plataformaU");
-		int stock = Integer.parseInt(request.getParameter("stockU"));		
-		String info=request.getParameter("infoU");
-		float precio=Float.parseFloat(request.getParameter("precioU"));
-		int genero=Integer.parseInt(request.getParameter("generoU"));
+		int stock = Integer.parseInt(request.getParameter("stockU"));
+		String info = request.getParameter("infoU");
+		float precio = Float.parseFloat(request.getParameter("precioU"));
+		int genero = Integer.parseInt(request.getParameter("generoU"));
 		try {
 			String fechaUp = request.getParameter("fechaU");
 			System.out.println(fechaUp);
@@ -508,28 +518,54 @@ public class servlet extends HttpServlet {
 		sesionHib.getTransaction().commit();
 		sesionHib.close();
 	}
+
+	public HashMap<Integer,CarritoItem> addToCarrito(HttpServletRequest request) {
+		HttpSession sesion = request.getSession();
+		Session sesionHib = HibernateUtils.getSessionFactory().openSession();
+		HashMap<Integer,CarritoItem> carrito = (HashMap<Integer,CarritoItem>) sesion.getAttribute("carrito");
+		if (sesion.getAttribute("carrito") == null) {
+			carrito = new HashMap<Integer,CarritoItem>();
+		}
+		int codProducto = Integer.parseInt(request.getParameter("addIdProd"));
+		Articulo articulo = sesionHib.get(Articulo.class, codProducto);
+		int cantidad = Integer.parseInt(request.getParameter("cantidad"));
+		CarritoItem item = new CarritoItem();
+if(carrito.containsKey(articulo.getCodigoArticulo())) {
+	item.setArticulo(articulo);
+	item.setCantidad(carrito.get(articulo.getCodigoArticulo()).getCantidad()+1);
+	carrito.put(item.getArticulo().getCodigoArticulo(), item);
+	return carrito;
+		}
+	
+		item.setArticulo(articulo);
+		item.setCantidad(cantidad);
+		carrito.put(item.getArticulo().getCodigoArticulo(), item);
+		return carrito;
+
+	}
+
 	public void imagen(HttpServletRequest request) {
 		HttpSession sesion = request.getSession();
-		String nombre="default.jpg";
+		String nombre = "default.jpg";
 		Part file = null;
 		try {
-			if(sesion.getAttribute("idProdNuevo")!=null) {
+			if (sesion.getAttribute("idProdNuevo") != null) {
 				System.out.println("IDPRODNUEVO");
-				nombre=sesion.getAttribute("idProdNuevo")+".jpg";
-				file=request.getPart("imagenAdd");
-				
-			}else {
-			file=request.getPart("imagenU");
-			nombre=request.getParameter("idProd")+".jpg";
+				nombre = sesion.getAttribute("idProdNuevo") + ".jpg";
+				file = request.getPart("imagenAdd");
+
+			} else {
+				file = request.getPart("imagenU");
+				nombre = request.getParameter("idProd") + ".jpg";
 			}
-		
-			InputStream is=file.getInputStream();
-			File directorio=new File("C:\\Users\\alumno_m\\git\\digiGame\\WebContent\\img\\imgArticulos\\"+nombre);
-			FileOutputStream os=new FileOutputStream(directorio);
-			int dato=is.read();
-			while(dato != -1) {
+
+			InputStream is = file.getInputStream();
+			File directorio = new File("C:\\Users\\alumno_m\\git\\digiGame\\WebContent\\img\\imgArticulos\\" + nombre);
+			FileOutputStream os = new FileOutputStream(directorio);
+			int dato = is.read();
+			while (dato != -1) {
 				os.write(dato);
-				dato=is.read();
+				dato = is.read();
 			}
 			os.close();
 			is.close();
@@ -543,6 +579,6 @@ public class servlet extends HttpServlet {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	
-		}
+
+	}
 }

@@ -51,6 +51,14 @@
 
 		$("[data-toggle=tooltip]").tooltip();
 	});
+
+	function eliminarUsuario() {
+		if (!confirm("Desea eliminar la cuenta este usuario?")) {
+		} else {
+			document.location.href = "/DigitalGame/servlet?action=botonBorrarArticulo";
+
+		}
+	}
 </script>
 </head>
 
@@ -80,39 +88,30 @@
 						<th>E-mail</th>
 						<th>Nombre</th>
 						<th>Apellido</th>
+						<th>Rol</th>
 					</tr>
 				</thead>
 
 				<tbody>
 
-					<c:forEach items="${listaUsers}" var="list">
-						<tr>
-							<td>${list.key}</td>
-							<td>${list.value.nombre}</td>
-							<td>${list.value.apellidos}</td>
-							<td><a class="btn btn-sm btn-danger" id="delete_product">
-							<i class="glyphicon glyphicon-trash"></i></a></td>
-						</tr>
-						  <tr>
-        <td class="col-xs-3">John</td>
-        <td class="col-xs-3">Doe</td>
-        <td class="col-xs-6">johndoe@email.com</td>
-      </tr>
-        <tr>
-        <td class="col-xs-3">John</td>
-        <td class="col-xs-3">Doe</td>
-        <td class="col-xs-6">johndoe@email.com</td>
-      </tr>
-        <tr>
-        <td class="col-xs-3">John</td>
-        <td class="col-xs-3">Doe</td>
-        <td class="col-xs-6">johndoe@email.com</td>
-      </tr>
-        <tr>
-        <td class="col-xs-3">John</td>
-        <td class="col-xs-3">Doe</td>
-        <td class="col-xs-6">johndoe@email.com</td>
-      </tr>
+					<c:forEach items="${listaUsers}" var="map">
+						<c:if test="${map.value.admin==0}">
+							<form action="<%=baseJsp%>?action=botonBorrarUser" method="POST"
+								id="form">
+								<tr>
+									<td>${map.key}</td>
+									<td>${map.value.nombre}</td>
+									<td>${map.value.apellidos}</td>
+									<td>User</td>
+									<td><input name="emailBorrar" type="hidden"
+										value="${map.key}">
+										<button type="button" onclick=" eliminarUsuario()"
+											class="btn btn-sm btn-danger" id="eliminar">
+											<i class="glyphicon glyphicon-trash"></i>
+										</button> </td>
+								</tr>
+							</form>
+						</c:if>
 					</c:forEach>
 
 

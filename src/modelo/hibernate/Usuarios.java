@@ -85,7 +85,7 @@ public class Usuarios implements java.io.Serializable {
 		this.fechaDeNac = fechaDeNac;
 	}
 
-	public int isAdmin() {
+	public int getAdmin() {
 		return this.admin;
 	}
 
