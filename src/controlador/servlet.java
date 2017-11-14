@@ -1,6 +1,7 @@
 package controlador;
 
 import modelo.control.CarritoItem;
+import modelo.control.EnviarCorreo;
 import modelo.hibernate.*;
 import java.math.BigInteger;
 import java.nio.file.Paths;
@@ -76,6 +77,8 @@ public class servlet extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		EnviarCorreo eC=new EnviarCorreo();
+		eC.createAndSendEmail("matmoreno9@gmail.com", "oli", "hello");
 		listarArticulos(request);
 		listarGeneros(request);
 		HttpSession sesion = request.getSession();
@@ -244,6 +247,10 @@ public class servlet extends HttpServlet {
 				HashMap<Integer,CarritoItem> cart = addToCarrito(request);
 				sesion.setAttribute("carrito", cart);
 				System.out.println(cart.toString());
+				url = base + "carrito.jsp";
+				break;
+			case "deleteItemCarrito":
+				
 				url = base + "carrito.jsp";
 				break;
 
@@ -542,6 +549,24 @@ if(carrito.containsKey(articulo.getCodigoArticulo())) {
 		carrito.put(item.getArticulo().getCodigoArticulo(), item);
 		return carrito;
 
+	}
+	public void updateCarrito(HttpServletRequest request) {
+		HttpSession sesion = request.getSession();
+		Session sesionHib = HibernateUtils.getSessionFactory().openSession();
+		HashMap<Integer,CarritoItem> carrito = (HashMap<Integer,CarritoItem>) sesion.getAttribute("carrito");
+		try {
+			int codigo=Integer.parseInt(request.getParameter("codigo"));
+			int cantidad=Integer.parseInt(request.getParameter("cantidadItem"));
+			CarritoItem item = carrito.get(codigo);
+			if (item != null) {
+				item.setCantidad(cantidad);
+
+			}
+		} catch (Exception e) {
+			// out.println("Error updating shopping cart!");
+		}
+		
+		
 	}
 
 	public void imagen(HttpServletRequest request) {

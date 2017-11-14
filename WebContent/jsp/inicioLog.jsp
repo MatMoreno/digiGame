@@ -18,12 +18,28 @@ HashMap<Integer, CarritoItem> carrito = (HashMap<Integer, CarritoItem>) sesion.g
     <meta name="author" content="Your name">
     <link rel="stylesheet" href="boot/css/bootstrap.css" type="text/css" media="screen">
     <link rel="stylesheet" href="boot/css/style.css" type="text/css" media="screen">
+    <link rel="stylesheet" href="bootstrap/css/bootstrap.css" type="text/css" media="screen">
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,600,700' rel='stylesheet' type='text/css'>
     <link  rel="stylesheet" href="css/estilos.css">
 	<script type="text/javascript" src="js/jquery.js"></script>
     <script src="js/jquery.ui.totop.js" type="text/javascript"></script>	
     <script type="text/javascript" src="js/bootstrap.js"></script>
+	<script>
+var bool=false;
+function openNav() {
+if(bool==true){
+    document.getElementById("mySidenav").style.width = "15%";
+	bool=false;
+	}else{
+	bool=true;
+	closeNav();
+	}
+}
 
+function closeNav() {
+    document.getElementById("mySidenav").style.width = "0";
+}
+</script>
 </head>
 
 <body id="fondo" >
@@ -77,22 +93,55 @@ function myFunction() {
 		%>
 
 	</div>
-<script>
-var bool=false;
-function openNav() {
-if(bool==true){
-    document.getElementById("mySidenav").style.width = "15%";
-	bool=false;
-	}else{
-	bool=true;
-	closeNav();
-	}
-}
+<footer>
+<div class="container">
+    <section style="height:80px;"></section>
+    <!----------- Footer ------------>
+    <footer class="footer-bs">
+        <div class="row">
+        	<div class="col-md-3 footer-brand animated fadeInLeft">
+            	<h2>DG e-shop</h2>
+                
+                <p>  2017 Mat Moreno.  All rights reserved</p>
+            </div>
+        	<div class="col-md-4 footer-nav animated fadeInUp">
+            	<h4>Menu </h4>
+            	
+            	<div class="col-md-6">
+                    <ul class="list">
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Contacts</a></li>
+                        <li><a href="#">Terms & Condition</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                    </ul>
+                </div>
+            </div>
+        	<div class="col-md-2 footer-social animated fadeInDown">
+            	<h4>Follow Us</h4>
+            	<ul>
+                	<li><a href="#">Facebook</a></li>
+                	<li><a href="#">Twitter</a></li>
+                	<li><a href="#">Instagram</a></li>
+                	<li><a href="#">RSS</a></li>
+                </ul>
+            </div>
+        	<div class="col-md-3 footer-ns animated fadeInRight">
+            	<h4>Newsletter</h4>
+                <p>A rover wearing a fuzzy suit doesn't alarm the real penguins</p>
+                <p>
+                    <div class="input-group">
+                      <input type="text" class="form-control" placeholder="Search for...">
+                      <span class="input-group-btn">
+                        <button class="btn btn-default" type="button"><span class="glyphicon glyphicon-envelope"></span></button>
+                      </span>
+                    </div><!-- /input-group -->
+                 </p>
+            </div>
+        </div>
+    </footer>
 
-function closeNav() {
-    document.getElementById("mySidenav").style.width = "0";
-}
-</script>
+</div>
+</footer>
 
 </body>
 </html>

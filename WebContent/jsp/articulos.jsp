@@ -9,6 +9,8 @@
 	ArrayList<Genero> lista = (ArrayList<Genero>) request.getAttribute("arrayGenero");
 	HttpSession sesion = request.getSession();
 	HashMap<Integer, CarritoItem> carrito = (HashMap<Integer, CarritoItem>) sesion.getAttribute("carrito");
+	int carritoSize=0;
+	if(carrito!=null) carritoSize=carrito.size();
 	ArrayList<Articulo> listaJuegos = (ArrayList<Articulo>) request.getAttribute("arrayJuegos");
 	Articulo juego = (Articulo) request.getAttribute("articuloElegido");
 	if (request.getAttribute("articuloGenero") != null) {
@@ -26,6 +28,8 @@
 <meta name="keywords" content="Your keywords">
 <meta name="author" content="Your name">
 <link rel="stylesheet" href="boot/css/bootstrap.css" type="text/css"
+	media="screen">
+	<link rel="stylesheet" href="bootstrap/css/bootstrap.css" type="text/css"
 	media="screen">
 <link rel="stylesheet" href="boot/css/style.css" type="text/css"
 	media="screen">
@@ -88,7 +92,7 @@
 			<a href="<%=baseJsp%>?action=irInicioLog">Home</a> <a
 				href="<%=baseJsp%>?action=irArticulos">Catálogo</a> <a
 				href="<%=baseJsp%>?action=irCuenta">Perfil de <%=(String) sesion.getAttribute("usuarioLogueado")%></a>
-			<a id="numeroCarrito" href="<%=baseJsp%>?action=irCarrito">Carrito[<%=carrito.size() %>]</a> <a
+			<a id="numeroCarrito" href="<%=baseJsp%>?action=irCarrito">Carrito[<%=carritoSize %>]</a> <a
 				href="<%=baseJsp%>?action=cerrarSesion">cerrar sesión</a>
 			<%
 				} else {
@@ -209,5 +213,52 @@
 			}
 		%>
 	</div>
+	<div class="container">
+    <section style="height:80px;"></section>
+    <!----------- Footer ------------>
+    <footer class="footer-bs">
+        <div class="row">
+        	<div class="col-md-3 footer-brand animated fadeInLeft">
+            	<h2 style="color: white">DG e-shop</h2>
+                
+                <p>  2017 Mat Moreno.  All rights reserved</p>
+            </div>
+        	<div class="col-md-4 footer-nav animated fadeInUp">
+            	<h4>Menu </h4>
+            	
+            	<div class="col-md-6">
+                    <ul class="list">
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Contacts</a></li>
+                        <li><a href="#">Terms & Condition</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                    </ul>
+                </div>
+            </div>
+        	<div class="col-md-2 footer-social animated fadeInDown">
+            	<h4 style="color: white">Follow Us</h4>
+            	<ul>
+                	<li><a href="#">Facebook</a></li>
+                	<li><a href="#">Twitter</a></li>
+                	<li><a href="#">Instagram</a></li>
+                	<li><a href="#">RSS</a></li>
+                </ul>
+            </div>
+        	<div class="col-md-3 footer-ns animated fadeInRight">
+            	<h4 style="color: white">Newsletter</h4>
+                <p>A rover wearing a fuzzy suit doesn't alarm the real penguins</p>
+                <p>
+                    <div class="input-group">
+                      <input style="height: 30px;" type="text" class="form-control" placeholder="Search for...">
+                      <span class="input-group-btn">
+                        <button class="btn btn-default" type="button"><span class="glyphicon glyphicon-envelope"></span></button>
+                      </span>
+                    </div><!-- /input-group -->
+                 </p>
+            </div>
+        </div>
+    </footer>
+
+</div>
 </body>
 </html>

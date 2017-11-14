@@ -9,10 +9,11 @@
 	}
 	String baseJsp = (String) request.getAttribute("baseJsp");
 	HashMap<Integer, CarritoItem> carrito = (HashMap<Integer, CarritoItem>) sesion.getAttribute("carrito");
-	 pageContext.setAttribute("listCarrito", carrito);
+	pageContext.setAttribute("listCarrito", carrito);
 %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt" %> 
-<%@page	import="modelo.hibernate.Usuarios,modelo.control.CarritoItem, utils.HibernateUtils, org.hibernate.Session, java.util.ArrayList"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt"%>
+<%@page
+	import="modelo.hibernate.Usuarios,modelo.control.CarritoItem, utils.HibernateUtils, org.hibernate.Session, java.util.ArrayList"%>
 <html>
 <head>
 <title>Home</title>
@@ -65,13 +66,13 @@
 		}
 	</script>
 
-<%
-int totalJuego=0;
-int total=0;
-%>
+	<%
+		int totalJuego = 0;
+		int total = 0;
+	%>
 
 	<div
-		style="background: linear-gradient(to right, rgba(255, 255, 255, 1) 0, rgba(239, 239, 239, 1) 100%); margin: auto; width: 45%;">
+		style="background: linear-gradient(to right, rgba(255, 255, 255, 1) 0, rgba(239, 239, 239, 1) 100%); margin: auto; width: 54%;">
 		<div class="container">
 			<div class="row">
 				<div class="col-xs-8">
@@ -86,7 +87,9 @@ int total=0;
 										</h5>
 									</div>
 									<div class="col-xs-6">
-										<button type="button" class="btn btn-primary btn-sm btn-block">
+										<button
+											onClick="window.location.href='<%=baseJsp%>?action=irArticulos'"
+											type="button" class="btn btn-primary btn-sm btn-block">
 											<span class="glyphicon glyphicon-share-alt"></span> Continuar
 											comprando
 										</button>
@@ -95,47 +98,64 @@ int total=0;
 							</div>
 						</div>
 						<div class="panel-body">
-						<c:set var="total" value="0" />
-						<c:forEach var="cart" items="${listCarrito}"> 
-							<div class="row">
-								<div class="col-xs-2">
-									<img class="img-responsive" src="img/imgArticulos/${cart.value.articulo.getCodigoArticulo()}.jpg">
-								</div>
-								<div class="col-xs-4">
-									<h4 class="product-name">
-										<strong>${cart.value.articulo.getNombre() }</strong>
-									</h4>
-									<h4>
-										<small>${cart.value.articulo.getPlataforma() }</small>
-									</h4>
-								</div>
-								<div class="col-xs-6">
-									<div class="col-xs-6 text-right">
-										<h6>
-											<strong>${cart.value.articulo.getPrecio() }&euro; <span class="text-muted">x</span></strong>
-										</h6>
+							<c:set var="total" value="0" />
+							<c:forEach var="cart" items="${listCarrito}">
+								<div class="row">
+									<div class="col-xs-2">
+										<img class="img-responsive"
+											src="img/imgArticulos/${cart.value.articulo.getCodigoArticulo()}.jpg">
 									</div>
 									<div class="col-xs-4">
-										<input type="text" class="form-control input-sm" value="${cart.value.cantidad }">
+										<h4 class="product-name">
+											<strong>${cart.value.articulo.getNombre() }</strong>
+										</h4>
+										<h4>
+											<small>${cart.value.articulo.getPlataforma() }</small>
+										</h4>
 									</div>
-									<div class="col-xs-2">
-										<button type="button" class="btn btn-link btn-xs">
-											<span class="glyphicon glyphicon-trash"> </span>
-										</button>
+									<div class="col-xs-6">
+										<div class="col-xs-6 text-right">
+											<h6>
+												<strong>${cart.value.articulo.getPrecio() }&euro; <span
+													class="text-muted">x</span></strong>
+											</h6>
+										</div>
+										
+										<div class="col-xs-4">
+												<input type='hidden' name='codigo' value="${cart.value.articulo.getCodigoArticulo()}">
+												<input name="cantidadItem" type="text"	class="form-control input-sm" value="${cart.value.cantidad }">
+										</div>
+										<div class="col-xs-1">
+										<input type='hidden' name='action' value="addCantidadItemCarrito">
+										<input type='hidden' name='codigo' value="${cart.value.articulo.getCodigoArticulo()}">
+											<button type="submit" class="btn btn-link btn-xs">
+												<span class="glyphicon glyphicon-plus"> </span>
+											</button>
+										</div>
+										<form>
+										<div class="col-xs-1">
+										<input type="hidden" name="action" value="deleteItemCarrito">
+										<input type="hidden" name="codigo" value="${cart.value.articulo.getCodigoArticulo()}">
+											<button type="submit" class="btn btn-link btn-xs">
+												<span class="glyphicon glyphicon-trash"> </span>
+											</button>
+										</div>
+										</form>	
+									
 									</div>
 								</div>
-							</div>
-							<hr>
-							<c:set var="precio" value="${cart.value.articulo.getPrecio()}" />
-							<c:set var="total" value="${total+( cart.value.cantidad*precio)}" />
-								</c:forEach>
+								<hr>
+								<c:set var="precio" value="${cart.value.articulo.getPrecio()}" />
+								<c:set var="total"
+									value="${total+( cart.value.cantidad*precio)}" />
+							</c:forEach>
 							<div class="row">
 								<div class="text-center">
 									<div class="col-xs-9">
 										<h6 class="text-right">Added items?</h6>
 									</div>
 									<div class="col-xs-3">
-										<button type="button" class="btn btn-default btn-sm btn-block">
+										<button type="submit" class="btn btn-default btn-sm btn-block">
 											Update cart</button>
 									</div>
 								</div>
