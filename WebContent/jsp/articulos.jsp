@@ -27,8 +27,7 @@
 <meta name="description" content="Your description">
 <meta name="keywords" content="Your keywords">
 <meta name="author" content="Your name">
-<link rel="stylesheet" href="boot/css/bootstrap.css" type="text/css"
-	media="screen">
+
 	<link rel="stylesheet" href="bootstrap/css/bootstrap.css" type="text/css"
 	media="screen">
 <link rel="stylesheet" href="boot/css/style.css" type="text/css"

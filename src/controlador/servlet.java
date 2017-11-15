@@ -253,7 +253,11 @@ public class servlet extends HttpServlet {
 				updateCarrito(request);
 				url = base + "carrito.jsp";
 				break;
-
+			case "irCheckout":
+				
+				url = base + "checkout.jsp";
+				break;
+				
 			default:
 				break;
 			}

@@ -9,11 +9,12 @@
 		response.sendRedirect("/DigitalGame/servlet?action=irInicioLog");
 		out.print("ERROOOOOOOOOOOOOOOOOOR USUARIO NO LOGUEADOO");
 	}
+
 	String baseJsp = (String) request.getAttribute("baseJsp");
 	HashMap<Integer, CarritoItem> carrito = (HashMap<Integer, CarritoItem>) sesion.getAttribute("carrito");
-	if (carrito != null)
+	if (carrito != null) {
 		carritoSize = carrito.size();
-	pageContext.setAttribute("listCarrito", carrito);
+		pageContext.setAttribute("listCarrito", carrito);
 %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt"%>
 <%@page
@@ -72,7 +73,7 @@
 
 	<%
 		int totalJuego = 0;
-		int total = 0;
+			int total = 0;
 	%>
 
 	<div
@@ -102,6 +103,10 @@
 							</div>
 						</div>
 						<div class="panel-body">
+							<%
+								if (carritoSize == 0)
+										out.print("<h4>Carrito vacío...</h4>");
+							%>
 							<c:set var="total" value="0" />
 							<c:forEach var="cart" items="${listCarrito}">
 								<div class="row">
@@ -167,6 +172,62 @@
 							<div class="row text-center">
 								<div class="col-xs-9">
 									<h4 class="text-right">
+										Total <strong>${total}&euro;</strong>
+									</h4>
+								</div>
+								<div class="col-xs-3">
+									<form>
+										<input type="hidden" name="action"
+											value="irCheckout"> <input
+											type="hidden" name="codigo"
+											value="${cart.value.articulo.getCodigoArticulo()}">
+										<button type="button" class="btn btn-success btn-block">
+											Pagar ahora</button>
+									</form>
+
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<%
+			} else {
+		%>
+		<div class="container">
+			<div class="row">
+				<div class="col-xs-8">
+					<div class="panel panel-info">
+						<div class="panel-heading">
+							<div class="panel-title">
+								<div class="row">
+									<div class="col-xs-6">
+										<h5>
+											<span class="glyphicon glyphicon-shopping-cart"></span>
+											Carrito
+										</h5>
+									</div>
+									<div class="col-xs-6">
+										<button
+											onClick="window.location.href='<%=baseJsp%>?action=irArticulos'"
+											type="button" class="btn btn-primary btn-sm btn-block">
+											<span class="glyphicon glyphicon-share-alt"></span> Continuar
+											comprando
+										</button>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="panel-body">
+
+							<h4>CARRITO VACÍO</h4>
+
+						</div>
+						<div class="panel-footer">
+							<div class="row text-center">
+								<div class="col-xs-9">
+									<h4 class="text-right">
 										Total <strong>${total}</strong>
 									</h4>
 								</div>
@@ -180,6 +241,9 @@
 				</div>
 			</div>
 		</div>
+		<%
+			}
+		%>
 	</div>
 	<script>
 		print
