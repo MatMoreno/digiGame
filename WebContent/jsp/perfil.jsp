@@ -2,10 +2,13 @@
 <!DOCTYPE html>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%
+
 	String baseJsp = (String) request.getAttribute("baseJsp");
 	ArrayList<Genero> lista = (ArrayList<Genero>) request.getAttribute("arrayGenero");
 	HttpSession sesion = request.getSession();
 	HashMap<Integer, CarritoItem> carrito = (HashMap<Integer, CarritoItem>) sesion.getAttribute("carrito");
+	int carritoSize=0;
+	if(carrito!=null) carritoSize=carrito.size();
 	HashMap<String, Usuarios> mapUsuario = (HashMap<String, Usuarios>) sesion.getAttribute("mapUsuarios");
 	Boolean panelEdit = (Boolean) sesion.getAttribute("panelEdit");
 	if (sesion.getAttribute("usuarioLogueado") == null) {
@@ -78,7 +81,7 @@
 			<a href="<%=baseJsp%>?action=irInicioLog">Home</a> <a
 				href="<%=baseJsp%>?action=irArticulos">Catálogo</a> <a
 				href="<%=baseJsp%>?action=irCuenta">Perfil de <%=(String) sesion.getAttribute("usuarioLogueado")%></a>
-			<a href="<%=baseJsp%>?action=irCarrito">Carrito[<%=carrito.size() %>]</a> <a
+			<a href="<%=baseJsp%>?action=irCarrito">Carrito[<%=carritoSize %>]</a> <a
 				href="<%=baseJsp%>?action=cerrarSesion">cerrar sesión</a>
 			<%
 				} else {

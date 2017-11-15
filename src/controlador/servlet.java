@@ -77,8 +77,7 @@ public class servlet extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		EnviarCorreo eC=new EnviarCorreo();
-		eC.createAndSendEmail("matmoreno9@gmail.com", "oli", "hello");
+		/* EnviarCorreo eC=new EnviarCorreo(); */
 		listarArticulos(request);
 		listarGeneros(request);
 		HttpSession sesion = request.getSession();
@@ -109,7 +108,7 @@ public class servlet extends HttpServlet {
 			case "botonBorrarArticulo":
 				Articulo articulo = (Articulo) sesion.getAttribute("articuloE");
 				deleteArticulo(articulo);
-				listarArticulos(request);
+
 				url = base + "articulosAdmin.jsp";
 				break;
 
@@ -137,13 +136,11 @@ public class servlet extends HttpServlet {
 				}
 
 			case "irUsuariosAdmin":
-				listarUsuarios(request);
 				url = base + "usuariosAdmin.jsp";
 				break;
 
 			case "irCuenta":
 				sesion.setAttribute("panelEdit", false);
-				listarUsuarios(request);
 				url = base + "perfil.jsp";
 				break;
 			case "irEditarPerfil":
@@ -244,13 +241,16 @@ public class servlet extends HttpServlet {
 				url = base + "carrito.jsp";
 				break;
 			case "addToCarrito":
-				HashMap<Integer,CarritoItem> cart = addToCarrito(request);
+				HashMap<Integer, CarritoItem> cart = addToCarrito(request);
 				sesion.setAttribute("carrito", cart);
-				System.out.println(cart.toString());
 				url = base + "carrito.jsp";
 				break;
 			case "deleteItemCarrito":
-				
+				deleteItemCarrito(request);
+				url = base + "carrito.jsp";
+				break;
+			case "aumentarCantidadItemCarrito":
+				updateCarrito(request);
 				url = base + "carrito.jsp";
 				break;
 
@@ -288,7 +288,7 @@ public class servlet extends HttpServlet {
 		if (request.getParameter("passUpdate1") != null && request.getParameter("passUpdate2") != null) {
 			pass = passMD5(request.getParameter("passUpdate2"));
 		}
-		System.out.println(pass);
+	
 		String nombre = request.getParameter("nombreUpdate");
 		String apellidos = request.getParameter("apellidosUpdate");
 		/* String email = request.getParameter("correoUpdate"); */
@@ -526,47 +526,61 @@ public class servlet extends HttpServlet {
 		sesionHib.close();
 	}
 
-	public HashMap<Integer,CarritoItem> addToCarrito(HttpServletRequest request) {
+	public HashMap<Integer, CarritoItem> addToCarrito(HttpServletRequest request) {
 		HttpSession sesion = request.getSession();
 		Session sesionHib = HibernateUtils.getSessionFactory().openSession();
-		HashMap<Integer,CarritoItem> carrito = (HashMap<Integer,CarritoItem>) sesion.getAttribute("carrito");
+		HashMap<Integer, CarritoItem> carrito = (HashMap<Integer, CarritoItem>) sesion.getAttribute("carrito");
 		if (sesion.getAttribute("carrito") == null) {
-			carrito = new HashMap<Integer,CarritoItem>();
+			carrito = new HashMap<Integer, CarritoItem>();
 		}
 		int codProducto = Integer.parseInt(request.getParameter("addIdProd"));
 		Articulo articulo = sesionHib.get(Articulo.class, codProducto);
 		int cantidad = Integer.parseInt(request.getParameter("cantidad"));
 		CarritoItem item = new CarritoItem();
-if(carrito.containsKey(articulo.getCodigoArticulo())) {
-	item.setArticulo(articulo);
-	item.setCantidad(carrito.get(articulo.getCodigoArticulo()).getCantidad()+1);
-	carrito.put(item.getArticulo().getCodigoArticulo(), item);
-	return carrito;
+		if (carrito.containsKey(articulo.getCodigoArticulo())) {
+			item.setArticulo(articulo);
+			item.setCantidad(carrito.get(articulo.getCodigoArticulo()).getCantidad() + 1);
+			carrito.put(item.getArticulo().getCodigoArticulo(), item);
+			return carrito;
 		}
-	
+
 		item.setArticulo(articulo);
 		item.setCantidad(cantidad);
 		carrito.put(item.getArticulo().getCodigoArticulo(), item);
 		return carrito;
 
 	}
-	public void updateCarrito(HttpServletRequest request) {
+	public void deleteItemCarrito(HttpServletRequest request) {
 		HttpSession sesion = request.getSession();
-		Session sesionHib = HibernateUtils.getSessionFactory().openSession();
-		HashMap<Integer,CarritoItem> carrito = (HashMap<Integer,CarritoItem>) sesion.getAttribute("carrito");
-		try {
-			int codigo=Integer.parseInt(request.getParameter("codigo"));
-			int cantidad=Integer.parseInt(request.getParameter("cantidadItem"));
+		HashMap<Integer, CarritoItem> carrito = (HashMap<Integer, CarritoItem>) sesion.getAttribute("carrito");
+			int codigo = Integer.parseInt(request.getParameter("codigo"));
 			CarritoItem item = carrito.get(codigo);
 			if (item != null) {
-				item.setCantidad(cantidad);
+				item.setCantidad(item.getCantidad() -1);
+				if(item.getCantidad()<=0) {
+					carrito.remove(codigo);
+					
+				}
+
+			}
+		
+
+	}
+
+	public void updateCarrito(HttpServletRequest request) {
+		HttpSession sesion = request.getSession();
+		HashMap<Integer, CarritoItem> carrito = (HashMap<Integer, CarritoItem>) sesion.getAttribute("carrito");
+		try {
+			int codigo = Integer.parseInt(request.getParameter("codigo"));
+			CarritoItem item = carrito.get(codigo);
+			if (item != null) {
+				item.setCantidad(item.getCantidad() + 1);
 
 			}
 		} catch (Exception e) {
 			// out.println("Error updating shopping cart!");
 		}
-		
-		
+
 	}
 
 	public void imagen(HttpServletRequest request) {

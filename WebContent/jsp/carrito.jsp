@@ -3,12 +3,16 @@
 <%@page import="java.util.HashMap"%>
 <%
 	HttpSession sesion = request.getSession();
+	int carritoSize = 0;
+
 	if (sesion.getAttribute("usuarioLogueado") == null) {
 		response.sendRedirect("/DigitalGame/servlet?action=irInicioLog");
 		out.print("ERROOOOOOOOOOOOOOOOOOR USUARIO NO LOGUEADOO");
 	}
 	String baseJsp = (String) request.getAttribute("baseJsp");
 	HashMap<Integer, CarritoItem> carrito = (HashMap<Integer, CarritoItem>) sesion.getAttribute("carrito");
+	if (carrito != null)
+		carritoSize = carrito.size();
 	pageContext.setAttribute("listCarrito", carrito);
 %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt"%>
@@ -26,8 +30,8 @@
 	type="text/css" media="screen">
 
 <link
-	href='http://fonts.googleapis.com/css?family=Open+Sans:400,600,700'
-	rel='stylesheet' type='text/css'>
+	href="http://fonts.googleapis.com/css?family=Open+Sans:400,600,700"
+	rel="stylesheet" type="text/css">
 <link rel="stylesheet" href="css/estilos.css">
 <script type="text/javascript" src="js/jquery.js"></script>
 <script src="js/jquery.ui.totop.js" type="text/javascript"></script>
@@ -46,8 +50,8 @@
 			<a href="<%=baseJsp%>?action=irInicioLog">Home</a> <a
 				href="<%=baseJsp%>?action=irArticulos">Catálogo</a> <a
 				href="<%=baseJsp%>?action=irCuenta">Perfil de <%=(String) sesion.getAttribute("usuarioLogueado")%></a>
-			<a href="<%=baseJsp%>?action=irCarrito">Carrito()</a> <a
-				href="<%=baseJsp%>?action=cerrarSesion">cerrar sesión</a> <a
+			<a href="<%=baseJsp%>?action=irCarrito">Carrito(<%=carritoSize%>)
+			</a> <a href="<%=baseJsp%>?action=cerrarSesion">cerrar sesión</a> <a
 				href="javascript:void(0);" style="font-size: 15px;" class="icon"
 				onclick="myFunction()">&#9776;</a>
 		</div>
@@ -120,28 +124,36 @@
 													class="text-muted">x</span></strong>
 											</h6>
 										</div>
-										
+
 										<div class="col-xs-4">
-												<input type='hidden' name='codigo' value="${cart.value.articulo.getCodigoArticulo()}">
-												<input name="cantidadItem" type="text"	class="form-control input-sm" value="${cart.value.cantidad }">
+											<input type="hidden" name="codigo"
+												value="${cart.value.articulo.getCodigoArticulo()}">
+											<input name="cantidadItem" type="text"
+												class="form-control input-sm"
+												value="${cart.value.cantidad }">
 										</div>
 										<div class="col-xs-1">
-										<input type='hidden' name='action' value="addCantidadItemCarrito">
-										<input type='hidden' name='codigo' value="${cart.value.articulo.getCodigoArticulo()}">
-											<button type="submit" class="btn btn-link btn-xs">
-												<span class="glyphicon glyphicon-plus"> </span>
-											</button>
+											<form>
+												<input type="hidden" name="action"
+													value="aumentarCantidadItemCarrito"> <input
+													type="hidden" name="codigo"
+													value="${cart.value.articulo.getCodigoArticulo()}">
+												<button type="submit" class="btn btn-link btn-xs">
+													<span class="glyphicon glyphicon-plus"> </span>
+												</button>
+											</form>
 										</div>
 										<form>
-										<div class="col-xs-1">
-										<input type="hidden" name="action" value="deleteItemCarrito">
-										<input type="hidden" name="codigo" value="${cart.value.articulo.getCodigoArticulo()}">
-											<button type="submit" class="btn btn-link btn-xs">
-												<span class="glyphicon glyphicon-trash"> </span>
-											</button>
-										</div>
-										</form>	
-									
+											<div class="col-xs-1">
+												<input type="hidden" name="action" value="deleteItemCarrito">
+												<input type="hidden" name="codigo"
+													value="${cart.value.articulo.getCodigoArticulo()}">
+												<button type="submit" class="btn btn-link btn-xs">
+													<span class="glyphicon glyphicon-trash"> </span>
+												</button>
+											</div>
+										</form>
+
 									</div>
 								</div>
 								<hr>
@@ -149,17 +161,7 @@
 								<c:set var="total"
 									value="${total+( cart.value.cantidad*precio)}" />
 							</c:forEach>
-							<div class="row">
-								<div class="text-center">
-									<div class="col-xs-9">
-										<h6 class="text-right">Added items?</h6>
-									</div>
-									<div class="col-xs-3">
-										<button type="submit" class="btn btn-default btn-sm btn-block">
-											Update cart</button>
-									</div>
-								</div>
-							</div>
+
 						</div>
 						<div class="panel-footer">
 							<div class="row text-center">

@@ -1,76 +1,76 @@
 package modelo.control;
 
-
+import java.util.*;
 import javax.mail.*;
 import javax.mail.internet.*;
-import java.util.Properties;
 
 public class EnviarCorreo {
- 
-    private String emailAddressTo = new String();
-    private String msgSubject = new String();
-    private String msgText = new String();
 
-    final String USER_NAME = "juanjosehdez96@gmail.com";   //User name of the Goole(gmail) account
-    final String PASSSWORD = "gugamida2";  //Password of the Goole(gmail) account
-    final String FROM_ADDRESS = "juanjosehernandez96@gmail.com";  //From addresss
- 
-    public EnviarCorreo() {
+private static String USER_NAME = "matmoreno";  // GMail user name (just the part before "@gmail.com")
+private static String PASSWORD = "nerelis96"; // GMail password
+private static String RECIPIENT = "mathewnino@hotmail.com";
+
+public static void main(String[] args) {
+    String from = USER_NAME;
+    String pass = PASSWORD;
+    String[] to = { RECIPIENT }; // list of recipient email addresses
+    String subject = "Java send mail example";
+    String body = "Welcome to JavaMail!";
+
+    sendFromGMail(from, pass, to, subject, body);
+}
+
+public static void sendFromGMail(String from, String pass, String[] to, String subject, String body) {
+    Properties props = System.getProperties();
+  String host = "smtp.gmail.com";
+   // String host="localhost";
+  // props.put("mail.smtp.ssl.trust", "smtp.gmail.com");
+    props.put("mail.smtp.starttls.enable", "true");
+   // props.put("mail.smtp.host", host);
+   props.put("mail.smtp.ssl.trust", host);
+    props.put("mail.smtp.user", from);
+    props.put("mail.smtp.password", pass);
+    props.put("mail.smtp.port", "587");//587
+    props.put("mail.smtp.auth", "true");
+   //System.out.println("success point 1");
+
+    Session session = Session.getDefaultInstance(props);
+    MimeMessage message = new MimeMessage(session);
+
+    try {
+         //System.out.println("success point 2");
+
+        message.setFrom(new InternetAddress(from));
+        InternetAddress[] toAddress = new InternetAddress[to.length];
+
+        // To get the array of addresses
+        for( int i = 0; i < to.length; i++ ) {
+            toAddress[i] = new InternetAddress(to[i]);
+        }
+
+        for( int i = 0; i < toAddress.length; i++) {
+            message.addRecipient(Message.RecipientType.TO, toAddress[i]);
+        }
+
+         //System.out.println("success point 3");
+
+        message.setSubject(subject);
+        message.setText(body);
+        // System.out.println("success point 4");
+
+        Transport transport = session.getTransport("smtp");
+        // System.out.println("success point 5");
+
+        transport.connect(host, from, pass);
+        transport.sendMessage(message, message.getAllRecipients());
+        transport.close();
+        //System.out.println("success 6");
     }
-
-
-    public void createAndSendEmail(String emailAddressTo, String msgSubject, String msgText) {
-        this.emailAddressTo = emailAddressTo;
-        this.msgSubject = msgSubject;
-        this.msgText = msgText;
-        sendEmailMessage();
+    catch (AddressException ae) {
+        ae.printStackTrace();
     }
-  
-    private void sendEmailMessage() {
-     
-     //Create email sending properties
-     Properties props = new Properties();
-     props.put("mail.smtp.auth", "true");
-     props.put("mail.smtp.starttls.enable", "true");
-     props.put("mail.smtp.host", "smtp.gmail.com");
-     props.put("mail.smtp.port", "587");
-     props.put("mail.smtp.ssl.trust", "smtp.gmail.com");
-  
-    Session session = Session.getInstance(props,
-    new javax.mail.Authenticator() {
-    protected PasswordAuthentication getPasswordAuthentication() {
-    return new PasswordAuthentication(USER_NAME, PASSSWORD);
-   }
-    });
-
-  try {
-
-     Message message = new MimeMessage(session);
-     message.setFrom(new InternetAddress(FROM_ADDRESS)); //Set from address of the email
-     message.setContent(msgText,"text/html"); //set content type of the email
-     
-    message.setRecipients(Message.RecipientType.TO,InternetAddress.parse(emailAddressTo)); //Set email recipient
-    
-    message.setSubject(msgSubject); //Set email message subject
-    Transport.send(message); //Send email message
-
-   System.out.println("sent email successfully!");
-
-  } catch (MessagingException e) {
-       throw new RuntimeException(e);
+    catch (MessagingException me) {
+        me.printStackTrace();
+    }
   }
-    }
-
-    public void setEmailAddressTo(String emailAddressTo) {
-        this.emailAddressTo = emailAddressTo;
-    }
-
-    public void setSubject(String subject) {
-        this.msgSubject = subject;
-    }
-
-    public void setMessageText(String msgText) {
-        this.msgText = msgText;
-    }
-  
 }
