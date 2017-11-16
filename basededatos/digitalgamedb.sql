@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 28-10-2017 a las 19:09:14
--- Versión del servidor: 10.1.28-MariaDB
--- Versión de PHP: 7.1.10
+-- Tiempo de generación: 16-11-2017 a las 15:42:39
+-- Versión del servidor: 10.1.26-MariaDB
+-- Versión de PHP: 7.1.8
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -45,8 +45,10 @@ CREATE TABLE `articulo` (
 --
 
 INSERT INTO `articulo` (`codigo_articulo`, `nombre`, `codigo_genero`, `plataforma`, `fecha_de_lanzamiento`, `informacion_adicional`, `stock`, `clave`, `precio`) VALUES
-(1, 'Call Of Duty:War at World II ', 5, 'STEAM', '2017-11-03', 'Segunda parte del ya famoso juego ambientado en la primera guerra mundial', 50, 9785, 29.99),
-(2, 'Counter Strike: Global Ofensive', 5, 'STEAM', '2013-10-09', 'Counter-Strike: Global Offensive es un videojuego de disparos en primera persona desarrollado por Valve Corporation en cooperación con Hidden Path Entertainment, y es el cuarto juego de la saga Counter-Strike, sin contar Counter-Strike: Online.', 35, 5465516, 9.75);
+(1, 'Call Of Duty:War at World II ', 5, 'STEAM', '2017-11-03', 'Segunda parte del ya famoso juego ambientado en la primera guerra mundial', 50, 9785, 29.95),
+(2, 'Counter Strike: Global Ofensive', 5, 'STEAM', '2013-10-09', 'Counter-Strike: Global Offensive es un videojuego de disparos en primera persona desarrollado por Valve Corporation en cooperación con Hidden Path Entertainment, y es el cuarto juego de la saga Counter-Strike, sin contar Counter-Strike: Online.', 35, 5465516, 9.75),
+(8, 'Rainbow Six Siege', 5, 'Uplay', '2017-11-10', 'Battle royale masivo.', 100, 6542, 20),
+(9, 'PlayerUnknowns Battlegrounds', 6, 'Steam', '2017-11-16', 'Battle royale masivo.', 56, 49652, 30);
 
 -- --------------------------------------------------------
 
@@ -57,7 +59,13 @@ INSERT INTO `articulo` (`codigo_articulo`, `nombre`, `codigo_genero`, `plataform
 CREATE TABLE `compra` (
   `codigo_compra` int(255) NOT NULL,
   `email_usuario` varchar(100) NOT NULL,
-  `codigo_articulo` int(255) NOT NULL
+  `codigo_articulo` int(255) NOT NULL,
+  `fecha_hora` datetime(6) NOT NULL,
+  `tipo_tarjeta` varchar(15) NOT NULL,
+  `numero_tarjeta` int(24) NOT NULL,
+  `ciudad` varchar(255) NOT NULL,
+  `pais` varchar(24) NOT NULL,
+  `fecha_cad` varchar(24) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -92,9 +100,10 @@ CREATE TABLE `genero` (
 INSERT INTO `genero` (`codigo_genero`, `nombre`) VALUES
 (1, 'Accion'),
 (2, 'Aventuras'),
-(3, 'Simuladores'),
+(3, 'Simulador'),
 (4, 'Fantasia'),
-(5, 'FPS');
+(5, 'FPS'),
+(6, 'Battle Royale');
 
 -- --------------------------------------------------------
 
@@ -116,7 +125,9 @@ CREATE TABLE `usuarios` (
 --
 
 INSERT INTO `usuarios` (`nombre`, `apellidos`, `email_usuario`, `contrasena`, `fecha_de_nac`, `admin`) VALUES
-('Jaime', 'Martinez Caca', 'jaime@gmail.com', 'e10adc3949ba59abbe56e057f20f883e', '1996-10-09', 0),
+('caca', 'caca caca', 'caca@gmail.com', 'e10adc3949ba59abbe56e057f20f883e', '2017-11-05', 0),
+('Mat', 'cliente', 'jaime1@gmail.com', '984cefd6d27eb0471fc401a493a4fdff', '1996-09-01', 0),
+('Asdasd', 'asdasd', 'matmoreno9@gmadasdil.com', 'c99a11a53a3748269e3f86d7ac38df11', '2017-11-03', 0),
 ('Mat', 'Moreno Perez', 'matmoreno9@gmail.com', 'e10adc3949ba59abbe56e057f20f883e', '1996-05-09', 1);
 
 --
@@ -161,7 +172,7 @@ ALTER TABLE `usuarios`
 -- AUTO_INCREMENT de la tabla `articulo`
 --
 ALTER TABLE `articulo`
-  MODIFY `codigo_articulo` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `codigo_articulo` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT de la tabla `detalle_compra`
@@ -173,7 +184,7 @@ ALTER TABLE `detalle_compra`
 -- AUTO_INCREMENT de la tabla `genero`
 --
 ALTER TABLE `genero`
-  MODIFY `codigo_genero` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `codigo_genero` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
