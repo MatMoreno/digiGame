@@ -12,5 +12,25 @@
         <property generated="never" lazy="false" name="codigoArticulo" optimistic-lock="true" type="int" unique="false">
             <column name="codigo_articulo" not-null="true"/>
         </property>
+        
+        <property generated="never" lazy="false" name="fechaHora" optimistic-lock="true" type="LocalDate" unique="false">
+            <column name="codigo_articulo" not-null="true"/>
+        </property>
+        
+        <property generated="never" lazy="false" name="numeroTarjeta" optimistic-lock="true" type="int" unique="false">
+            <column name="codigo_articulo" not-null="true"/>
+        </property>
+         <property generated="never" lazy="false" name="numeroTarjeta" optimistic-lock="true" type="int" unique="false">
+            <column name="codigo_articulo" not-null="true"/>
+        </property>
+         <property generated="never" lazy="false" name="numeroTarjeta" optimistic-lock="true" type="int" unique="false">
+            <column name="codigo_articulo" not-null="true"/>
+        </property>
+         <property generated="never" lazy="false" name="numeroTarjeta" optimistic-lock="true" type="int" unique="false">
+            <column name="codigo_articulo" not-null="true"/>
+        </property>
+         <property generated="never" lazy="false" name="numeroTarjeta" optimistic-lock="true" type="int" unique="false">
+            <column name="codigo_articulo" not-null="true"/>
+        </property>
     </class>
 </hibernate-mapping>

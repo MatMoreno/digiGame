@@ -16,10 +16,13 @@ public class DetalleCompra implements java.io.Serializable {
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private int idDetalle;
+	
 	private int emailUsuario;
 	private int cantidad;
 	private int precio;
 	private int codigoCompra;
+	private int codigoArticulo;
+	private int claveArticulo;
 
 	public DetalleCompra() {
 	}
@@ -69,6 +72,22 @@ public class DetalleCompra implements java.io.Serializable {
 
 	public void setCodigoCompra(int codigoCompra) {
 		this.codigoCompra = codigoCompra;
+	}
+
+	public int getClaveArticulo() {
+		return claveArticulo;
+	}
+
+	public void setClaveArticulo(int claveArticulo) {
+		this.claveArticulo = claveArticulo;
+	}
+
+	public int getCodigoArticulo() {
+		return codigoArticulo;
+	}
+
+	public void setCodigoArticulo(int codigoArticulo) {
+		this.codigoArticulo = codigoArticulo;
 	}
 
 }

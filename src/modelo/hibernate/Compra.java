@@ -1,6 +1,9 @@
 package modelo.hibernate;
 // Generated 23-oct-2017 11:55:10 by Hibernate Tools 5.2.5.Final
 
+import java.time.LocalDate;
+
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -19,17 +22,43 @@ public class Compra implements java.io.Serializable {
 	private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
+	@Column(name="codigo_compra")
 	private int codigoCompra;
+	@Column(name="email_Usuario")
 	private String emailUsuario;
+	@Column(name="codigo_articulo")
 	private int codigoArticulo;
+	@Column(name="fecha_hora")
+	private LocalDate FechaHora;
+	@Column(name="tipo_tarjeta")
+	private String tipo_tarjeta;
+	@Column(name="numero_tarjeta")
+	private int numeroTarjeta;
+	@Column(name="direccion")
+	private String direccion;
+	@Column(name="ciudad")
+	private String ciudad;
+	@Column(name="pais")
+	private String pais;
+	@Column(name="codigo_postal")
+	private int codigoPostal;
+	@Column(name="fecha_cad")
+	private LocalDate fechaCaducidadTarjeta;
 
 	public Compra() {
 	}
 
-	public Compra(int codigoCompra, String emailUsuario, int codigoArticulo) {
+	public Compra(int codigoCompra, String emailUsuario, int codigoArticulo,LocalDate FechaHora,int numeroTarjeta,String direccion,String ciudad,String pais, int codigoPostal,LocalDate fechaCaducidadTarjeta) {
 		this.codigoCompra = codigoCompra;
 		this.emailUsuario = emailUsuario;
 		this.codigoArticulo = codigoArticulo;
+		this.FechaHora=FechaHora;
+		this.numeroTarjeta=numeroTarjeta;
+		this.direccion=direccion;
+		this.ciudad=ciudad;
+		this.pais=pais;
+		this.codigoPostal=codigoPostal;
+		this.fechaCaducidadTarjeta=fechaCaducidadTarjeta;
 	}
 
 	public int getCodigoCompra() {
@@ -54,6 +83,70 @@ public class Compra implements java.io.Serializable {
 
 	public void setCodigoArticulo(int codigoArticulo) {
 		this.codigoArticulo = codigoArticulo;
+	}
+
+	public LocalDate getFechaHora() {
+		return FechaHora;
+	}
+
+	public void setFechaHora(LocalDate fechaHora) {
+		FechaHora = fechaHora;
+	}
+
+	public int getNumeroTarjeta() {
+		return numeroTarjeta;
+	}
+
+	public void setNumeroTarjeta(int numeroTarjeta) {
+		this.numeroTarjeta = numeroTarjeta;
+	}
+
+	public String getDireccion() {
+		return direccion;
+	}
+
+	public void setDireccion(String direccion) {
+		this.direccion = direccion;
+	}
+
+	public String getCiudad() {
+		return ciudad;
+	}
+
+	public void setCiudad(String ciudad) {
+		this.ciudad = ciudad;
+	}
+
+	public String getPais() {
+		return pais;
+	}
+
+	public void setPais(String pais) {
+		this.pais = pais;
+	}
+
+	public int getCodigoPostal() {
+		return codigoPostal;
+	}
+
+	public void setCodigoPostal(int codigoPostal) {
+		this.codigoPostal = codigoPostal;
+	}
+
+	public String getTipo_tarjeta() {
+		return tipo_tarjeta;
+	}
+
+	public void setTipo_tarjeta(String tipo_tarjeta) {
+		this.tipo_tarjeta = tipo_tarjeta;
+	}
+
+	public LocalDate getFechaCaducidadTarjeta() {
+		return fechaCaducidadTarjeta;
+	}
+
+	public void setFechaCaducidadTarjeta(LocalDate fechaCaducidadTarjeta) {
+		this.fechaCaducidadTarjeta = fechaCaducidadTarjeta;
 	}
 
 }
