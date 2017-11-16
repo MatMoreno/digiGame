@@ -107,10 +107,6 @@
 
 </body>
 </html>
-
-
-</body>
-</html>
   <% }else{%>
   <html>
   <head></head>

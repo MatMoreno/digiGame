@@ -77,7 +77,8 @@ public class servlet extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		/* EnviarCorreo eC=new EnviarCorreo(); */
+		
+		
 		listarArticulos(request);
 		listarGeneros(request);
 		HttpSession sesion = request.getSession();
@@ -254,8 +255,15 @@ public class servlet extends HttpServlet {
 				url = base + "carrito.jsp";
 				break;
 			case "irCheckout":
-				
+				if(sesion.getAttribute("carrito")==null){
+					url = base + "carrito.jsp";
+					break;
+				}
 				url = base + "checkout.jsp";
+				break;
+			case "botonCheckout":
+				checkOut(request);
+				url = base + "inicioLog.jsp";
 				break;
 				
 			default:
@@ -586,7 +594,23 @@ public class servlet extends HttpServlet {
 		}
 
 	}
+	public void checkOut(HttpServletRequest request) {
+		Session sesionHib = HibernateUtils.getSessionFactory().openSession();
+		String nombre = request.getParameter("nombreCheck");
+		String email = request.getParameter("correoCheck");
+		String fechaCad = request.getParameter("fechaCad");
+		String tipoTar = request.getParameter("tipoTarjeta");
+		int numeroTar= Integer.parseInt(request.getParameter("numeroTarjeta"));
+		String pais=request.getParameter("paisCheck");
+		Compra compra=new Compra(nombre, email,LocalDate.now(), tipoTar, numeroTar, pais, fechaCad);
+		sesionHib.save(compra);
+		EnviarCorreo eC=new EnviarCorreo();
+		eC.createAndSendEmail(email, "Compra Realizada con Éxito", "Recibira sus claves en otro correo");
 
+	
+
+	
+	}
 	public void imagen(HttpServletRequest request) {
 		HttpSession sesion = request.getSession();
 		String nombre = "default.jpg";

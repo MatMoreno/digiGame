@@ -46,16 +46,7 @@ public class Articulo implements java.io.Serializable {
 		
 	}
 
-	public Articulo(String nombre, int codigoGenero, String plataforma,LocalDate fechaDeLanzamiento, int stock,
-			int clave,float precio) {
-		this.nombre = nombre;
-		this.codigoGenero = codigoGenero;
-		this.plataforma = plataforma;
-		this.fechaDeLanzamiento = fechaDeLanzamiento;
-		this.stock = stock;
-		this.clave = clave;
-		this.precio=precio;
-	}
+
 
 	public Articulo(String nombre, int codigoGenero, String plataforma, LocalDate fechaDeLanzamiento,
 			String informacionAdicional, int stock, int clave,float precio) {

@@ -155,11 +155,8 @@
 					<p style="font-size: 20px; font-weight: bold"><%=juego.getPrecio() + "&euro;"%></p>
 					</br>
 					<%if(sesion.getAttribute("usuarioLogueado") != null){ %> 
-					<a
-					href="<%=baseJsp%>?action=irJuego&idProd=<%=juego.getCodigoArticulo()%>"
-					style="cursor: pointer; font-size: 16px; color: red;">Adquirir
-						Key&nbsp;</a>
-						 <a	onClick="sumCarrito()" href="<%=baseJsp%>?action=addToCarrito&addIdProd=<%=juego.getCodigoArticulo()%>&cantidad=1" style="cursor: pointer; font-size: 16px; color: red;" >Añadir al
+					
+						 <a	 href="<%=baseJsp%>?action=addToCarrito&addIdProd=<%=juego.getCodigoArticulo()%>&cantidad=1" style="cursor: pointer; font-size: 16px; color: red;" >Añadir al
 						carrito</a>
 						<%} %>
 			</span>
@@ -212,7 +209,7 @@
 			}
 		%>
 	</div>
-	<div class="container">
+<div class="container">
     <section style="height:80px;"></section>
     <!----------- Footer ------------>
     <footer class="footer-bs">
@@ -227,15 +224,15 @@
             	
             	<div class="col-md-6">
                     <ul class="list">
-                        <li><a href="#">About Us</a></li>
-                        <li><a href="#">Contacts</a></li>
-                        <li><a href="#">Terms & Condition</a></li>
-                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">sobre nosotros</a></li>
+                        <li><a href="#">Contacto</a></li>
+                        <li><a href="#">Terminos y condiciones</a></li>
+                        <li><a href="#">Política de privacidad</a></li>
                     </ul>
                 </div>
             </div>
         	<div class="col-md-2 footer-social animated fadeInDown">
-            	<h4 style="color: white">Follow Us</h4>
+            	<h4 style="color: white">Siguenos</h4>
             	<ul>
                 	<li><a href="#">Facebook</a></li>
                 	<li><a href="#">Twitter</a></li>
@@ -244,11 +241,11 @@
                 </ul>
             </div>
         	<div class="col-md-3 footer-ns animated fadeInRight">
-            	<h4 style="color: white">Newsletter</h4>
-                <p>A rover wearing a fuzzy suit doesn't alarm the real penguins</p>
+            	<h4 style="color: white">Noticias</h4>
+                <p>Semana de descuentos en todos los articulos</p>
                 <p>
                     <div class="input-group">
-                      <input style="height: 30px;" type="text" class="form-control" placeholder="Search for...">
+                      <input style="height: 34px;" type="text" class="form-control" placeholder="Search for...">
                       <span class="input-group-btn">
                         <button class="btn btn-default" type="button"><span class="glyphicon glyphicon-envelope"></span></button>
                       </span>

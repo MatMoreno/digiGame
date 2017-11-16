@@ -12,9 +12,7 @@
 
 	String baseJsp = (String) request.getAttribute("baseJsp");
 	HashMap<Integer, CarritoItem> carrito = (HashMap<Integer, CarritoItem>) sesion.getAttribute("carrito");
-	if (carrito != null) {
-		carritoSize = carrito.size();
-		pageContext.setAttribute("listCarrito", carrito);
+	
 %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt"%>
 <%@page
@@ -37,7 +35,18 @@
 <script type="text/javascript" src="js/jquery.js"></script>
 <script src="js/jquery.ui.totop.js" type="text/javascript"></script>
 <script type="text/javascript" src="js/bootstrap.js"></script>
-
+	<script>
+		function myFunction() {
+			var x = document.getElementById("myTopnav");
+			if (x.className === "topnav") {
+				x.className += " responsive";
+				document.getElementById("mySidenav").style.marginTop = "400px";
+			} else {
+				document.getElementById("mySidenav").style.marginTop = "143px";
+				x.className = "topnav";
+			}
+		}
+	</script>
 </head>
 
 <body id="fondo">
@@ -57,27 +66,16 @@
 				onclick="myFunction()">&#9776;</a>
 		</div>
 	</header>
+<%	if(carrito!=null){carritoSize = carrito.size();
+	pageContext.setAttribute("listCarrito", carrito);} %>
 
-	<script>
-		function myFunction() {
-			var x = document.getElementById("myTopnav");
-			if (x.className === "topnav") {
-				x.className += " responsive";
-				document.getElementById("mySidenav").style.marginTop = "400px";
-			} else {
-				document.getElementById("mySidenav").style.marginTop = "143px";
-				x.className = "topnav";
-			}
-		}
-	</script>
 
 	<%
 		int totalJuego = 0;
 			int total = 0;
 	%>
 
-	<div
-		style="background: linear-gradient(to right, rgba(255, 255, 255, 1) 0, rgba(239, 239, 239, 1) 100%); margin: auto; width: 54%;">
+	<div style="background: linear-gradient(to right, rgba(255, 255, 255, 1) 0, rgba(239, 239, 239, 1) 100%); margin: auto; width: 54%;">
 		<div class="container">
 			<div class="row">
 				<div class="col-xs-8">
@@ -95,8 +93,7 @@
 										<button
 											onClick="window.location.href='<%=baseJsp%>?action=irArticulos'"
 											type="button" class="btn btn-primary btn-sm btn-block">
-											<span class="glyphicon glyphicon-share-alt"></span> Continuar
-											comprando
+											<span class="glyphicon glyphicon-share-alt"></span> Continuar comprando
 										</button>
 									</div>
 								</div>
@@ -181,8 +178,7 @@
 											value="irCheckout"> <input
 											type="hidden" name="codigo"
 											value="${cart.value.articulo.getCodigoArticulo()}">
-										<button type="button" class="btn btn-success btn-block">
-											Pagar ahora</button>
+										<input type="button" onClick="window.location.href='<%=baseJsp%>?action=irCheckout'" value="Pagar ahora" class="btn btn-success btn-block"></input>
 									</form>
 
 								</div>
@@ -192,62 +188,55 @@
 				</div>
 			</div>
 		</div>
-		<%
-			} else {
-		%>
-		<div class="container">
-			<div class="row">
-				<div class="col-xs-8">
-					<div class="panel panel-info">
-						<div class="panel-heading">
-							<div class="panel-title">
-								<div class="row">
-									<div class="col-xs-6">
-										<h5>
-											<span class="glyphicon glyphicon-shopping-cart"></span>
-											Carrito
-										</h5>
-									</div>
-									<div class="col-xs-6">
-										<button
-											onClick="window.location.href='<%=baseJsp%>?action=irArticulos'"
-											type="button" class="btn btn-primary btn-sm btn-block">
-											<span class="glyphicon glyphicon-share-alt"></span> Continuar
-											comprando
-										</button>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="panel-body">
 
-							<h4>CARRITO VACÍO</h4>
-
-						</div>
-						<div class="panel-footer">
-							<div class="row text-center">
-								<div class="col-xs-9">
-									<h4 class="text-right">
-										Total <strong>${total}</strong>
-									</h4>
-								</div>
-								<div class="col-xs-3">
-									<button type="button" class="btn btn-success btn-block">
-										Pagar ahora</button>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-		<%
-			}
-		%>
 	</div>
-	<script>
-		print
-	</script>
+			<div class="container">
+    <section style="height:80px;"></section>
+    <!----------- Footer ------------>
+    <footer class="footer-bs">
+        <div class="row">
+        	<div class="col-md-3 footer-brand animated fadeInLeft">
+            	<h2 style="color: white">DG e-shop</h2>
+                
+                <p>  2017 Mat Moreno.  All rights reserved</p>
+            </div>
+        	<div class="col-md-4 footer-nav animated fadeInUp">
+            	<h4>Menu </h4>
+            	
+            	<div class="col-md-6">
+                    <ul class="list">
+                        <li><a href="#">sobre nosotros</a></li>
+                        <li><a href="#">Contacto</a></li>
+                        <li><a href="#">Terminos y condiciones</a></li>
+                        <li><a href="#">Política de privacidad</a></li>
+                    </ul>
+                </div>
+            </div>
+        	<div class="col-md-2 footer-social animated fadeInDown">
+            	<h4 style="color: white">Siguenos</h4>
+            	<ul>
+                	<li><a href="#">Facebook</a></li>
+                	<li><a href="#">Twitter</a></li>
+                	<li><a href="#">Instagram</a></li>
+                	<li><a href="#">RSS</a></li>
+                </ul>
+            </div>
+        	<div class="col-md-3 footer-ns animated fadeInRight">
+            	<h4 style="color: white">Noticias</h4>
+                <p>Semana de descuentos en todos los articulos</p>
+                <p>
+                    <div class="input-group">
+                      <input style="height: 30px;" type="text" class="form-control" placeholder="Search for...">
+                      <span class="input-group-btn">
+                        <button class="btn btn-default" type="button"><span class="glyphicon glyphicon-envelope"></span></button>
+                      </span>
+                    </div><!-- /input-group -->
+                 </p>
+            </div>
+        </div>
+    </footer>
+
+</div>
 	<script>
 		var bool = false;
 		function openNav() {
@@ -259,7 +248,6 @@
 				closeNav();
 			}
 		}
-
 		function closeNav() {
 			document.getElementById("mySidenav").style.width = "0";
 		}

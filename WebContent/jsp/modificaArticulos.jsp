@@ -182,12 +182,7 @@
 							class="btn btn-success"></input>
 					</div>
 				</div>
-				<div class="control-group">
-					<div >
-						<input type="button" id="btn" name="singlebutton"
-							class="btn btn-success" value="Volver"></input>
-					</div>
-				</div>
+				<a>Volver atrás</a>
 				</div>
 
 

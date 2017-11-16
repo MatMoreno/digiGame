@@ -64,78 +64,75 @@
 	<div
 		style="background: linear-gradient(to right, rgba(255, 255, 255, 1) 0, rgba(239, 239, 239, 1) 100%); margin: auto; width: 70%; height: 600px">
 
-		<form id="form" action="<%=baseJsp%>?action=botonRegistro"
+		<form id="form" action="<%=baseJsp%>?action=botonCheckout"
 			method="POST" class="form-horizontal">
 			<fieldset>
 
 				<!-- Form Name -->
 				<legend>
-					<h2>Regístrate</h2>
+					<h2>Datos para realizar pedido</h2>
 				</legend>
 
 				<!-- Text input-->
 				<div class="control-group">
-					<label class="control-label" for="textinput">Nombre</label>
+					<label class="control-label" for="textinput">Nombre y apellidos</label>
 					<div class="controls">
-						<input id="nombreReg" name="nombreReg" type="text"
-							pattern="[A-Za-z]{3,15}" title="Al menos 3 caracteres"
-							placeholder="Nombre" class="input-xlarge" required>
+						<input id="nombreCheck" name="nombreCheck" type="text"
+							pattern="[A-Za-z]{3,30}" title="Al menos 3 caracteres"
+							placeholder="Ej: Pepe Moreno Perez" class="input-xlarge" required>
 
 					</div>
 				</div>
 
-				<!-- Text input-->
-				<div class="control-group">
-					<label class="control-label" for="textinput">Apellidos</label>
-					<div class="controls">
-						<input id="apellidosReg" name="apellidosReg" type="text"
-							pattern="[A-Za-z ]{5,15}[A-Za-z]" title="Al menos 5 caracteres"
-							placeholder="apellidos" class="input-xlarge" required>
-
-					</div>
-				</div>
 
 				<!-- Text input-->
 				<div class="control-group">
 					<label class="control-label" for="textinput">Correo
-						Electronico</label>
+						Electrónico al que se enviara la clave del juego</label>
 					<div class="controls">
-						<input id="correoReg" name="correoReg" type="email"
-							placeholder="placeholder" class="input-xlarge" required>
+						<input id="correoCheck" name="correoCheck" type="email"
+							placeholder="Ej:Digital@gmail.com" class="input-xlarge" required>
 
 					</div>
 				</div>
+				
+							<div class="control-group">
+					<label class="control-label" for="textinput">País</label>
+					<div class="controls">
+						<input id="pais" name="paisCheck" type="text"
+							pattern="[A-Za-zñ]{3,30}" title="Al menos 3 caracteres"
+							placeholder="Ej:España" class="input-xlarge" required>
 
+					</div>
+				</div>
+				
+				
+				
+				<div class="control-group">
+					<label class="control-label" for="textinput">Tipo de tarjeta de crédito</label>
+					<div class="controls">
+						<select name="tipoTarjeta">
+						<option>Visa</option>
+						<option>MasterCard</option>
+						</select>
+
+					</div>
+				</div>
 				<!-- Password input-->
 				<div class="control-group">
-					<label class="control-label" for="passReg">Contraseña</label>
+					<label class="control-label" >Numero de la Tarjeta de Crédito</label>
 					<div class="controls">
-						<input id="passReg" name="passReg" pattern=".{6,}"
-							title="6 o más caracteres" type="password"
-							placeholder="placeholder" class="input-medium" required>
+						<input name="numeroTarjeta" placeholder="XXXX XXXX XXXX XXXX" type="text" pattern="[0-9]{16}" class="input-medium" required>
 
 					</div>
 				</div>
-
-				<!-- Password input-->
-				<!-- 				<div class="control-group"> -->
-				<!-- 					<label class="control-label" for="contraseñaRegistro">Repita -->
-				<!-- 						la Contraseña</label> -->
-				<!-- 					<div class="controls"> -->
-				<!-- 						<input id="passReg2" name="passReg2" type="password" -->
-				<!-- 							placeholder="placeholder" class="input-medium" required/> -->
-
-				<!-- 					</div> -->
-				<!-- 				</div> -->
-
-				<!-- Appended checkbox -->
 				<div class="control-group">
 					<label class="control-label" for="appendedcheckbox">Fecha
-						de Nacimiento</label>
+						cad. Tarjeta</label>
 					<div class="controls">
 						<div class="input-append">
 
-							<input type="date" id="fechaReg" name="fechaReg" required>
+							<input type="text" title="Debe seguir el modelo xx/xx" id="fechaCad" name="fechaCad" pattern="[0-9]{2}/[0-9]{2}" placeholder="Ej: 05/18" required>
 						</div>
 
 					</div>
@@ -162,9 +159,5 @@
 			</fieldset>
 		</form>
 	</div>
-
-
-
-
 </body>
 </html>

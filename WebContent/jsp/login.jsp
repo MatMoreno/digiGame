@@ -16,6 +16,7 @@
     <meta name="keywords" content="Your keywords">
     <meta name="author" content="Your name">
     <link rel="stylesheet" href="boot/css/bootstrap.css" type="text/css" media="screen">
+     <link rel="stylesheet" href="bootstrap/css/bootstrap.css" type="text/css" media="screen">
     <link rel="stylesheet" href="boot/css/responsive.css" type="text/css" media="screen">
     <link rel="stylesheet" href="boot/css/camera.css" type="text/css" media="screen"> 
     <link rel="stylesheet" href="boot/css/style.css" type="text/css" media="screen">
@@ -51,10 +52,7 @@
                 <h2>Iniciar Sesión</h2>
                 <input type="text" class="input-block-level" placeholder="correo electrónico" name="emailLogin" id='email' required>
                 <input type="password" class="input-block-level" placeholder="contraseña" name="password" id="password" required>
-                <label class="checkbox">
-                    <input type="checkbox" value="remember-me" id="remember_me"> Remember me
-                </label>
-                <button  type="submit">Sign in</button><label style="display:inline;margin-left: 5px; "><a style="color: black" href="<%=baseJsp%>?action=irRegistro" >Registrate ahora!</a></label>
+                <button  type="submit">Entrar</button><label style="display:inline;margin-left: 5px; "><a style="color: black" href="<%=baseJsp%>?action=irRegistro" >Registrate ahora!</a></label>
             </form>
             <%
           
@@ -82,15 +80,15 @@
             	
             	<div class="col-md-6">
                     <ul class="list">
-                        <li><a href="#">About Us</a></li>
-                        <li><a href="#">Contacts</a></li>
-                        <li><a href="#">Terms & Condition</a></li>
-                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">sobre nosotros</a></li>
+                        <li><a href="#">Contacto</a></li>
+                        <li><a href="#">Terminos y condiciones</a></li>
+                        <li><a href="#">Política de privacidad</a></li>
                     </ul>
                 </div>
             </div>
         	<div class="col-md-2 footer-social animated fadeInDown">
-            	<h4 style="color: white">Follow Us</h4>
+            	<h4 style="color: white">Siguenos</h4>
             	<ul>
                 	<li><a href="#">Facebook</a></li>
                 	<li><a href="#">Twitter</a></li>
@@ -99,8 +97,8 @@
                 </ul>
             </div>
         	<div class="col-md-3 footer-ns animated fadeInRight">
-            	<h4 style="color: white">Newsletter</h4>
-                <p>A rover wearing a fuzzy suit doesn't alarm the real penguins</p>
+            	<h4 style="color: white">Noticias</h4>
+                <p>Semana de descuentos en todos los articulos</p>
                 <p>
                     <div class="input-group">
                       <input style="height: 30px;" type="text" class="form-control" placeholder="Search for...">
