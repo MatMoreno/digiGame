@@ -10,7 +10,7 @@
         <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/digitalgamedb</property>
         <property name="hibernate.connection.username">root</property>
         <property name="hibernate.dialect">org.hibernate.dialect.MySQLInnoDBDialect</property>
-        <property name="hibernate.show_sql">true</property>
+        <property name="hibernate.show_sql">false</property>
     	 <mapping class="modelo.hibernate.Usuarios" package="modelo.hibernate" resource="/modelo.hibernate.Usuarios.hbm.xml"/>
     	 <mapping class="modelo.hibernate.Compra" package="modelo.hibernate" resource="/modelo.hibernate.Compra.hbm.xml"/>
     	 <mapping class="modelo.hibernate.Genero" package="modelo.hibernate" resource="/modelo.hibernate.Genero.hbm.xml"/>

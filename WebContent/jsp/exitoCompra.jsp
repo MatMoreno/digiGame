@@ -54,6 +54,7 @@ function closeNav() {
   <h2>DIGITALGAME e-SHOP</h2>
 </div>
 <div class="topnav" id="myTopnav">
+<a style="cursor:pointer"   onclick="openNav()">&#9776;</a>
 <%if(sesion.getAttribute("usuarioLogueado")!=null){ %>
 <a href="<%=baseJsp%>?action=irInicioLog">Home</a>
 <a href="<%=baseJsp%>?action=irArticulos">Catálogo</a>
@@ -82,11 +83,17 @@ function myFunction() {
     }
 }
 </script>
+<script >
+$(document).ready(function() {
+    $('#Carousel').carousel({
+        interval: 5000
+    })
+});
+</script>
 
-
-	
-	
-	
+<div style="margin: auto; width: 80%; height: 460px; overflow: hidden; margin-bottom: 5%;margin:auto;text-align:center;color:white;">
+<div><h2>Compra realizada con exito! </h2><p>Revise su correo, use su clave y empiece a jugar!</p></div>
+</div>
 <div class="container">
     <section style="height:80px;"></section>
     <!----------- Footer ------------>

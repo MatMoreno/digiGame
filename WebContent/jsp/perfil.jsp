@@ -130,8 +130,8 @@
 					<p>Apellidos:</p>
 					<p>Fecha de Nacimiento:</p>
 					</br>
-					<p>Contraseña antigua:</p>
-					<p>Nueva Contraseña:</p>
+					<p id="passOld" style="display:none">Contraseña antigua:</p>
+					<p id="passNew" style="display:none">Nueva Contraseña:</p>
 				</span>
 				<!-- onsubmit="return valida()" -->
 				<form action="<%=baseJsp%>?action=updateUsuario" method="POST"      >
@@ -165,10 +165,14 @@
 				var eldiv = document.getElementById("vermasdiv");
 
 				if (abierto == false) {
+					document.getElementById("passOld").style.display="block";
+					document.getElementById("passNew").style.display="block";
+					
 					eldiv.style.display = "block";
 					abierto = true;
 				} else {
-					
+					document.getElementById("passOld").style.display="none";
+					document.getElementById("passNew").style.display="none";
 					eldiv.style.display = "none";
 					document.getElementById("passUpdate1").value="";
 					document.getElementById("passUpdate2").value="";

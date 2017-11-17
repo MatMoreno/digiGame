@@ -80,7 +80,7 @@
             	
             	<div class="col-md-6">
                     <ul class="list">
-                        <li><a href="#">sobre nosotros</a></li>
+                        <li><a href="#">Sobre nosotros</a></li>
                         <li><a href="#">Contacto</a></li>
                         <li><a href="#">Terminos y condiciones</a></li>
                         <li><a href="#">Política de privacidad</a></li>

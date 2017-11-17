@@ -1,8 +1,7 @@
 
 <!DOCTYPE html>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@page
-	import="java.time.format.DateTimeFormatter ,modelo.hibernate.Usuarios,modelo.hibernate.Articulo,modelo.hibernate.Genero, utils.HibernateUtils, org.hibernate.Session, java.util.ArrayList"%>
+<%@page	import="java.time.format.DateTimeFormatter ,modelo.hibernate.Usuarios,modelo.hibernate.Articulo,modelo.hibernate.Genero, utils.HibernateUtils, org.hibernate.Session, java.util.ArrayList"%>
 <%
 	String baseJsp = (String) request.getAttribute("baseJsp");
 	ArrayList<Genero> lista = (ArrayList<Genero>) request.getAttribute("arrayGenero");
@@ -101,7 +100,7 @@
 		<%
 			for (int i = 0; i < lista.size(); i++) {%>
 		<a
-			href="<%=baseJsp%>?action=irGenero&idGen=<%=lista.get(i).getCodigoGenero()%> "><%=lista.get(i).getNombre()%></a>
+			href="<%=baseJsp%>?action=irGeneroAdmin&idGen=<%=lista.get(i).getCodigoGenero()%> "><%=lista.get(i).getNombre()%></a>
 		<%
 			}
 		%>

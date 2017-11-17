@@ -4,15 +4,16 @@
 <%
 	HttpSession sesion = request.getSession();
 	int carritoSize = 0;
-
 	if (sesion.getAttribute("usuarioLogueado") == null) {
 		response.sendRedirect("/DigitalGame/servlet?action=irInicioLog");
 		out.print("ERROOOOOOOOOOOOOOOOOOR USUARIO NO LOGUEADOO");
 	}
-
 	String baseJsp = (String) request.getAttribute("baseJsp");
 	HashMap<Integer, CarritoItem> carrito = (HashMap<Integer, CarritoItem>) sesion.getAttribute("carrito");
-	
+	if (carrito != null) {
+		carritoSize = carrito.size();
+		pageContext.setAttribute("listCarrito", carrito);
+	}
 %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt"%>
 <%@page
@@ -25,8 +26,8 @@
 <meta name="description" content="Your description">
 <meta name="keywords" content="Your keywords">
 <meta name="author" content="Your name">
-<link rel="stylesheet" href="boot/css/bootstrap.css"
-	type="text/css" media="screen">
+<link rel="stylesheet" href="boot/css/bootstrap.css" type="text/css"
+	media="screen">
 <link rel="stylesheet" href="bootstrap/css/bootstrap.css">
 
 
@@ -37,18 +38,18 @@
 <script type="text/javascript" src="js/jquery.js"></script>
 <script src="js/jquery.ui.totop.js" type="text/javascript"></script>
 <script type="text/javascript" src="js/bootstrap.js"></script>
-	<script>
-		function myFunction() {
-			var x = document.getElementById("myTopnav");
-			if (x.className === "topnav") {
-				x.className += " responsive";
-				document.getElementById("mySidenav").style.marginTop = "400px";
-			} else {
-				document.getElementById("mySidenav").style.marginTop = "143px";
-				x.className = "topnav";
-			}
+<script>
+	function myFunction() {
+		var x = document.getElementById("myTopnav");
+		if (x.className === "topnav") {
+			x.className += " responsive";
+			document.getElementById("mySidenav").style.marginTop = "400px";
+		} else {
+			document.getElementById("mySidenav").style.marginTop = "143px";
+			x.className = "topnav";
 		}
-	</script>
+	}
+</script>
 </head>
 
 <body id="fondo">
@@ -68,16 +69,16 @@
 				onclick="myFunction()">&#9776;</a>
 		</div>
 	</header>
-<%	if(carrito!=null){carritoSize = carrito.size();
-	pageContext.setAttribute("listCarrito", carrito);} %>
+
 
 
 	<%
 		int totalJuego = 0;
-			int total = 0;
+		int total = 0;
 	%>
 
-	<div style="background: linear-gradient(to right, rgba(255, 255, 255, 1) 0, rgba(239, 239, 239, 1) 100%); margin: auto; width: 54%;">
+	<div
+		style="background: linear-gradient(to right, rgba(255, 255, 255, 1) 0, rgba(239, 239, 239, 1) 100%); margin: auto; width: 54%;">
 		<div class="container">
 			<div class="row">
 				<div class="col-xs-8">
@@ -95,7 +96,8 @@
 										<button
 											onClick="window.location.href='<%=baseJsp%>?action=irArticulos'"
 											type="button" class="btn btn-primary btn-sm btn-block">
-											<span class="glyphicon glyphicon-share-alt"></span> Continuar comprando
+											<span class="glyphicon glyphicon-share-alt"></span> Continuar
+											comprando
 										</button>
 									</div>
 								</div>
@@ -104,7 +106,7 @@
 						<div class="panel-body">
 							<%
 								if (carritoSize == 0)
-										out.print("<h4>Carrito vacío...</h4>");
+									out.print("<h4>Carrito vacío...</h4>");
 							%>
 							<c:set var="total" value="0" />
 							<c:forEach var="cart" items="${listCarrito}">
@@ -133,8 +135,8 @@
 											<input type="hidden" name="codigo"
 												value="${cart.value.articulo.getCodigoArticulo()}">
 											<input name="cantidadItem" type="text"
-												class="form-control input-sm"
-												value="${cart.value.cantidad }">
+												class="form-control input-sm" style=cursor:default;
+												value="${cart.value.cantidad }" disabled>
 										</div>
 										<div class="col-xs-1">
 											<form>
@@ -148,7 +150,17 @@
 											</form>
 										</div>
 										<form>
-											<div class="col-xs-1">
+											<div>
+												<input type="hidden" name="action" value="decrementarItemCarrito">
+												<input type="hidden" name="codigo"
+													value="${cart.value.articulo.getCodigoArticulo()}">
+												<button type="submit" class="btn btn-link btn-xs">
+													<span class="glyphicon glyphicon-minus"> </span>
+												</button>
+											</div>
+										</form>
+										<form>
+											<div style="float: right">
 												<input type="hidden" name="action" value="deleteItemCarrito">
 												<input type="hidden" name="codigo"
 													value="${cart.value.articulo.getCodigoArticulo()}">
@@ -171,16 +183,17 @@
 							<div class="row text-center">
 								<div class="col-xs-9">
 									<h4 class="text-right">
-										Total <strong>${total}&euro;</strong>
+										Total <strong>${total} &euro;</strong>
 									</h4>
 								</div>
 								<div class="col-xs-3">
 									<form>
-										<input type="hidden" name="action"
-											value="irCheckout"> <input
-											type="hidden" name="codigo"
-											value="${cart.value.articulo.getCodigoArticulo()}">
-										<input type="button" onClick="window.location.href='<%=baseJsp%>?action=irCheckout'" value="Pagar ahora" class="btn btn-success btn-block"></input>
+										<input type="hidden" name="action" value="irCheckout">
+										<input type="hidden" name="codigo"
+											value="${cart.value.articulo.getCodigoArticulo()}"> <input
+											type="button"
+											onClick="window.location.href='<%=baseJsp%>?action=irCheckout'"
+											value="Pagar ahora" class="btn btn-success btn-block"></input>
 									</form>
 
 								</div>
@@ -192,53 +205,57 @@
 		</div>
 
 	</div>
-			<div class="container">
-    <section style="height:80px;"></section>
-    <!----------- Footer ------------>
-    <footer class="footer-bs">
-        <div class="row">
-        	<div class="col-md-3 footer-brand animated fadeInLeft">
-            	<h2 style="color: white">DG e-shop</h2>
-                
-                <p>  2017 Mat Moreno.  All rights reserved</p>
-            </div>
-        	<div class="col-md-4 footer-nav animated fadeInUp">
-            	<h4>Menu </h4>
-            	
-            	<div class="col-md-6">
-                    <ul class="list">
-                        <li><a href="#">sobre nosotros</a></li>
-                        <li><a href="#">Contacto</a></li>
-                        <li><a href="#">Terminos y condiciones</a></li>
-                        <li><a href="#">Política de privacidad</a></li>
-                    </ul>
-                </div>
-            </div>
-        	<div class="col-md-2 footer-social animated fadeInDown">
-            	<h4 style="color: white">Siguenos</h4>
-            	<ul>
-                	<li><a href="#">Facebook</a></li>
-                	<li><a href="#">Twitter</a></li>
-                	<li><a href="#">Instagram</a></li>
-                	<li><a href="#">RSS</a></li>
-                </ul>
-            </div>
-        	<div class="col-md-3 footer-ns animated fadeInRight">
-            	<h4 style="color: white">Noticias</h4>
-                <p>Semana de descuentos en todos los articulos</p>
-                <p>
-                    <div class="input-group">
-                      <input style="height: 30px;" type="text" class="form-control" placeholder="Search for...">
-                      <span class="input-group-btn">
-                        <button class="btn btn-default" type="button"><span class="glyphicon glyphicon-envelope"></span></button>
-                      </span>
-                    </div><!-- /input-group -->
-                 </p>
-            </div>
-        </div>
-    </footer>
+	<div class="container">
+		<section style="height: 80px;"></section>
+		<!----------- Footer ------------>
+		<footer class="footer-bs">
+			<div class="row">
+				<div class="col-md-3 footer-brand animated fadeInLeft">
+					<h2 style="color: white">DG e-shop</h2>
 
-</div>
+					<p>2017 Mat Moreno. All rights reserved</p>
+				</div>
+				<div class="col-md-4 footer-nav animated fadeInUp">
+					<h4>Menu</h4>
+
+					<div class="col-md-6">
+						<ul class="list">
+							<li><a href="#">sobre nosotros</a></li>
+							<li><a href="#">Contacto</a></li>
+							<li><a href="#">Terminos y condiciones</a></li>
+							<li><a href="#">Política de privacidad</a></li>
+						</ul>
+					</div>
+				</div>
+				<div class="col-md-2 footer-social animated fadeInDown">
+					<h4 style="color: white">Siguenos</h4>
+					<ul>
+						<li><a href="#">Facebook</a></li>
+						<li><a href="#">Twitter</a></li>
+						<li><a href="#">Instagram</a></li>
+						<li><a href="#">RSS</a></li>
+					</ul>
+				</div>
+				<div class="col-md-3 footer-ns animated fadeInRight">
+					<h4 style="color: white">Noticias</h4>
+					<p>Semana de descuentos en todos los articulos</p>
+					<p>
+					<div class="input-group">
+						<input style="height: 30px;" type="text" class="form-control"
+							placeholder="Search for..."> <span
+							class="input-group-btn">
+							<button class="btn btn-default" type="button">
+								<span class="glyphicon glyphicon-envelope"></span>
+							</button>
+						</span>
+					</div>
+					<!-- /input-group -->
+					</p>
+				</div>
+			</div>
+		</footer>
+
+	</div>
 	<script>
 		var bool = false;
 		function openNav() {
