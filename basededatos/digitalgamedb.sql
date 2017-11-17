@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 16-11-2017 a las 15:42:39
--- Versión del servidor: 10.1.26-MariaDB
--- Versión de PHP: 7.1.8
+-- Tiempo de generación: 17-11-2017 a las 01:36:03
+-- Versión del servidor: 10.1.28-MariaDB
+-- Versión de PHP: 7.1.10
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -58,15 +58,31 @@ INSERT INTO `articulo` (`codigo_articulo`, `nombre`, `codigo_genero`, `plataform
 
 CREATE TABLE `compra` (
   `codigo_compra` int(255) NOT NULL,
-  `email_usuario` varchar(100) NOT NULL,
-  `codigo_articulo` int(255) NOT NULL,
   `fecha_hora` datetime(6) NOT NULL,
-  `tipo_tarjeta` varchar(15) NOT NULL,
-  `numero_tarjeta` int(24) NOT NULL,
-  `ciudad` varchar(255) NOT NULL,
-  `pais` varchar(24) NOT NULL,
-  `fecha_cad` varchar(24) NOT NULL
+  `nombre_destino` varchar(255) CHARACTER SET utf8 COLLATE utf8_spanish_ci NOT NULL,
+  `email_destino` varchar(100) CHARACTER SET utf8 COLLATE utf8_spanish_ci NOT NULL,
+  `pais` varchar(24) CHARACTER SET utf8 COLLATE utf8_spanish_ci NOT NULL,
+  `tipo_tarjeta` varchar(15) CHARACTER SET utf8 COLLATE utf8_spanish_ci NOT NULL,
+  `numero_tarjeta` varchar(255) NOT NULL,
+  `fecha_cad` varchar(24) NOT NULL,
+  `email_usuario` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `compra`
+--
+
+INSERT INTO `compra` (`codigo_compra`, `fecha_hora`, `nombre_destino`, `email_destino`, `pais`, `tipo_tarjeta`, `numero_tarjeta`, `fecha_cad`, `email_usuario`) VALUES
+(4, '2017-11-16 22:01:07.000000', 'matmoreno9@gmail.com', 'Mat', 'España', 'Visa', '215645415152', '09/12', 'caca@gmail.com'),
+(5, '2017-11-16 22:14:33.000000', 'dosache94@gmail.com', 'Mat', 'España', 'Visa', '415454545545545', '09/48', 'caca@gmail.com'),
+(6, '2017-11-16 22:22:52.000000', 'matmoreno9@gmail.com', 'Abel', 'España', 'Visa', '555554', '05/45', 'caca@gmail.com'),
+(7, '2017-11-16 22:24:01.000000', 'matmoreno9@gmail.com', 'Abel', 'España', 'Visa', '555554', '05/45', 'caca@gmail.com'),
+(8, '2017-11-16 22:24:38.000000', 'matmoreno9@gmail.com', 'dfsdf', 'España', 'Visa', '123454', '06/45', 'caca@gmail.com'),
+(9, '2017-11-16 22:25:38.000000', 'matmoreno9@gmail.com', 'drfd', 'España', 'Visa', '2554', '05/45', 'caca@gmail.com'),
+(10, '2017-11-16 22:42:58.000000', 'matmoreno9@gmail.com', 'mat moreno', 'España', 'Visa', '55454545454', '05/18', 'caca@gmail.com'),
+(11, '2017-11-16 22:53:51.000000', 'matmoreno9@gmail.com', 'Mat Moreno', 'España', 'Visa', '5445455454', '02/45', 'caca@gmail.com'),
+(12, '2017-11-16 22:58:50.000000', 'matmoreno9@gmail.com', 'Mat Moreno', 'España', 'Visa', '52454', '02/45', 'caca@gmail.com'),
+(13, '2017-11-16 23:01:18.000000', 'matmoreno9@gmail.com', 'Mat Moreno', 'España', 'Visa', '54545454', '06/45', 'caca@gmail.com');
 
 -- --------------------------------------------------------
 
@@ -76,11 +92,33 @@ CREATE TABLE `compra` (
 
 CREATE TABLE `detalle_compra` (
   `id_detalle` int(255) NOT NULL,
-  `email_usuario` int(100) NOT NULL,
+  `codigo_articulo` int(255) NOT NULL,
+  `nombre_articulo` varchar(255) CHARACTER SET utf8 COLLATE utf8_spanish_ci NOT NULL,
   `cantidad` int(255) NOT NULL,
   `precio` int(255) NOT NULL,
-  `codigo_compra` int(11) NOT NULL
+  `clave_articulo` varchar(255) NOT NULL,
+  `codigo_compra` int(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `detalle_compra`
+--
+
+INSERT INTO `detalle_compra` (`id_detalle`, `codigo_articulo`, `nombre_articulo`, `cantidad`, `precio`, `clave_articulo`, `codigo_compra`) VALUES
+(1, 1, 'Call Of Duty:War at World II ', 2, 60, '9785', 4),
+(2, 1, 'Call Of Duty:War at World II ', 1, 30, '9785', 5),
+(3, 1, 'Call Of Duty:War at World II ', 1, 30, '9785', 6),
+(4, 1, 'Call Of Duty:War at World II ', 1, 30, '9785', 7),
+(6, 1, 'Call Of Duty:War at World II ', 1, 30, '9785', 9),
+(7, 2, 'Counter Strike: Global Ofensive', 1, 10, '5465516', 9),
+(8, 1, 'Call Of Duty:War at World II ', 1, 30, '9785', 10),
+(9, 8, 'Rainbow Six Siege', 1, 20, '6542', 10),
+(10, 1, 'Call Of Duty:War at World II ', 1, 30, '9785', 11),
+(11, 2, 'Counter Strike: Global Ofensive', 1, 10, '5465516', 11),
+(12, 1, 'Call Of Duty:War at World II ', 1, 30, '9785', 12),
+(13, 2, 'Counter Strike: Global Ofensive', 1, 10, '5465516', 12),
+(14, 1, 'Call Of Duty:War at World II ', 1, 30, '9785', 13),
+(15, 2, 'Counter Strike: Global Ofensive', 1, 10, '5465516', 13);
 
 -- --------------------------------------------------------
 
@@ -175,10 +213,16 @@ ALTER TABLE `articulo`
   MODIFY `codigo_articulo` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
+-- AUTO_INCREMENT de la tabla `compra`
+--
+ALTER TABLE `compra`
+  MODIFY `codigo_compra` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+
+--
 -- AUTO_INCREMENT de la tabla `detalle_compra`
 --
 ALTER TABLE `detalle_compra`
-  MODIFY `id_detalle` int(255) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_detalle` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT de la tabla `genero`

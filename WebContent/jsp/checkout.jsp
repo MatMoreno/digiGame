@@ -2,11 +2,14 @@
 
 <!DOCTYPE html>
 <%
+	HttpSession sesion = request.getSession();
 	String baseJsp = (String) request.getAttribute("baseJsp");
-	ArrayList<Genero> lista = (ArrayList<Genero>) request.getAttribute("arrayGenero");
+	HashMap<Integer, CarritoItem> carrito = (HashMap<Integer, CarritoItem>) sesion.getAttribute("carrito");
+	int carritoSize = 0;
+	carritoSize=carrito.size();
 %>
 <%@page
-	import="modelo.hibernate.Usuarios,modelo.hibernate.Genero, utils.HibernateUtils, org.hibernate.Session, java.util.ArrayList"%>
+	import="java.util.HashMap,modelo.hibernate.Usuarios,modelo.control.CarritoItem, utils.HibernateUtils, org.hibernate.Session, java.util.ArrayList"%>
 <html>
 <head>
 <title>Home</title>
@@ -15,7 +18,9 @@
 <meta name="description" content="Your description">
 <meta name="keywords" content="Your keywords">
 <meta name="author" content="Your name">
-<link rel="stylesheet" href="boot/css/bootstrap.css" type="text/css"
+<link rel="stylesheet" href="bootstrap/css/bootstrap.css" type="text/css"
+	media="screen">
+	<link rel="stylesheet" href="boot/css/bootstrap.css" type="text/css"
 	media="screen">
 <link rel="stylesheet" href="boot/css/style.css" type="text/css"
 	media="screen">
@@ -38,11 +43,11 @@
 			<h2>DIGITALGAME e-SHOP</h2>
 		</div>
 		<div class="topnav" id="myTopnav">
-			<a style="cursor: pointer" onclick="openNav()">&#9776;</a> <a
-				href="<%=baseJsp%>?action=irInicio">Home</a> <a
+			<a href="<%=baseJsp%>?action=irInicioLog">Home</a> <a
 				href="<%=baseJsp%>?action=irArticulos">Catálogo</a> <a
-				href="<%=baseJsp%>?action=irLogin">Login</a> <a
-				href="<%=baseJsp%>?action=irRegistro">Registrarse</a> <a
+				href="<%=baseJsp%>?action=irCuenta">Perfil de <%=(String) sesion.getAttribute("usuarioLogueado")%></a>
+			<a href="<%=baseJsp%>?action=irCarrito">Carrito(<%=carritoSize%>)
+			</a> <a href="<%=baseJsp%>?action=cerrarSesion">cerrar sesión</a> <a
 				href="javascript:void(0);" style="font-size: 15px;" class="icon"
 				onclick="myFunction()">&#9776;</a>
 		</div>
@@ -75,10 +80,11 @@
 
 				<!-- Text input-->
 				<div class="control-group">
-					<label class="control-label" for="textinput">Nombre y apellidos</label>
+					<label class="control-label" for="textinput">Nombre y
+						apellidos</label>
 					<div class="controls">
 						<input id="nombreCheck" name="nombreCheck" type="text"
-							pattern="[A-Za-z]{3,30}" title="Al menos 3 caracteres"
+							pattern="[A-Za-z ]{5,25}[A-Za-z]" title="Al menos 3 caracteres"
 							placeholder="Ej: Pepe Moreno Perez" class="input-xlarge" required>
 
 					</div>
@@ -95,8 +101,8 @@
 
 					</div>
 				</div>
-				
-							<div class="control-group">
+
+				<div class="control-group">
 					<label class="control-label" for="textinput">País</label>
 					<div class="controls">
 						<input id="pais" name="paisCheck" type="text"
@@ -105,24 +111,27 @@
 
 					</div>
 				</div>
-				
-				
-				
+
+
+
 				<div class="control-group">
-					<label class="control-label" for="textinput">Tipo de tarjeta de crédito</label>
+					<label class="control-label" for="textinput">Tipo de
+						tarjeta de crédito</label>
 					<div class="controls">
 						<select name="tipoTarjeta">
-						<option>Visa</option>
-						<option>MasterCard</option>
+							<option>Visa</option>
+							<option>MasterCard</option>
 						</select>
 
 					</div>
 				</div>
 				<!-- Password input-->
 				<div class="control-group">
-					<label class="control-label" >Numero de la Tarjeta de Crédito</label>
+					<label class="control-label">Numero de la Tarjeta de
+						Crédito</label>
 					<div class="controls">
-						<input name="numeroTarjeta" placeholder="XXXX XXXX XXXX XXXX" type="text" pattern="[0-9]{16}" class="input-medium" required>
+						<input name="numeroTarjeta" placeholder="XXXX XXXX XXXX XXXX"
+							type="text" pattern="[0-9]{2-16}" class="input-medium" required>
 
 					</div>
 				</div>
@@ -132,7 +141,9 @@
 					<div class="controls">
 						<div class="input-append">
 
-							<input type="text" title="Debe seguir el modelo xx/xx" id="fechaCad" name="fechaCad" pattern="[0-9]{2}/[0-9]{2}" placeholder="Ej: 05/18" required>
+							<input type="text" title="Debe seguir el modelo xx/xx"
+								id="fechaCad" name="fechaCad" pattern="[0-9]{2}/[0-9]{2}"
+								placeholder="Ej: 05/18" required>
 						</div>
 
 					</div>
@@ -146,16 +157,7 @@
 							class="btn btn-success"></input>
 					</div>
 				</div>
-				<%
-					HttpSession sesion = request.getSession();
-					String error = (String) sesion.getAttribute("errorReg");
-					if (error == "1") {
-				%>
-				<p style="margin-left: 10%; color: red">Este correo electrónico	ya esta registrado en nuestra base de datos</p>
-				<%
-					}
-					sesion.invalidate();
-				%>
+		
 			</fieldset>
 		</form>
 	</div>

@@ -1,6 +1,7 @@
 package modelo.hibernate;
 // Generated 23-oct-2017 11:55:10 by Hibernate Tools 5.2.5.Final
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -14,25 +15,40 @@ import javax.persistence.Table;
 @Table(name="detalle_compra")
 public class DetalleCompra implements java.io.Serializable {
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name="id_detalle")
 	private int idDetalle;
-	
-	private int emailUsuario;
-	private int cantidad;
-	private int precio;
-	private int codigoCompra;
+	@Column(name="codigo_articulo")
 	private int codigoArticulo;
-	private int claveArticulo;
+	@Column(name="nombre_articulo")
+	private String nombreArticulo;
+	@Column(name="cantidad")
+	private int cantidad;
+	@Column(name="precio")
+	private float precio;
+	@Column(name="clave_articulo")
+	private String claveArticulo;
+	@Column(name="codigo_compra")
+	private int codigoCompra;
+	
+	
+	public DetalleCompra( String nombreArticulo,int cantidad, float precio, int codigoArticulo, String claveArticulo,
+			int codigoCompra) {
+		super();
+		this.nombreArticulo=nombreArticulo;
+		this.cantidad = cantidad;
+		this.precio = precio;
+		this.codigoArticulo = codigoArticulo;
+		this.claveArticulo = claveArticulo;
+		this.codigoCompra = codigoCompra;
+	}
+
+	
 
 	public DetalleCompra() {
 	}
 
-	public DetalleCompra(int emailUsuario, int cantidad, int precio, int codigoCompra) {
-		this.emailUsuario = emailUsuario;
-		this.cantidad = cantidad;
-		this.precio = precio;
-		this.codigoCompra = codigoCompra;
-	}
+
 
 	public Integer getIdDetalle() {
 		return this.idDetalle;
@@ -42,13 +58,7 @@ public class DetalleCompra implements java.io.Serializable {
 		this.idDetalle = idDetalle;
 	}
 
-	public int getEmailUsuario() {
-		return this.emailUsuario;
-	}
 
-	public void setEmailUsuario(int emailUsuario) {
-		this.emailUsuario = emailUsuario;
-	}
 
 	public int getCantidad() {
 		return this.cantidad;
@@ -58,7 +68,7 @@ public class DetalleCompra implements java.io.Serializable {
 		this.cantidad = cantidad;
 	}
 
-	public int getPrecio() {
+	public float getPrecio() {
 		return this.precio;
 	}
 
@@ -74,11 +84,11 @@ public class DetalleCompra implements java.io.Serializable {
 		this.codigoCompra = codigoCompra;
 	}
 
-	public int getClaveArticulo() {
+	public String getClaveArticulo() {
 		return claveArticulo;
 	}
 
-	public void setClaveArticulo(int claveArticulo) {
+	public void setClaveArticulo(String claveArticulo) {
 		this.claveArticulo = claveArticulo;
 	}
 
@@ -88,6 +98,24 @@ public class DetalleCompra implements java.io.Serializable {
 
 	public void setCodigoArticulo(int codigoArticulo) {
 		this.codigoArticulo = codigoArticulo;
+	}
+
+
+
+	public void setIdDetalle(int idDetalle) {
+		this.idDetalle = idDetalle;
+	}
+
+
+
+	public String getNombreArticulo() {
+		return nombreArticulo;
+	}
+
+
+
+	public void setNombreArticulo(String nombreArticulo) {
+		this.nombreArticulo = nombreArticulo;
 	}
 
 }

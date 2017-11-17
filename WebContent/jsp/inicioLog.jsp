@@ -6,6 +6,9 @@
 ArrayList<Genero> lista=(ArrayList<Genero>) request.getAttribute("arrayGenero");
 HttpSession sesion = request.getSession();
 HashMap<Integer, CarritoItem> carrito = (HashMap<Integer, CarritoItem>) sesion.getAttribute("carrito");
+int carritoSize=0;
+if(carrito!=null) carritoSize=carrito.size();
+
   %>
 <%@page
 	import="java.util.HashMap,java.time.format.DateTimeFormatter ,modelo.control.CarritoItem,modelo.hibernate.Usuarios,modelo.hibernate.Articulo,modelo.hibernate.Genero, utils.HibernateUtils, org.hibernate.Session, java.util.ArrayList"%><html>
@@ -56,7 +59,7 @@ function closeNav() {
 <a href="<%=baseJsp%>?action=irInicioLog">Home</a>
 <a href="<%=baseJsp%>?action=irArticulos">Catálogo</a>
 <a   href="<%=baseJsp%>?action=irCuenta">Perfil de <%=(String) sesion.getAttribute("usuarioLogueado") %></a>
-<a href="<%=baseJsp%>?action=irCarrito">Carrito[<%if(carrito!=null){out.print(carrito.size());} %>]</a>
+<a href="<%=baseJsp%>?action=irCarrito">Carrito[<%=carritoSize %>]</a>
 <a href="<%=baseJsp%>?action=cerrarSesion">cerrar sesión</a>
 <%}else{ %>
 <a href="<%=baseJsp%>?action=irInicio">Home</a>
@@ -101,6 +104,7 @@ $(document).ready(function() {
 		%>
 
 	</div>
+	
 	
 </div><!--.container-->
 <footer>

@@ -6,17 +6,24 @@
             <column name="id_detalle"/>
             <generator class="identity"/>
         </id>
-        <property generated="never" lazy="false" name="emailUsuario" optimistic-lock="true" type="int" unique="false">
-            <column name="email_usuario" not-null="true"/>
+        <property generated="never" lazy="false" name="codigoArticulo" optimistic-lock="true" type="int" unique="false">
+            <column name="codigo_articulo" not-null="true"/>
+        </property>
+         <property generated="never" lazy="false" name="nombreArticulo" optimistic-lock="true" type="string" unique="false">
+            <column name="nombre_articulo" not-null="true"/>
         </property>
         <property generated="never" lazy="false" name="cantidad" optimistic-lock="true" type="int" unique="false">
             <column name="cantidad" not-null="true"/>
         </property>
-        <property generated="never" lazy="false" name="precio" optimistic-lock="true" type="int" unique="false">
+        <property generated="never" lazy="false" name="precio" optimistic-lock="true" type="float" unique="false">
             <column name="precio" not-null="true"/>
+        </property>
+           <property generated="never" lazy="false" name="claveArticulo" optimistic-lock="true" type="string" unique="false">
+            <column name="clave_articulo" not-null="true"/>
         </property>
         <property generated="never" lazy="false" name="codigoCompra" optimistic-lock="true" type="int" unique="false">
             <column name="codigo_compra" not-null="true"/>
         </property>
+      
     </class>
 </hibernate-mapping>

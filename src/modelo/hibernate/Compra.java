@@ -2,6 +2,7 @@ package modelo.hibernate;
 // Generated 23-oct-2017 11:55:10 by Hibernate Tools 5.2.5.Final
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -19,27 +20,30 @@ public class Compra implements java.io.Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "codigo_compra")
 	private int codigoCompra;
-	@Column(name = "nombre_compra")
-	private String nombre;
-	@Column(name = "email_Usuario")
+	@Column(name = "email_usuario")
 	private String emailUsuario;
+	@Column(name = "nombre_destino")
+	private String nombreDestino;
+	@Column(name = "email_destino")
+	private String emailDestino;
 	@Column(name = "fecha_hora")
-	private LocalDate FechaHora;
+	private LocalDateTime fechaHora;
 	@Column(name = "tipo_tarjeta")
 	private String tipo_tarjeta;
 	@Column(name = "numero_tarjeta")
-	private int numeroTarjeta;
+	private String numeroTarjeta;
 	@Column(name = "pais")
 	private String pais;
 	@Column(name = "fecha_cad")
 	private String fechaCaducidadTarjeta;
 
-	public Compra(String nombre, String emailUsuario, LocalDate fechaHora, String tipo_tarjeta, int numeroTarjeta,
+	public Compra(String emailUsuario, String emailDestino, String nombre,  LocalDateTime fechaHora, String tipo_tarjeta, String numeroTarjeta,
 			String pais, String fechaCaducidadTarjeta) {
 		super();
-		this.nombre = nombre;
+		this.nombreDestino = nombre;
 		this.emailUsuario = emailUsuario;
-		this.FechaHora = fechaHora;
+		this.emailDestino=emailDestino;
+		this.fechaHora = fechaHora;
 		this.tipo_tarjeta = tipo_tarjeta;
 		this.numeroTarjeta = numeroTarjeta;
 		this.pais = pais;
@@ -55,11 +59,11 @@ public class Compra implements java.io.Serializable {
 	}
 
 	public String getNombre() {
-		return nombre;
+		return nombreDestino;
 	}
 
 	public void setNombre(String nombre) {
-		this.nombre = nombre;
+		this.nombreDestino = nombre;
 	}
 
 	public String getEmailUsuario() {
@@ -72,19 +76,19 @@ public class Compra implements java.io.Serializable {
 
 	
 
-	public LocalDate getFechaHora() {
-		return FechaHora;
+	public LocalDateTime getFechaHora() {
+		return fechaHora;
 	}
 
-	public void setFechaHora(LocalDate fechaHora) {
-		FechaHora = fechaHora;
+	public void setFechaHora(LocalDateTime fechaHora) {
+		this.fechaHora = fechaHora;
 	}
 
-	public int getNumeroTarjeta() {
+	public String getNumeroTarjeta() {
 		return numeroTarjeta;
 	}
 
-	public void setNumeroTarjeta(int numeroTarjeta) {
+	public void setNumeroTarjeta(String numeroTarjeta) {
 		this.numeroTarjeta = numeroTarjeta;
 	}
 

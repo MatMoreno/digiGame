@@ -20,6 +20,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -54,6 +55,7 @@ import jdk.nashorn.internal.ir.RuntimeNode.Request;
  */
 @MultipartConfig
 public class servlet extends HttpServlet {
+	EnviarCorreo eC = new EnviarCorreo();
 	private static final long serialVersionUID = 1L;
 
 	public void init(HttpServletRequest request) throws ServletException {
@@ -77,7 +79,6 @@ public class servlet extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		
 		
 		listarArticulos(request);
 		listarGeneros(request);
@@ -194,7 +195,7 @@ public class servlet extends HttpServlet {
 			case "botonLogin":
 				error = "false";
 				String emailCaja = request.getParameter("emailLogin");
-				String passCaja = request.getParameter("password");
+				
 				// System.out.println(emailCaja + "---" + passCaja);
 				if (usuarioEnLista(request) == emailCaja) {
 
@@ -255,7 +256,7 @@ public class servlet extends HttpServlet {
 				url = base + "carrito.jsp";
 				break;
 			case "irCheckout":
-				if(sesion.getAttribute("carrito")==null){
+				if (sesion.getAttribute("carrito") == null) {
 					url = base + "carrito.jsp";
 					break;
 				}
@@ -263,9 +264,10 @@ public class servlet extends HttpServlet {
 				break;
 			case "botonCheckout":
 				checkOut(request);
-				url = base + "inicioLog.jsp";
-				break;
-				
+				response.sendRedirect("/DigitalGame/servlet?action=irInicioLog");
+				sesion.setAttribute("carrito", null);
+				return;
+
 			default:
 				break;
 			}
@@ -300,7 +302,7 @@ public class servlet extends HttpServlet {
 		if (request.getParameter("passUpdate1") != null && request.getParameter("passUpdate2") != null) {
 			pass = passMD5(request.getParameter("passUpdate2"));
 		}
-	
+
 		String nombre = request.getParameter("nombreUpdate");
 		String apellidos = request.getParameter("apellidosUpdate");
 		/* String email = request.getParameter("correoUpdate"); */
@@ -562,20 +564,20 @@ public class servlet extends HttpServlet {
 		return carrito;
 
 	}
+
 	public void deleteItemCarrito(HttpServletRequest request) {
 		HttpSession sesion = request.getSession();
 		HashMap<Integer, CarritoItem> carrito = (HashMap<Integer, CarritoItem>) sesion.getAttribute("carrito");
-			int codigo = Integer.parseInt(request.getParameter("codigo"));
-			CarritoItem item = carrito.get(codigo);
-			if (item != null) {
-				item.setCantidad(item.getCantidad() -1);
-				if(item.getCantidad()<=0) {
-					carrito.remove(codigo);
-					
-				}
+		int codigo = Integer.parseInt(request.getParameter("codigo"));
+		CarritoItem item = carrito.get(codigo);
+		if (item != null) {
+			item.setCantidad(item.getCantidad() - 1);
+			if (item.getCantidad() <= 0) {
+				carrito.remove(codigo);
 
 			}
-		
+
+		}
 
 	}
 
@@ -594,23 +596,56 @@ public class servlet extends HttpServlet {
 		}
 
 	}
+
 	public void checkOut(HttpServletRequest request) {
+		HttpSession sesion = request.getSession();
 		Session sesionHib = HibernateUtils.getSessionFactory().openSession();
-		String nombre = request.getParameter("nombreCheck");
-		String email = request.getParameter("correoCheck");
-		String fechaCad = request.getParameter("fechaCad");
+		String emailUsuario=(String)sesion.getAttribute("emailLogueado");
+		String nombreDestino = request.getParameter("nombreCheck").trim();
+		String emailDestino = request.getParameter("correoCheck").trim();
+		String fechaCad = request.getParameter("fechaCad").trim();
 		String tipoTar = request.getParameter("tipoTarjeta");
-		int numeroTar= Integer.parseInt(request.getParameter("numeroTarjeta"));
-		String pais=request.getParameter("paisCheck");
-		Compra compra=new Compra(nombre, email,LocalDate.now(), tipoTar, numeroTar, pais, fechaCad);
+		String numeroTar = request.getParameter("numeroTarjeta").trim();
+		String pais = request.getParameter("paisCheck");
+		Compra compra = new Compra(emailUsuario,nombreDestino, emailDestino, LocalDateTime.now(), tipoTar, numeroTar, pais, fechaCad);
+		sesionHib.beginTransaction();
 		sesionHib.save(compra);
-		EnviarCorreo eC=new EnviarCorreo();
-		eC.createAndSendEmail(email, "Compra Realizada con Éxito", "Recibira sus claves en otro correo");
+		sesionHib.getTransaction().commit();
+		sesionHib.close();
+		sesion.setAttribute("emailDestino",emailDestino);
+		sesion.setAttribute("codigoCompra", compra.getCodigoCompra());
+		eC.createAndSendEmail(emailUsuario, "DigitalGame e-shop: Compra Realizada con Éxito", "Recibira sus claves en el correo de destino");
+		crearDetalleCompra(request);
 
-	
-
-	
 	}
+	public void crearDetalleCompra(HttpServletRequest request) {
+		HttpSession sesion = request.getSession();
+		Session sesionHib = HibernateUtils.getSessionFactory().openSession();
+		String emailDestino=(String) sesion.getAttribute("emailDestino");
+		HashMap<Integer, CarritoItem> carrito = (HashMap<Integer, CarritoItem>) sesion.getAttribute("carrito");
+		int codigoCompra=(Integer)sesion.getAttribute("codigoCompra");
+		String mensaje="";
+		Set<Integer> claves=carrito.keySet();
+		for(Integer clave:claves) {
+		String nombreArticulo=carrito.get(clave).getArticulo().getNombre();
+		int cantidad=carrito.get(clave).getCantidad();
+		float precio=carrito.get(clave).getArticulo().getPrecio()*cantidad;
+		String claveArticulo=String.valueOf(carrito.get(clave).getArticulo().getClave());
+		DetalleCompra detalleC= new DetalleCompra(nombreArticulo, cantidad, precio, clave, claveArticulo, codigoCompra);
+		sesionHib.beginTransaction();
+		sesionHib.save(detalleC);
+		sesionHib.getTransaction().commit();
+		mensaje+="<html><body><p>Juego: <strong>"+nombreArticulo+"</strong>&nbsp;&nbsp;&nbsp;Clave: <strong>"+claveArticulo+"</strong> Numero de usos de la clave: <strong>"+ cantidad+"</strong></p></body></html>";
+		}
+		
+		sesionHib.close();
+		if(carrito.size()>1) {
+			eC.createAndSendEmail(emailDestino, "DigitalGame e-shop: Ha adquirido varias claves de juegos ",mensaje);
+		}
+		eC.createAndSendEmail(emailDestino, "DigitalGame e-shop: Ha adquirido una clave de juego ", mensaje);
+
+	}
+
 	public void imagen(HttpServletRequest request) {
 		HttpSession sesion = request.getSession();
 		String nombre = "default.jpg";

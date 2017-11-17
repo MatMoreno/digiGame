@@ -7,30 +7,30 @@
             <generator class="assigned"/>
         </id>
         <property generated="never" lazy="false" name="emailUsuario" optimistic-lock="true" type="string" unique="false">
-            <column length="100" name="email_usuario" not-null="true"/>
+            <column name="email_usuario" not-null="true"/>
         </property>
-        <property generated="never" lazy="false" name="codigoArticulo" optimistic-lock="true" type="int" unique="false">
-            <column name="codigo_articulo" not-null="true"/>
+        <property generated="never" lazy="false" name="nombreDestino" optimistic-lock="true" type="string" unique="false">
+            <column length="100" name="nombre_destino" not-null="true"/>
+        </property>
+        <property generated="never" lazy="false" name="emailDestino" optimistic-lock="true" type="string" unique="false">
+            <column name="email_destino" not-null="true"/>
         </property>
         
-        <property generated="never" lazy="false" name="fechaHora" optimistic-lock="true" type="LocalDate" unique="false">
-            <column name="codigo_articulo" not-null="true"/>
+        <property generated="never" lazy="false" name="fechaHora" optimistic-lock="true" type="LocalDateTime" unique="false">
+            <column name="fecha_hora" not-null="true"/>
         </property>
         
-        <property generated="never" lazy="false" name="numeroTarjeta" optimistic-lock="true" type="int" unique="false">
-            <column name="codigo_articulo" not-null="true"/>
+        <property generated="never" lazy="false" name="tipoTarjeta" optimistic-lock="true" type="string" unique="false">
+            <column name="tipo_tarjeta" not-null="true"/>
         </property>
-         <property generated="never" lazy="false" name="numeroTarjeta" optimistic-lock="true" type="int" unique="false">
-            <column name="codigo_articulo" not-null="true"/>
+         <property generated="never" lazy="false" name="numeroTarjeta" optimistic-lock="true" type="string" unique="false">
+            <column name="numero_tarjeta" not-null="true"/>
         </property>
-         <property generated="never" lazy="false" name="numeroTarjeta" optimistic-lock="true" type="int" unique="false">
-            <column name="codigo_articulo" not-null="true"/>
+         <property generated="never" lazy="false" name="pais" optimistic-lock="true" type="string" unique="false">
+            <column name="pais" not-null="true"/>
         </property>
-         <property generated="never" lazy="false" name="numeroTarjeta" optimistic-lock="true" type="int" unique="false">
-            <column name="codigo_articulo" not-null="true"/>
-        </property>
-         <property generated="never" lazy="false" name="numeroTarjeta" optimistic-lock="true" type="int" unique="false">
-            <column name="codigo_articulo" not-null="true"/>
+         <property generated="never" lazy="false" name="fechaCaducidadTarjeta" optimistic-lock="true" type="string" unique="false">
+            <column name="fecha_cad" not-null="true"/>
         </property>
     </class>
 </hibernate-mapping>
