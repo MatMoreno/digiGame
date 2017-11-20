@@ -151,6 +151,7 @@
 	                                
 		                         </div>
 		                           <div class="history_item_size">
+		                           
 		                            <c:forEach var="articulo" items="${compra.value.getArticulos()}" >  
 	                                <span class="item_size">
 	                                  ${articulo.getArticulo().getPrecio()}&euro;

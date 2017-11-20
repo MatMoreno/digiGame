@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 20-11-2017 a las 02:37:02
+-- Tiempo de generación: 20-11-2017 a las 02:43:26
 -- Versión del servidor: 10.1.28-MariaDB
 -- Versión de PHP: 7.1.10
 
@@ -128,7 +128,7 @@ CREATE TABLE `usuarios` (
 
 INSERT INTO `usuarios` (`nombre`, `apellidos`, `email_usuario`, `contrasena`, `fecha_de_nac`, `admin`) VALUES
 ('Administrador', 'admin admin', 'admin@gmail.com', 'e10adc3949ba59abbe56e057f20f883e', '1996-05-09', 1),
-('Mat', 'Moreno', 'matmoreno9@gmail.com', 'd41d8cd98f00b204e9800998ecf8427e', '1996-05-09', 0);
+('Mat', 'Moreno', 'matmoreno9@gmail.com', 'e10adc3949ba59abbe56e057f20f883e', '1996-05-09', 0);
 
 --
 -- Índices para tablas volcadas

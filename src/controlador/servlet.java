@@ -704,13 +704,14 @@ public class servlet extends HttpServlet {
 			for(int j=0;j<itemsDetalle.size();j++) {
 				Articulo articulo=(Articulo)sesionHib.get(Articulo.class,itemsDetalle.get(j).getCodigoArticulo());
 				int cantidad=itemsDetalle.get(j).getCantidad();
-				precio=cantidad*articulo.getPrecio();
+				precio+=cantidad*articulo.getPrecio();
 				array.add(new CarritoItem(articulo,cantidad));
 			}
 			CompraItem compra=new CompraItem(array, fechaHora, codigoCompra, precio);
 			compras.put(codigoCompra,compra);
-			
+			System.out.println(precio);
 		}
+		
 		return compras;
 		
 		
