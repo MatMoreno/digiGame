@@ -6,22 +6,22 @@ import java.util.Properties;
 
 public class EnviarCorreo {
  
-    private String emailAddressTo = new String();
-    private String msgSubject = new String();
-    private String msgText = new String();
+    private String correoDestino = new String();
+    private String asuntoMsg = new String();
+    private String mensaje = new String();
 
-    final String USER_NAME = "matmoreno9@gmail.com";   //User name of the Goole(gmail) account
-    final String PASSSWORD = "nerelis96";  //Password of the Goole(gmail) account
-    final String FROM_ADDRESS = "caca@gmail.com";  //From addresss
+    final String miCorreo = "digitalgameinfo@gmail.com";   //User name of the Goole(gmail) account
+    final String contraCorreo = "0905141996";  //Password of the Goole(gmail) account
+    //final String FROM_ADDRESS = "digitalgameinfo@gmail.com";  //From addresss
  
     public EnviarCorreo() {
     }
 
 
-    public void createAndSendEmail(String emailAddressTo, String msgSubject, String msgText) {
-        this.emailAddressTo = emailAddressTo;
-        this.msgSubject = msgSubject;
-        this.msgText = msgText;
+    public void createAndSendEmail(String correoDestino, String asuntoMsg, String mensaje) {
+        this.correoDestino = correoDestino;
+        this.asuntoMsg = asuntoMsg;
+        this.mensaje = mensaje;
         sendEmailMessage();
     }
   
@@ -45,38 +45,38 @@ public class EnviarCorreo {
     Session session = Session.getInstance(props,
     new javax.mail.Authenticator() {
     protected PasswordAuthentication getPasswordAuthentication() {
-    return new PasswordAuthentication(USER_NAME, PASSSWORD);
+    return new PasswordAuthentication(miCorreo, contraCorreo);
    }
     });
 
   try {
 
      Message message = new MimeMessage(session);
-     message.setFrom(new InternetAddress(FROM_ADDRESS)); //Set from address of the email
-     message.setContent(msgText,"text/html"); //set content type of the email
+     message.setFrom(new InternetAddress(miCorreo)); //Set from address of the email
+     message.setContent(mensaje,"text/html"); //set content type of the email
      
-    message.setRecipients(Message.RecipientType.TO,InternetAddress.parse(emailAddressTo)); //Set email recipient
+    message.setRecipients(Message.RecipientType.TO,InternetAddress.parse(correoDestino)); //Set email recipient
     
-    message.setSubject(msgSubject); //Set email message subject
+    message.setSubject(asuntoMsg); //Set email message subject
     Transport.send(message); //Send email message
 
-   System.out.println("sent email successfully!");
+   System.out.println("Correo Enviado Correctamente!");
 
   } catch (MessagingException e) {
        throw new RuntimeException(e);
   }
     }
 
-    public void setEmailAddressTo(String emailAddressTo) {
-        this.emailAddressTo = emailAddressTo;
+    public void setcorreoDestino(String correoDestino) {
+        this.correoDestino = correoDestino;
     }
 
     public void setSubject(String subject) {
-        this.msgSubject = subject;
+        this.asuntoMsg = subject;
     }
 
-    public void setMessageText(String msgText) {
-        this.msgText = msgText;
+    public void setMessageText(String mensaje) {
+        this.mensaje = mensaje;
     }
   
 }

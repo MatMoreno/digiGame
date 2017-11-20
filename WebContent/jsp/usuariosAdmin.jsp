@@ -79,7 +79,12 @@
 	</header>
 	<div
 		style="background: linear-gradient(to right, rgba(255, 255, 255, 1) 0, rgba(239, 239, 239, 1) 100%); width: 70%; margin: auto; height: 400px">
-		<legend style="font-size: 28px;">Panel de Control</legend>
+		<legend style="font-size: 28px;">
+			Panel de Control<input type="button" style="float: right;font-size:16px;margin:5px;font-weight: bold;"
+				class="btn:hover" name="volverPanelControl" value="Volver atras"
+				onClick="window.location.href='<%=baseJsp%>?action=irPanelAdmin'">
+		</legend>
+
 		<div class="table-responsive">
 
 			<table class="table table-fixed" cellspacing="0" width="100%">
@@ -108,7 +113,7 @@
 										<button type="button" onclick=" eliminarUsuario()"
 											class="btn btn-sm btn-danger" id="eliminar">
 											<i class="glyphicon glyphicon-trash"></i>
-										</button> </td>
+										</button></td>
 								</tr>
 							</form>
 						</c:if>

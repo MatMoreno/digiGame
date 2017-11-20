@@ -10,7 +10,6 @@
 	Articulo juego = (Articulo) request.getAttribute("articuloElegido");
 	 if(sesion.getAttribute("usuarioLogueado")!=null && (Integer)sesion.getAttribute("codAdmin")==1){ 
 	if (request.getAttribute("articuloGenero") != null) {
-		out.print(request.getAttribute("articuloGenero"));
 		listaJuegos = (ArrayList<Articulo>) request.getAttribute("articuloGenero");
 	}
 	
@@ -108,6 +107,9 @@
 	</div>
 
 	<div style="overflow: auto; background: linear-gradient(to right, rgba(255, 255, 255, 1) 0, rgba(239, 239, 239, 1) 100%); margin: auto; width: 70%; padding-top: 2%">
+	<input type="button" style="float: left;font-size:16px;margin:5px;font-weight: bold;"
+				class="btn:hover" name="volverPanelControl" value="Volver atras"
+				onClick="window.location.href='<%=baseJsp%>?action=<%if (request.getAttribute("articuloElegido") != null) { out.print("irArticulosAdmin");}else{%>irPanelAdmin<%} %>'">
 			<input  class="btn " type="button" value="Añadir un nuevo artículo" onClick="window.location.href='<%=baseJsp%>?action=irAddArticulo'" style="font-size:20px;cursor:pointer;color :black;float:right;margin-right: 15px">
 		<h2 style="text-align: center;"><%if (request.getAttribute("articuloElegido") != null) { out.print(juego.getNombre());}else{%>Catálogo de juegos<%} %></h2>
 		<legend></legend>

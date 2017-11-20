@@ -22,7 +22,7 @@ if(carrito!=null) carritoSize=carrito.size();
 
      <link rel="stylesheet" href="bootstrap/css/bootstrap.css" type="text/css" media="screen">
     <link rel="stylesheet" href="boot/css/style.css" type="text/css" media="screen">
-    <link rel="stylesheet" href="bootstrap/css/bootstrap.css" type="text/css" media="screen">
+  
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,600,700' rel='stylesheet' type='text/css'>
     <link  rel="stylesheet" href="css/estilos.css">
 	<script type="text/javascript" src="js/jquery.js"></script>
@@ -46,29 +46,38 @@ function closeNav() {
 </script>
 </head>
 
-<body id="fondo" >
-<!--==============================header=================================-->
+<body id="fondo">
+	<!--==============================header=================================-->
 
-<header  class="p0">
-<div style="padding-left:16px">
-  <h2>DIGITALGAME e-SHOP</h2>
-</div>
-<div class="topnav" id="myTopnav">
-<%if(sesion.getAttribute("usuarioLogueado")!=null){ %>
-<a href="<%=baseJsp%>?action=irInicioLog">Home</a>
-<a href="<%=baseJsp%>?action=irArticulos">Catálogo</a>
-<a   href="<%=baseJsp%>?action=irCuenta">Perfil de <%=(String) sesion.getAttribute("usuarioLogueado") %></a>
-<a href="<%=baseJsp%>?action=irCarrito">Carrito[<%=carritoSize %>]</a>
-<a href="<%=baseJsp%>?action=cerrarSesion">cerrar sesión</a>
-<%}else{ %>
-<a href="<%=baseJsp%>?action=irInicio">Home</a>
-<a href="<%=baseJsp%>?action=irArticulos">Catálogo</a>
-<a   href="<%=baseJsp%>?action=irLogin">Login</a>
-<a href="<%=baseJsp%>?action=irRegistro">Registrarse</a>
-<%} %>
-<a href="javascript:void(0);" style="font-size:15px;" class="icon" onclick="myFunction()">&#9776;</a>
-</div>
-</header>
+	<header class="p0">
+		<div style="padding-left: 16px">
+			<h2>DIGITALGAME e-SHOP</h2>
+		</div>
+		<div class="topnav" id="myTopnav">
+			<a style="cursor: pointer" onclick="openNav()">&#9776;</a>
+			<%
+				if (sesion.getAttribute("usuarioLogueado") != null) {
+			%>
+			<a href="<%=baseJsp%>?action=irInicioLog">Home</a> <a
+				href="<%=baseJsp%>?action=irArticulos">Catálogo</a> <a
+				href="<%=baseJsp%>?action=irCuenta">Perfil de <%=(String) sesion.getAttribute("usuarioLogueado")%></a>
+			<a id="numeroCarrito" href="<%=baseJsp%>?action=irCarrito">Carrito[<%=carritoSize %>]</a>
+			<a href="<%=baseJsp%>?action=irMisCompras">Mis Compras</a>
+			 <a
+				href="<%=baseJsp%>?action=cerrarSesion">cerrar sesión</a>
+			<%
+				} else {
+			%>
+			<a href="<%=baseJsp%>?action=irInicio">Home</a> <a
+				href="<%=baseJsp%>?action=irArticulos">Catálogo</a> <a
+				href="<%=baseJsp%>?action=irLogin">Login</a> <a
+				href="<%=baseJsp%>?action=irRegistro">Registrarse</a>
+			<%
+				}
+			%>
+			
+		</div>
+	</header>
 
 <script>
 function myFunction() {
@@ -84,6 +93,8 @@ function myFunction() {
 </script>
 
 
+			<p style="border-radius:20px;text-align:center;margin:auto;margin-top:5%"><img style="border-radius:20px;" src="img/imgInicio.jpg"/> </p>
+			
 	
 	
 	

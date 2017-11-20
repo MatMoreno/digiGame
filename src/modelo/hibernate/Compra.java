@@ -49,6 +49,9 @@ public class Compra implements java.io.Serializable {
 		this.pais = pais;
 		this.fechaCaducidadTarjeta = fechaCaducidadTarjeta;
 	}
+	public Compra() {
+		
+	}
 
 	public int getCodigoCompra() {
 		return this.codigoCompra;

@@ -1,6 +1,7 @@
 package controlador;
 
 import modelo.control.CarritoItem;
+import modelo.control.CompraItem;
 import modelo.control.EnviarCorreo;
 import modelo.hibernate.*;
 import java.math.BigInteger;
@@ -79,8 +80,6 @@ public class servlet extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-
-		listarArticulos(request);
 		listarGeneros(request);
 		HttpSession sesion = request.getSession();
 		String error = "false";
@@ -93,6 +92,11 @@ public class servlet extends HttpServlet {
 			switch (action) {
 			case "irInicioLog":
 				url = base + "inicioLog.jsp";
+				break;
+			case "irMisCompras":
+				HashMap<Integer,CompraItem> comprasMap =obtenerDatosCompra(request);
+				request.setAttribute("compras",comprasMap);
+				url = base + "misCompras.jsp";
 				break;
 			case "irArticulos":
 				listarArticulos(request);
@@ -315,9 +319,10 @@ public class servlet extends HttpServlet {
 		Usuarios user = sesionHib.get(Usuarios.class, (String) sesion.getAttribute("emailLogueado"));
 		String pass = user.getContrasena();
 		/* Arreglar si contraseña esta en la base de datos */
-		if (request.getParameter("passUpdate1") != null && request.getParameter("passUpdate2") != null) {
+		if (request.getParameter("passUpdate1") != "" && request.getParameter("passUpdate2") != "") {
 			pass = passMD5(request.getParameter("passUpdate2"));
 		}
+		System.out.println(request.getParameter("passUpdate1")+request.getParameter("passUpdate2"));
 
 		String nombre = request.getParameter("nombreUpdate");
 		String apellidos = request.getParameter("apellidosUpdate");
@@ -648,11 +653,11 @@ public class servlet extends HttpServlet {
 		sesion.setAttribute("codigoCompra", compra.getCodigoCompra());
 		eC.createAndSendEmail(emailUsuario, "DigitalGame e-shop: Compra Realizada con Éxito",
 				"Recibira sus claves en el correo de destino que ha elegido '" + emailDestino + "'");
-		crearDetalleCompra(request);
+		crearDetalleCompraYEnviarEmail(request);
 
 	}
 
-	public void crearDetalleCompra(HttpServletRequest request) {
+	public void crearDetalleCompraYEnviarEmail(HttpServletRequest request) {
 		HttpSession sesion = request.getSession();
 		Session sesionHib = HibernateUtils.getSessionFactory().openSession();
 		String emailDestino = (String) sesion.getAttribute("emailDestino");
@@ -682,6 +687,35 @@ public class servlet extends HttpServlet {
 			eC.createAndSendEmail(emailDestino, "DigitalGame e-shop: Ha adquirido una clave de juego ", mensaje);
 		}
 	}
+	@SuppressWarnings("unchecked")
+	public HashMap<Integer,CompraItem>  obtenerDatosCompra(HttpServletRequest request) {
+		HttpSession sesion = request.getSession();
+		Session sesionHib = HibernateUtils.getSessionFactory().openSession();
+		String emailUsuario = (String) sesion.getAttribute("emailLogueado");
+		HashMap<Integer,CompraItem> compras=new HashMap<>();
+		ArrayList<Compra> itemsCompra= (ArrayList<Compra>) sesionHib.createQuery("from Compra where emailUsuario='"+emailUsuario+"'").list();
+		for(int i=0;i<itemsCompra.size();i++) {
+			int codigoCompra=itemsCompra.get(i).getCodigoCompra();
+			LocalDateTime fechaHora=itemsCompra.get(i).getFechaHora();
+			ArrayList<CarritoItem> array=new ArrayList<>();
+			float precio=0;
+			ArrayList<DetalleCompra> itemsDetalle= (ArrayList<DetalleCompra>) sesionHib.createQuery("from DetalleCompra where codigoCompra='"+codigoCompra+"'").list();
+
+			for(int j=0;j<itemsDetalle.size();j++) {
+				Articulo articulo=(Articulo)sesionHib.get(Articulo.class,itemsDetalle.get(j).getCodigoArticulo());
+				int cantidad=itemsDetalle.get(j).getCantidad();
+				precio=cantidad*articulo.getPrecio();
+				array.add(new CarritoItem(articulo,cantidad));
+			}
+			CompraItem compra=new CompraItem(array, fechaHora, codigoCompra, precio);
+			compras.put(codigoCompra,compra);
+			
+		}
+		return compras;
+		
+		
+		
+	}
 
 	public void imagen(HttpServletRequest request) {
 		HttpSession sesion = request.getSession();
@@ -689,7 +723,6 @@ public class servlet extends HttpServlet {
 		Part file = null;
 		try {
 			if (sesion.getAttribute("idProdNuevo") != null) {
-				System.out.println("IDPRODNUEVO");
 				nombre = sesion.getAttribute("idProdNuevo") + ".jpg";
 				file = request.getPart("imagenAdd");
 
@@ -699,7 +732,7 @@ public class servlet extends HttpServlet {
 			}
 
 			InputStream is = file.getInputStream();
-			File directorio = new File("C:\\Users\\alumno_m\\git\\digiGame\\WebContent\\img\\imgArticulos\\" + nombre);
+			File directorio = new File("C:\\Users\\mat\\git\\digiGame\\WebContent\\img\\imgArticulos\\" + nombre);
 			FileOutputStream os = new FileOutputStream(directorio);
 			int dato = is.read();
 			while (dato != -1) {

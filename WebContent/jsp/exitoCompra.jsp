@@ -6,6 +6,9 @@
 ArrayList<Genero> lista=(ArrayList<Genero>) request.getAttribute("arrayGenero");
 HttpSession sesion = request.getSession();
 HashMap<Integer, CarritoItem> carrito = (HashMap<Integer, CarritoItem>) sesion.getAttribute("carrito");
+if (sesion.getAttribute("usuarioLogueado") == null) {
+	response.sendRedirect("/DigitalGame/servlet?action=irInicioLog");
+}
 int carritoSize=0;
 if(carrito!=null) carritoSize=carrito.size();
 
@@ -55,18 +58,13 @@ function closeNav() {
 </div>
 <div class="topnav" id="myTopnav">
 <a style="cursor:pointer"   onclick="openNav()">&#9776;</a>
-<%if(sesion.getAttribute("usuarioLogueado")!=null){ %>
 <a href="<%=baseJsp%>?action=irInicioLog">Home</a>
 <a href="<%=baseJsp%>?action=irArticulos">Catálogo</a>
 <a   href="<%=baseJsp%>?action=irCuenta">Perfil de <%=(String) sesion.getAttribute("usuarioLogueado") %></a>
 <a href="<%=baseJsp%>?action=irCarrito">Carrito[<%=carritoSize %>]</a>
+<a href="<%=baseJsp%>?action=irMisCompras">Mis Compras</a>
 <a href="<%=baseJsp%>?action=cerrarSesion">cerrar sesión</a>
-<%}else{ %>
-<a href="<%=baseJsp%>?action=irInicio">Home</a>
-<a href="<%=baseJsp%>?action=irArticulos">Catálogo</a>
-<a   href="<%=baseJsp%>?action=irLogin">Login</a>
-<a href="<%=baseJsp%>?action=irRegistro">Registrarse</a>
-<%} %>
+
 <a href="javascript:void(0);" style="font-size:15px;" class="icon" onclick="myFunction()">&#9776;</a>
 </div>
 </header>
@@ -92,7 +90,7 @@ $(document).ready(function() {
 </script>
 
 <div style="margin: auto; width: 80%; height: 460px; overflow: hidden; margin-bottom: 5%;margin:auto;text-align:center;color:white;">
-<div><h2>Compra realizada con exito! </h2><p>Revise su correo, use su clave y empiece a jugar!</p></div>
+<div><h2>Compra realizada con exito! </h2><p>Revise su correo de destino, use su clave y empiece a jugar!</p></div>
 </div>
 <div class="container">
     <section style="height:80px;"></section>

@@ -46,7 +46,7 @@
 </div>
 </header>
 <div id="fondoL">
-<div  style="margin:auto;padding:5%;width: 35%;border: 3px black thin;  border-radius:20px;background: linear-gradient(to right, rgba(255, 255, 255, 1) 0, rgba(239, 239, 239, 1) 100%);">
+<div  style="margin:auto;margin-top:5%;padding:5%;width: 35%;opacity:0.88 ;border: 3px black thin;  border-radius:20px;background: linear-gradient(to right, rgba(255, 255, 255, 1) 0, rgba(239, 239, 239, 50) 80%);">
         
             <form   action="<%=baseJsp%>?action=botonLogin" method="POST">
                 <h2>Iniciar Sesión</h2>

@@ -44,6 +44,18 @@
 		document.getElementById("form2").visibility = "hidden";
 	}
 </script>
+<script>
+function myFunction() {
+    var x = document.getElementById("myTopnav");
+    if (x.className === "topnav") {
+        x.className += " responsive";
+        document.getElementById("mySidenav").style.marginTop="400px";
+    } else {
+    	 document.getElementById("mySidenav").style.marginTop="143px";
+        x.className = "topnav";
+    }
+}
+</script>
 </head>
 
 <body>

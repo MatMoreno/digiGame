@@ -6,7 +6,6 @@
 	int carritoSize = 0;
 	if (sesion.getAttribute("usuarioLogueado") == null) {
 		response.sendRedirect("/DigitalGame/servlet?action=irInicioLog");
-		out.print("ERROOOOOOOOOOOOOOOOOOR USUARIO NO LOGUEADOO");
 	}
 	String baseJsp = (String) request.getAttribute("baseJsp");
 	HashMap<Integer, CarritoItem> carrito = (HashMap<Integer, CarritoItem>) sesion.getAttribute("carrito");
@@ -63,8 +62,9 @@
 			<a href="<%=baseJsp%>?action=irInicioLog">Home</a> <a
 				href="<%=baseJsp%>?action=irArticulos">Catálogo</a> <a
 				href="<%=baseJsp%>?action=irCuenta">Perfil de <%=(String) sesion.getAttribute("usuarioLogueado")%></a>
-			<a href="<%=baseJsp%>?action=irCarrito">Carrito(<%=carritoSize%>)
-			</a> <a href="<%=baseJsp%>?action=cerrarSesion">cerrar sesión</a> <a
+			<a href="<%=baseJsp%>?action=irCarrito">Carrito[<%=carritoSize%>]</a>
+			<a href="<%=baseJsp%>?action=irMisCompras">Mis Compras</a>
+			 <a href="<%=baseJsp%>?action=cerrarSesion">cerrar sesión</a> <a
 				href="javascript:void(0);" style="font-size: 15px;" class="icon"
 				onclick="myFunction()">&#9776;</a>
 		</div>
@@ -179,6 +179,7 @@
 							</c:forEach>
 
 						</div>
+						<%if (carritoSize != 0){%>
 						<div class="panel-footer">
 							<div class="row text-center">
 								<div class="col-xs-9">
@@ -199,6 +200,7 @@
 								</div>
 							</div>
 						</div>
+							<%}	%>
 					</div>
 				</div>
 			</div>

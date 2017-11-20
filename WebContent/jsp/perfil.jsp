@@ -81,7 +81,9 @@
 			<a href="<%=baseJsp%>?action=irInicioLog">Home</a> <a
 				href="<%=baseJsp%>?action=irArticulos">Catálogo</a> <a
 				href="<%=baseJsp%>?action=irCuenta">Perfil de <%=(String) sesion.getAttribute("usuarioLogueado")%></a>
-			<a href="<%=baseJsp%>?action=irCarrito">Carrito[<%=carritoSize %>]</a> <a
+			<a href="<%=baseJsp%>?action=irCarrito">Carrito[<%=carritoSize %>]</a> 
+			<a href="<%=baseJsp%>?action=irMisCompras">Mis Compras</a>
+			<a
 				href="<%=baseJsp%>?action=cerrarSesion">cerrar sesión</a>
 			<%
 				} else {

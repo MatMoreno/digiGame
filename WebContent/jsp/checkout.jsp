@@ -46,8 +46,9 @@
 			<a href="<%=baseJsp%>?action=irInicioLog">Home</a> <a
 				href="<%=baseJsp%>?action=irArticulos">Catálogo</a> <a
 				href="<%=baseJsp%>?action=irCuenta">Perfil de <%=(String) sesion.getAttribute("usuarioLogueado")%></a>
-			<a href="<%=baseJsp%>?action=irCarrito">Carrito(<%=carritoSize%>)
-			</a> <a href="<%=baseJsp%>?action=cerrarSesion">cerrar sesión</a> <a
+			<a href="<%=baseJsp%>?action=irCarrito">Carrito(<%=carritoSize%>)</a>
+				<a href="<%=baseJsp%>?action=irMisCompras">Mis Compras</a>
+				 <a href="<%=baseJsp%>?action=cerrarSesion">cerrar sesión</a> <a
 				href="javascript:void(0);" style="font-size: 15px;" class="icon"
 				onclick="myFunction()">&#9776;</a>
 		</div>

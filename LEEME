@@ -1,1 +1,4 @@
 Build path desde WEB-INF/lib
+Resolver unbounded del build-path
+cambiar credenciales de base de datos abriendo como editor de texto hibernate.cfg.xml
+y listo!
